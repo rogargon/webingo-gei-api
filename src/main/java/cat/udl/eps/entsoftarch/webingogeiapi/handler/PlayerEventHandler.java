@@ -44,6 +44,7 @@ public class PlayerEventHandler {
     }
 
     @HandleBeforeLinkSave
+    @Transactional
     public void handlePlayerPreLinkSave(Player player, Object o) {
         logger.info("Before linking: {} to {}", player.toString(), o.toString());
     }
@@ -71,6 +72,7 @@ public class PlayerEventHandler {
     }
 
     @HandleAfterLinkSave
+    @Transactional
     public void handlePlayerPostLinkSave(Player player, Object o) {
         logger.info("After linking: {} to {}", player.toString(), o.toString());
     }

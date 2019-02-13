@@ -8,17 +8,9 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface UserRepository extends PagingAndSortingRepository<User, String> {
 
   /**
-   * Finds user by given email with given name as parameter
-   * @param email String email for finding user
+   * Finds the user with given email
+   * @param email String email
    * @return Returns user object.
    */
   User findByEmail(String email);
-
-
-  /**
-   * Finds user by given username, with given name as parameter
-   * @param text String text for finding user
-   * @return Returns user object.
-   */
-  User findByUsername(String text);
 }
