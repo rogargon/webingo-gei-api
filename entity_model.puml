@@ -69,13 +69,13 @@ class Invitation <<Invitation>> {
     createdAt : Date
 }
 
-Invitation "many" -- "1" Player
+Invitation "many" -- "1" Player : Send <
 
-Invitation "many" -- "1" Player
+Invitation "many" -- "1" Player : Receive >
 
-Invitation "many" -left- "1" Game
+Invitation "many" -left- "1" Game : Belongs >
 
-Game "1" -left- "many" Card
+Game "1" -left- "many" Card : Belongs <
 
 Player "1" -- "1" Card : Has >
 
