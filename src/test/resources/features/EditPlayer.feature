@@ -15,3 +15,10 @@ Feature: Edit Player
     When I edit player with username "player" a new email "player_2@webingo.org>"
     Then The response code is 401
     And It has not been edited a player with username "player"
+
+  Scenario: Edit player with invalid email
+    Given I login as "admin" with password "password"
+    And I register a new player with username "player", email "player@webingo.org" and password "password"
+    When I edit player with username "player", email "playerawebingo.org" and password "password"
+    Then The response code is 400
+    And It has not been edited a player with username "player"

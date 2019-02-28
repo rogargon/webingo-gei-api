@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
@@ -53,5 +52,21 @@ public class EditPlayerStepDefs {
 								.with(AuthenticationStepDefs.authenticate()))
 				.andDo(print());
 
+	}
+
+	@When("^I edit player with username \"([^\"]*)\", email \"([^\"]*)\" and password \"([^\"]*)\"$")
+	public void iEditPlayerWithUsernameEmailAndPassword(String username, String email, String password) throws Throwable {
+		// Write code here that turns the phrase above into concrete actions
+		JSONObject player = new JSONObject();
+		player.put("username", username);
+		player.put("email", email);
+		player.put("password", password);
+		stepDefs.result = stepDefs.mockMvc.perform(
+				patch("/players/{username}",username)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(player.toString())
+						.accept(MediaType.APPLICATION_JSON)
+						.with(AuthenticationStepDefs.authenticate()))
+				.andDo(print());
 	}
 }
