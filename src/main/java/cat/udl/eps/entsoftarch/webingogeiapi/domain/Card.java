@@ -2,13 +2,13 @@ package cat.udl.eps.entsoftarch.webingogeiapi.domain;
 
 import java.util.Collection;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 import lombok.NonNull;
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -24,6 +24,11 @@ public class Card {
     @Id
     private int id;
 
+    @ManyToOne
+    private Game game;
+
+    @OneToMany
+    private Player player;
 
     /**
      * List of numbers associated to a card.
@@ -35,6 +40,6 @@ public class Card {
     public int getId() {
         return id;
     }
-    
+
 
 }
