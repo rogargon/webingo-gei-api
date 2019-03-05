@@ -22,8 +22,12 @@ public class Invitation {
     @JsonIdentityReference(alwaysAsId = true)
     private Player invites;
 
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private Player createdBy;
+
     //TODO: Uncomment Game implementations
-    
+
     /*@ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     private Game invitesTo;*/
@@ -32,19 +36,21 @@ public class Invitation {
 
     public Player getInvites() { return invites; }
 
+    public Player getCreatedBy() { return createdBy; }
+
     //public Game getInvitesTo() { return invitesTo; }
 
     public void setId(Long id) { this.id = id; }
 
     public String getMessage() { return message; }
 
+    /*public void setInvitesTo(Game invitesTo) {
+    this.invitesTo = invitesTo;
+    }*/
+
     public void setInvites(Player invites) {
         this.invites = invites;
     }
-
-    /*public void setInvitesTo(Game invitesTo) {
-        this.invitesTo = invitesTo;
-    }*/
 
     public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
@@ -52,6 +58,10 @@ public class Invitation {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public void sendCreatedBy(Player message) {
+        this.createdBy = createdBy;
     }
 
 }
