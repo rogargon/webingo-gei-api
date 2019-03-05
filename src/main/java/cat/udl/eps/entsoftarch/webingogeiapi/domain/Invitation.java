@@ -60,7 +60,7 @@ public class Invitation {
         this.message = message;
     }
 
-    public void sendCreatedBy(Player message) {
+    public void setCreatedBy(Player createdBy) {
         this.createdBy = createdBy;
     }
 
