@@ -35,14 +35,14 @@ public class CreateInvitationStepDefs {
 
     @When("^I send an invitation with message \"([^\"]*)\"$")
     public void iSendAnInvitationWithMessage(String message) throws Throwable {
-        Player player = playerRepo.findById(username).orElse(null);
-
-        stepDefs.result = stepDefs.mockMvc.perform(
-                post("/players")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(player.toString())
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print());
+//        Player player = playerRepo.findById(username).orElse(null);
+//
+//        stepDefs.result = stepDefs.mockMvc.perform(
+//                post("/players")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(player.toString())
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .with(AuthenticationStepDefs.authenticate()))
+//                .andDo(print());
     }
 }

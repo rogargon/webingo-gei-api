@@ -3,12 +3,10 @@ package cat.udl.eps.entsoftarch.webingogeiapi.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.ZonedDateTime;
 
+@Entity
 public class Invitation {
 
     @Id
