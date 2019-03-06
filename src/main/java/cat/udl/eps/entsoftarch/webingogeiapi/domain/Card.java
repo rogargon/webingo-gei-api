@@ -6,14 +6,18 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
-import lombok.NonNull;
+import lombok.*;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
+@Data
 @Entity
+@Getter
+@Setter
+@EqualsAndHashCode
 public class Card {
     private int rows = 3;
     private int cols = 9;
@@ -36,10 +40,4 @@ public class Card {
     @NonNull
     @NotBlank
     private int[][] numbers = new int[rows][cols];
-
-    public int getId() {
-        return id;
-    }
-
-
 }
