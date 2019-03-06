@@ -10,6 +10,14 @@ Feature: Edit Player
     Then The response code is 200
     And It has been edited a player with username "player" and email "player_1@webingo.org", the password is not returned
 
+  Scenario: Edit player as user
+    Given I login as "admin" with password "password"
+    And I register a new player with username "player", email "player@webingo.org" and password "password"
+    Given I login as "user" with password "password"
+    When I edit player with username "player" a new email "player_1@webingo.org" and password "password"
+    Then The response code is 200
+    And It has not been edited a player with username "player"
+
   Scenario: Try to register new player without authenticating
     Given I'm not logged in
     When I edit player with username "player" a new email "player_2@webingo.org>" and password "password"
@@ -40,4 +48,5 @@ Feature: Edit Player
     And The error message is "must be a well-formed email address"
     And The error message is "length must be between 8 and 256"
     And It has not been edited a player with username "player"
+
 
