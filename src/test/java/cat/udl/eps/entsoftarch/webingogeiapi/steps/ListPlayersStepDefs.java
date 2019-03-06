@@ -26,6 +26,8 @@ public class ListPlayersStepDefs {
     @Autowired
     private UserRepository UserRepository;
 
+
+
     @When("^I list players$")
     public void iListPlayers() throws Exception {
         stepDefs.result = stepDefs.mockMvc.perform(
