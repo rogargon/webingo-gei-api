@@ -21,4 +21,16 @@ Feature: Edit Player
     And I register a new player with username "player", email "player@webingo.org" and password "password"
     When I edit player with username "player" a new email "playerawebingo.org" and password "password"
     Then The response code is 400
+    And The error message is "must be a well-formed email address"
     And It has not been edited a player with username "player"
+
+  Scenario: Edit player with invalid email and invalid password
+    Given I login as "admin" with password "password"
+    And I register a new player with username "player", email "player@webingo.org" and password "password"
+    When I edit player with username "player" a new email "playerawebingo.org" and password "1234"
+    Then The response code is 400
+    And The error message is "must be a well-formed email address"
+    And The error message is "length must be between 8 and 256"
+    And It has not been edited a player with username "player"
+
+    
