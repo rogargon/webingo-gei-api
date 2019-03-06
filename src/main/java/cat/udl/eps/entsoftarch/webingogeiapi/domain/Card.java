@@ -31,9 +31,6 @@ public class Card {
     @ManyToOne
     private Game game;
 
-    @OneToMany
-    private Player player;
-
     /**
      * List of numbers associated to a card.
      */

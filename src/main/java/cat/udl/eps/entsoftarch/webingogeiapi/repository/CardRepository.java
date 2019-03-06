@@ -17,11 +17,4 @@ public interface CardRepository extends PagingAndSortingRepository<Card, String>
      * @return a list of the cards.
      */
     List<Card> findByGame(@Param("game") Game game);
-
-    /**
-     * Returns the card related to a player.
-     * @param player The Player that contains the cards we want.
-     * @return a list of the cards.
-     */
-    List<Card> findByUser(@Param("player") Player player);
 }
