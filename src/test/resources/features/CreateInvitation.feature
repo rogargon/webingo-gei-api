@@ -4,7 +4,13 @@ Feature: Create Invitation
   I want to send invitations
 
   Scenario: Send invitation to registered player
-    Given I login as "admin" with password "password"
-    When I register a new player with username "player", email "player@webingo.org" and password "password"
+    Given I login as "user" with password "password"
+    And There is an user "user2" with password "password"
+    When I send an invitation to "user2"
     Then The response code is 201
-    And It has been created a player with username "player" and email "player@webingo.org", the password is not returned
+
+  Scenario: Create invitation
+    Given I login as "user" with password "password"
+    When I send an invitation with message "asd"
+    Then The response code is 201
+    And Exists an invitation with
