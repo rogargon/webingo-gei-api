@@ -21,5 +21,9 @@ Feature: Remove Player
     Given I'm not logged in
     When I delete a player with username "player"
     Then The response code is 401
-    And It has not been edited a player with username "player"
-    
+    And It has not been deleted a player with username "player"
+
+  Scenario: Remove player that not exist
+    Given I login as "admin" with password "password"
+    When I delete a player with username "player"
+    Then The response code is 404
