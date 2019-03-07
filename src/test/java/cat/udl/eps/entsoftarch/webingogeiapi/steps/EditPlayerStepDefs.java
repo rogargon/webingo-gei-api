@@ -3,6 +3,7 @@ package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -48,6 +49,32 @@ public class EditPlayerStepDefs {
 		player.put("password", password);
 		stepDefs.result = stepDefs.mockMvc.perform(
 				put("/players/{username}",username)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(player.toString())
+						.accept(MediaType.APPLICATION_JSON)
+						.with(AuthenticationStepDefs.authenticate()))
+				.andDo(print());
+	}
+
+	@When("^I edit player with username \"([^\"]*)\" and a new password \"([^\"]*)\"$")
+	public void iEditPlayerWithUsernameAndPassword(String username, String password) throws Throwable {
+		JSONObject player = new JSONObject();
+		player.put("password", password);
+		stepDefs.result = stepDefs.mockMvc.perform(
+				patch("/players/{username}",username)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(player.toString())
+						.accept(MediaType.APPLICATION_JSON)
+						.with(AuthenticationStepDefs.authenticate()))
+				.andDo(print());
+	}
+
+	@When("^I edit player with username \"([^\"]*)\" and a new email \"([^\"]*)\"$")
+	public void iEditPlayerWithUsernameANewEmail(String username, String email) throws Throwable {
+		JSONObject player = new JSONObject();
+		player.put("email", email);
+		stepDefs.result = stepDefs.mockMvc.perform(
+				patch("/players/{username}",username)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(player.toString())
 						.accept(MediaType.APPLICATION_JSON)

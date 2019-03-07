@@ -18,7 +18,7 @@ Feature: Edit Player
     Then The response code is 200
     And It has not been edited a player with username "player"
 
-  Scenario: Try to register new player without authenticating
+  Scenario: Edit a player without authenticating
     Given I'm not logged in
     When I edit player with username "player" a new email "player_2@webingo.org>" and password "password"
     Then The response code is 401
@@ -27,7 +27,7 @@ Feature: Edit Player
   Scenario: Edit player with invalid email
     Given I login as "admin" with password "password"
     And I register a new player with username "player", email "player@webingo.org" and password "password"
-    When I edit player with username "player" a new email "playerawebingo.org" and password "password"
+    When I edit player with username "player" and a new email "playerawebingo.org"
     Then The response code is 400
     And The error message is "must be a well-formed email address"
     And It has not been edited a player with username "player"
@@ -35,7 +35,7 @@ Feature: Edit Player
   Scenario: Edit player with invalid password
     Given I login as "admin" with password "password"
     And I register a new player with username "player", email "player@webingo.org" and password "password"
-    When I edit player with username "player" a new email "player@webingo.org" and password "123"
+    When I edit player with username "player" and a new password "123"
     Then The response code is 400
     And The error message is "length must be between 8 and 256"
     And It has not been edited a player with username "player"
