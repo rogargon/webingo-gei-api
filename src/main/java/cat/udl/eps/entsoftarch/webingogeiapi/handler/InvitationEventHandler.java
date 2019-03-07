@@ -28,11 +28,11 @@ public class InvitationEventHandler {
     @HandleBeforeCreate
     @Transactional
     public void handlePlayerPreCreate(Invitation invi) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();;
-        invi.setCreatedAt(ZonedDateTime.now());
-        invi.setCreatedBy((Player) authentication.getPrincipal());
+        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();;
+        //invi.setCreatedAt(ZonedDateTime.now());
+        //invi.setCreatedBy((Player) authentication.getPrincipal());
 
-        logger.info("Before creating: {}", invi.toString());
+        //logger.info("Before creating: {}", invi.toString());
     }
 
 
