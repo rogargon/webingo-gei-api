@@ -49,7 +49,6 @@ package Users <<Layout>>{
 
 class Card <<Card>> {
     id : Integer
-    price : float
     numbers: List <Integer>
 }
 
@@ -58,9 +57,10 @@ class Game <<Game>> {
     status : Integer
     numbers: List <Integer>
     jackpot : float
+    pricePerCard : float
     bingo : bool
     line : bool
-    createdAt : Date
+    startAt : Date
     finishedAt : Date
 }
 
@@ -69,20 +69,20 @@ class Invitation <<Invitation>> {
     createdAt : Date
 }
 
-Invitation "many" -- "1" Player : Send <
+Invitation "many" -> "1" Player : Is Sent >
 
-Invitation "many" -- "1" Player : Receive >
+Invitation "many" -> "1" Player : Receive >
 
-Invitation "many" -left- "1" Game : Belongs >
+Invitation "many" --> "1" Game : Belongs >
 
-Game "1" -left- "many" Card : Belongs <
+Game "1" <-left- "many" Card : Belongs <
 
-Player "1" -- "1" Card : Has >
+Player "1" --> "1" Card : Has >
 
-Player "many" -- "1" Game : Joins >
+Player "many" --> "1" Game : Joins >
 
-Player " " --|> " " User
+Player --|> User
 
-Admin " " --|> " " User
+Admin -|> User
 
 @enduml
