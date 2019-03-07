@@ -17,5 +17,9 @@ Feature: Remove Player
     Then The response code is 403
     And It has not been deleted a player with username "player"
 
-
-
+  Scenario: Remove a player without authenticating
+    Given I'm not logged in
+    When I delete a player with username "player"
+    Then The response code is 401
+    And It has not been edited a player with username "player"
+    
