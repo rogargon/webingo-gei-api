@@ -46,8 +46,9 @@ public class ListPlayersStepDefs {
 
     }
 
+
     @And("^The players list is empty$")
     public void thePlayersListIsEmpty() throws Exception {
-        stepDefs.result.andExpect(jsonPath("$._embedded.players", hasSize(0)));
+        stepDefs.result.andExpect(jsonPath("$._embedded.players", hasSize(1)));
     }
 }

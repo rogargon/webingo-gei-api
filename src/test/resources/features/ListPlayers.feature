@@ -3,10 +3,11 @@ Feature: List players
   As an admin
   I want to list the players
 
-  Scenario: Try to list players without authenticating
+  Scenario:List players without authenticating
     Given I'm not logged in
     When I list players
     Then The response code is 401
+
 
   Scenario: Having 2 players, list players authenticated as admin
     Given I login as "admin" with password "password"

@@ -56,6 +56,6 @@ public class RegisterPlayerStepDef {
     stepDefs.result = stepDefs.mockMvc.perform(
         get("/players/{username}", username)
             .accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().isNotFound());
+        .andExpect(status().isUnauthorized());
   }
 }
