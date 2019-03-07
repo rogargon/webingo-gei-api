@@ -24,14 +24,16 @@ public class Invitation {
     @JsonIdentityReference(alwaysAsId = true)
     private Player createdBy;
 
-    //TODO: Uncomment Game implementations
-    /*@ManyToOne
+
+    @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
-    private Game invitesTo;*/
-    //public Game getInvitesTo() { return invitesTo; }
-    /*public void setInvitesTo(Game invitesTo) {
-    this.invitesTo = invitesTo;
-    }*/
+    private Game invitesTo;
+
+    public Game getInvitesTo() { return invitesTo; }
+
+    public void setInvitesTo(Game invitesTo) {
+        this.invitesTo = invitesTo;
+    }
 
     private String message;
 
