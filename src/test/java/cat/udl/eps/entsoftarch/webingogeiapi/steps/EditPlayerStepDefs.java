@@ -4,10 +4,12 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
@@ -20,20 +22,6 @@ public class EditPlayerStepDefs {
 	@Autowired
 	private StepDefs stepDefs;
 	private static final Logger logger = LoggerFactory.getLogger(RegisterPlayerStepDef.class);
-
-	@When("^I edit player with username \"([^\"]*)\" a new email \"([^\"]*)\"$")
-	public void iEditPlayerWithUsernameANewEmail(String username, String email) throws Throwable {
-		JSONObject player = new JSONObject();
-		player.put("username", username);
-		player.put("email", email);
-		stepDefs.result = stepDefs.mockMvc.perform(
-				patch("/players/{username}", username)
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(player.toString())
-						.accept(MediaType.APPLICATION_JSON)
-						.with(AuthenticationStepDefs.authenticate()))
-				.andDo(print());
-	}
 
 	@And("^It has been edited a player with username \"([^\"]*)\" and email \"([^\"]*)\", the password is not returned$")
 	public void itHasBeenEditedAPlayerWithUsernameAndEmailThePasswordIsNotReturned(String username, String email) throws Throwable {
@@ -54,13 +42,37 @@ public class EditPlayerStepDefs {
 
 	}
 
-	@When("^I edit player with username \"([^\"]*)\", email \"([^\"]*)\" and password \"([^\"]*)\"$")
-	public void iEditPlayerWithUsernameEmailAndPassword(String username, String email, String password) throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+	@When("^I edit player with username \"([^\"]*)\" a new email \"([^\"]*)\" and password \"([^\"]*)\"$")
+	public void iEditPlayerWithUsernameANewEmailAndPassword(String username, String email, String password) throws Throwable {
 		JSONObject player = new JSONObject();
-		player.put("username", username);
 		player.put("email", email);
 		player.put("password", password);
+		stepDefs.result = stepDefs.mockMvc.perform(
+				put("/players/{username}",username)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(player.toString())
+						.accept(MediaType.APPLICATION_JSON)
+						.with(AuthenticationStepDefs.authenticate()))
+				.andDo(print());
+	}
+
+	@When("^I edit player with username \"([^\"]*)\" and a new password \"([^\"]*)\"$")
+	public void iEditPlayerWithUsernameAndPassword(String username, String password) throws Throwable {
+		JSONObject player = new JSONObject();
+		player.put("password", password);
+		stepDefs.result = stepDefs.mockMvc.perform(
+				patch("/players/{username}",username)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(player.toString())
+						.accept(MediaType.APPLICATION_JSON)
+						.with(AuthenticationStepDefs.authenticate()))
+				.andDo(print());
+	}
+
+	@When("^I edit player with username \"([^\"]*)\" and a new email \"([^\"]*)\"$")
+	public void iEditPlayerWithUsernameANewEmail(String username, String email) throws Throwable {
+		JSONObject player = new JSONObject();
+		player.put("email", email);
 		stepDefs.result = stepDefs.mockMvc.perform(
 				patch("/players/{username}",username)
 						.contentType(MediaType.APPLICATION_JSON)
