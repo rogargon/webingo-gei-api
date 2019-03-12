@@ -1,0 +1,88 @@
+@startuml
+
+skinparam dpi 200
+skinparam classAttributeFontSize 8
+skinparam classArrowFontSize 9
+skinparam classFontSize 10
+skinparam nodesep 90
+skinparam ranksep 40
+hide stereotype
+
+skinparam class {
+	BackgroundColor White
+	BackgroundColor<<Game>> LightPink
+	BackgroundColor<<User>> LightBlue
+	BackgroundColor<<Card>> LightGreen
+	BackgroundColor<<Invitation>> LightYellow
+}
+skinparam shadowing false
+
+skinparam package<<Layout>> {
+  borderColor Transparent
+  backgroundColor Transparent
+  fontColor Transparent
+  stereotypeFontColor Transparent
+}
+
+class User <<User>> {
+    username : String
+    password : String
+    email : String
+}
+
+package Users <<Layout>>{
+    class Player <<User>> {
+        username : String
+        password : String
+        email : String
+        funds : float
+        games: List <Games>
+        friends: List <Player>
+    }
+
+    class Admin <<User>> {
+    username : String
+    password : String
+    email : String
+    }
+}
+
+class Card <<Card>> {
+    id : Integer
+    numbers: List <Integer>
+}
+
+class Game <<Game>> {
+    id : Integer
+    status : Integer
+    numbers: List <Integer>
+    jackpot : float
+    pricePerCard : float
+    bingo : bool
+    line : bool
+    startAt : Date
+    finishedAt : Date
+}
+
+class Invitation <<Invitation>> {
+    message : String
+    createdAt : Date
+}
+
+Invitation "many" -> "1" Player : Is Sent >
+
+Invitation "many" -> "1" Player : Receive >
+
+Invitation "many" --> "1" Game : Belongs >
+
+Game "1" <-left- "many" Card : Belongs <
+
+Player "1" --> "1" Card : Has >
+
+Player "many" --> "1" Game : Joins >
+
+Player --|> User
+
+Admin -|> User
+
+@enduml
