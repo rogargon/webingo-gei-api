@@ -4,9 +4,8 @@ Feature: Delete Invitation
   I want to delete invitations
 
   Scenario: Delete owned invitation
-    Given I login as "player" with password "password"
-    When I send an invitation with message "asd"
-    Then There are 1 invitations created
-    When I delete the invitation with message "asd"
+    Given I login as "user" with password "password"
+    And There is an invitation with message "asd"
+    When I delete the previously created invitation
     Then The response code is 204
     And There are 0 invitations created

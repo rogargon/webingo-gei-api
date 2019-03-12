@@ -22,4 +22,9 @@ public class Player extends User {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_PLAYER");
 	}
+
+	@Override
+	public String getUsername() {
+		return super.getUsername();
+	}
 }
