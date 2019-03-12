@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -37,6 +38,8 @@ public class Invitation {
     }
 
     @NotNull
+    @Lob
+    @Size(max = 255, message = "error.description.size")
     private String message;
 
 
