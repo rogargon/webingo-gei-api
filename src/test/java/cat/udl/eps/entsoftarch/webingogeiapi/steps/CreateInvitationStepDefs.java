@@ -2,11 +2,13 @@ package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
 import static org.hamcrest.Matchers.is;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
+import cat.udl.eps.entsoftarch.webingogeiapi.repository.InvitationRepository;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.PlayerRepository;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
@@ -21,6 +23,9 @@ public class CreateInvitationStepDefs {
     private PlayerRepository playerRepo;
     @Autowired
     private StepDefs stepDefs;
+
+    @Autowired
+    private InvitationRepository invitationRepo;
 
     private String url;
 
@@ -48,6 +53,16 @@ public class CreateInvitationStepDefs {
     @And("^Exists an invitation with message \"([^\"]*)\"$")
     public void existsAnInvitationWithMessage(String text) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get(url).accept(MediaType.APPLICATION_JSON).with(AuthenticationStepDefs.authenticate())).andDo(print()).andExpect(jsonPath("$.message", is(text)));
+                get(url)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.message", is(text)));
+    }
+
+    @And("^And it doesn't exist an invitation with message \"([^\"]*)\"$")
+    public void andItDoesnTExistAnInvitationWithMessage(String text) throws Throwable {
+        Assert.assertEquals(0, invitationRepo.count());
+        Assert.assertEquals(0, invitationRepo.findByMessageContaining(text).size());
     }
 }

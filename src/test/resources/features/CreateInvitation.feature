@@ -9,3 +9,9 @@ Feature: Create Invitation
     When I create an invitation with message "asd"
     Then The response code is 201
     And Exists an invitation with message "asd"
+
+  Scenario: Create invitation while not logged in
+    Given I'm not logged in
+    When I create an invitation with message "asd"
+    Then The response code is 401
+    And And it doesn't exist an invitation with message "asd"
