@@ -15,3 +15,10 @@ Feature: Create Invitation
     When I create an invitation with message "asd"
     Then The response code is 401
     And And it doesn't exist an invitation with message "asd"
+
+  Scenario: Create invitation without message
+    Given I login as "user" with password "password"
+    When I create an invitation with no message
+    Then The response code is 400
+    And The error message is "must not be null"
+    And And it exists "0" invitations

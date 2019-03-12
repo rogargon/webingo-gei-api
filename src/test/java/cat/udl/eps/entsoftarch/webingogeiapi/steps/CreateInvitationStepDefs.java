@@ -65,4 +65,21 @@ public class CreateInvitationStepDefs {
         Assert.assertEquals(0, invitationRepo.count());
         Assert.assertEquals(0, invitationRepo.findByMessageContaining(text).size());
     }
+
+    @When("^I create an invitation with no message$")
+    public void iCreateAnInvitationWithNoMessage() throws Throwable{
+        JSONObject player = new JSONObject();
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/invitations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(player.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
+
+    @And("^And it exists \"([^\"]*)\" invitations$")
+    public void andItExistsInvitations(String arg0) throws Throwable {
+        Assert.assertEquals(0, invitationRepo.count());
+    }
 }
