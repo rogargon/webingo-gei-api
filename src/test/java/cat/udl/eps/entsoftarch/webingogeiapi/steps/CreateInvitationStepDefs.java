@@ -12,6 +12,8 @@ import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
+import java.util.Arrays;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -81,5 +83,23 @@ public class CreateInvitationStepDefs {
     @And("^And it exists \"([^\"]*)\" invitations$")
     public void andItExistsInvitations(String arg0) throws Throwable {
         Assert.assertEquals(0, invitationRepo.count());
+    }
+
+    @When("^I create an invitation with a \"([^\"]*)\" chars message$")
+    public void iCreateAnInvitationWithACharsMessage(String arg0) throws Throwable {
+        char[] charArray = new char[Integer.parseInt(arg0)];
+        Arrays.fill(charArray, ' ');
+        String str = new String(charArray);
+
+
+        JSONObject player = new JSONObject();
+        player.put("", str);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/invitations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(player.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
     }
 }

@@ -28,3 +28,9 @@ Feature: Create Invitation
     When I create an invitation with message "asd"
     Then The response code is 403
     And And it exists "0" invitations
+
+  Scenario: Create invitation with a too long message
+    Given I login as "user" with password "password"
+    When I create an invitation with a "300" chars message
+    Then The response code is 400
+    And And it exists "0" invitations
