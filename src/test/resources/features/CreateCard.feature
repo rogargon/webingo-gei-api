@@ -18,3 +18,6 @@ Scenario: Generate a new card as another player
   And I create a card
   Then  The response code is 201
   And A card has been created with price 10.0
+
+  Scenario: Generate a n
+    Given A card is created

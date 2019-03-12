@@ -1,7 +1,9 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
 import cat.udl.eps.entsoftarch.webingogeiapi.WebingoGeiApiApplication;
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.Card;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootContextLoader;
@@ -31,5 +33,12 @@ public class CardStepDef {
 
     @And("^A card has been created with price (\\\\d+.\\\\d+)")
     public void aCardHasBeenCreatedWithPrice(int arg0, int arg1) {
+    }
+
+    @Given("^A card is created$")
+    public void aCardIsCreated() {
+        Card card = new Card();
+        System.out.println(card.toString());
+        int a=0;
     }
 }
