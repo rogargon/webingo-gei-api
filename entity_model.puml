@@ -79,7 +79,7 @@ Game "1" <-left- "many" Card : Belongs <
 
 Player "1" --> "1" Card : Has >
 
-Player "many" --> "1" Game : Joins >
+Player "many" --> "1" Game : Has played >
 
 Player --|> User
 
