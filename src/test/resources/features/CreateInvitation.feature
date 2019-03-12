@@ -22,3 +22,9 @@ Feature: Create Invitation
     Then The response code is 400
     And The error message is "must not be null"
     And And it exists "0" invitations
+
+  Scenario: Create invitation as admin
+    Given I login as "admin" with password "password"
+    When I create an invitation with message "asd"
+    Then The response code is 403
+    And And it exists "0" invitations
