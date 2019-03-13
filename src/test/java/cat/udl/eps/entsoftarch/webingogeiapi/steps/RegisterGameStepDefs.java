@@ -18,7 +18,7 @@ import org.springframework.http.MediaType;
 
 
 public class RegisterGameStepDefs {
-    private static final Logger logger = LoggerFactory.getLogger(RegisterPlayerStepDef.class);
+    private static final Logger logger = LoggerFactory.getLogger(RegisterGameStepDefs.class);
 
     @Autowired
     private StepDefs stepDefs;
@@ -49,7 +49,8 @@ public class RegisterGameStepDefs {
                         .content(game.toString())
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print());
+                .andDo(print())
+                .andExpect(jsonPath("$.status", is(status)));
     }
 
 

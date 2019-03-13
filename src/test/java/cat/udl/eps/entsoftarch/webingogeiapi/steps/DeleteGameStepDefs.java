@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class DeleteGameStepDefs {
 
+    private static final Logger logger = LoggerFactory.getLogger(DeleteGameStepDefs.class);
     @Autowired
     private StepDefs stepDefs;
 
