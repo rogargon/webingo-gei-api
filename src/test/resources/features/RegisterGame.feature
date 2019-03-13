@@ -10,9 +10,9 @@ Feature: Register Game
     And It has been created a game with id "1"
 
   Scenario: Register new game as user
-    Given I login as "user" with password "password"
+    Given I login as "player" with password "password"
     When I register a new game with id "1"
-    Then The response code is 403
+    Then The response code is 401
     And It has not been created a game with id "1"
 
   Scenario: Try to register new player without authenticating
