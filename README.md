@@ -1,6 +1,6 @@
 # WEBingo - Web Bingo - API
 
-[![Build Status](https://travis-ci.org/rhizomik/webingo-gei-api.svg?branch=master)](https://travis-ci.org/rhizomik/webingo-gei-api/branches) 
+[![Build Status](https://travis-ci.org/UdL-EPS-SoftArch/webingo-gei-api.svg?branch=master)](https://travis-ci.org/UdL-EPS-SoftArch/webingo-gei-api/branches) 
 
 ## Vision
 
@@ -27,4 +27,4 @@
 
 ## Entities Model
 
-![Entities Model Diagram](http://www.plantuml.com/plantuml/png/hPJFZjem4CRFzLECkA_4LZrqLr6qiDNIbVQ0Igkgnu5CWejZH_Pa4TtoxdKSWWC4QG-zuMz-VFF7upmuHijrgOHm6wahj5X2LaduE1xtb9L2voRCLYvhfYUZUI7_47o-GAmrssFuxZnyZDpspRN9o545TttHejuqugUnMCkCm35PChohI9oxmfluCCNLfh2crjcZKSR2pxLakf2JP8ObfIcyo6BDSwat0yWFHxP3fgeUSdb4ctN8p1Bf0UPPlqf6baPtv2zIocp5lbU_MsDcjb8NaADo9wrLtX0BIf8Nt9cQlScR05WQcv5jU_nkKJiFa-Oc4WiOYEP6yv0Un_eqIEo5Q6VSJ0MwuOHI06f_q5WItCE2hUyYg9N7jxxCKvLAb2fAtlVGO71s4FjilTkiSuMxoxpNSr_FVr53b7C_C-VbN1daeEv5huP9Lahz7riF2U9Wcrs2uqgrxh9nUDPC1TaWwBfSadNtVf4SGt88fT6bsMlerlkQYsFashtFEiH--okg39_Cfh9oHNEoeUv-OEcRCrvP6gE2eAIc_ZbyQYQDsnTa2b8kjNHhog9wx2Y-7-W_fcDt9Jc7nTa5h2mXdzdrZ4Obwjq8Rb8OtOwwvVBZSB0WpP2-1_v6AvAlT0K-qBDsDQQaZ2vSmmQb2IKtYdA-wVuHnXZ9H8WsKyDsTXtq5RrL16BAyBFB6h2gOR98U-nl6fwQ4Er2n_C3wQmkrJy0)
+![Entities Model Diagram](http://www.plantuml.com/plantuml/svg/5Sqz3W8X44VntbFe0M1wgxMmip3PM1iMHfY43pByoSRRkrQlUSbl6N2AMVBf8jNd6NXgFYUWZokHkjr6GPhR7Ao-LN25zQtGAppC_RcQjNrmKvzevqrgR2Qo6DU5YXjWfUCNVD-b1Sws_vs5QpZw0m00)
