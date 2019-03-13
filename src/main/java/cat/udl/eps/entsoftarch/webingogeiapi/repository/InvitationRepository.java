@@ -13,4 +13,6 @@ import java.util.List;
 public interface InvitationRepository extends PagingAndSortingRepository<Invitation, Long>  {
 
     List<Invitation> findByMessageContaining(@Param("text") String text);
+    List<Invitation> findById(@Param("id") long id);
+
 }

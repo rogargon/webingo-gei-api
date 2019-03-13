@@ -23,8 +23,5 @@ public class Player extends User {
 		return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_PLAYER");
 	}
 
-	@Override
-	public String getUsername() {
-		return super.getUsername();
-	}
+
 }

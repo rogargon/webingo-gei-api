@@ -33,7 +33,6 @@ public class DeleteInvitationStepDefs {
 
     @And("^There are (\\d+) invitations created$")
     public void thereAreInvitationsCreated(int numInvitations) {
-
         long invitationsInRepository = invitationRepository.count();
         Assert.assertEquals(numInvitations, invitationsInRepository);
 
@@ -52,6 +51,7 @@ public class DeleteInvitationStepDefs {
 
     @When("^I delete the previously created invitation$")
     public void iDeleteThePreviouslyCreatedInvitation() throws Throwable {
+
         stepDefs.result = stepDefs.mockMvc.perform(
                 delete("/invitations/{id}", id)
                         .with(AuthenticationStepDefs.authenticate()))
