@@ -1,7 +1,7 @@
 Feature: Delete Game
-  In order to allow a admin to delete a game
-  As an user
-  I want to delete a game.
+  In order to allow remove game
+  As an admin
+  I want to to remove a game
 
   Scenario: Admin try to delete a game not started
     Given I login as "admin" with password "password"
