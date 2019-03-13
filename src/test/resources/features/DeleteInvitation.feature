@@ -5,7 +5,7 @@ Feature: Delete Invitation
 
   Scenario: Delete owned invitation
     Given I login as "user" with password "password"
-    And There is an invitation with message "asd"
+    And There is an invitation with message "asd" by user "user"
     When I delete the previously created invitation
     Then The response code is 204
     And There are 0 invitations created
@@ -13,8 +13,7 @@ Feature: Delete Invitation
 
   Scenario: Delete invitation from other user
     Given I login as "user" with password "password"
-    And There is a user with username "user2"
-    And There is an invitation with message "asd" created by "user2"
+    And There is an invitation with message "asd" by user "user2"
     When I delete the previously created invitation
-    Then The response code is 401
+    Then The response code is 403
     And There are 1 invitations created

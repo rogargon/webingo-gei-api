@@ -3,6 +3,7 @@ package cat.udl.eps.entsoftarch.webingogeiapi.handler;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Admin;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Invitation;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
+import cat.udl.eps.entsoftarch.webingogeiapi.exception.InvitationDeleteException;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.InvitationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,7 @@ public class InvitationEventHandler {
 
     @HandleBeforeCreate
     @Transactional
-    public void handlePlayerPreCreate(Invitation invi) {
+    public void handleInvitationPreCreate(Invitation invi) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         invi.setCreatedAt(ZonedDateTime.now());
         invi.setCreatedBy((Player) authentication.getPrincipal());
@@ -39,18 +40,13 @@ public class InvitationEventHandler {
 
     @HandleBeforeDelete
     @Transactional
-    public void handleInvitationPreDelete(Invitation invi) throws Throwable{
+    public void handleInvitationPreDelete(Invitation invi) throws InvitationDeleteException{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Player player = (Player) authentication.getPrincipal();
 
-        List<Invitation> invis  =  invitationRepository.findById(invi.getId());
 
-        for(Invitation inv : invis){
-            if( inv.getCreatedBy() != player)
-                throw new Throwable();
-
-        }
-
+            if(!invi.getCreatedBy().getId().equals(player.getId()))
+                throw new InvitationDeleteException();
     }
 
 

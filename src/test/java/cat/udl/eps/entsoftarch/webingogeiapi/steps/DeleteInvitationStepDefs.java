@@ -1,6 +1,7 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Invitation;
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.InvitationRepository;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.PlayerRepository;
 import cucumber.api.PendingException;
@@ -31,21 +32,12 @@ public class DeleteInvitationStepDefs {
     private long id;
 
 
+
+
     @And("^There are (\\d+) invitations created$")
     public void thereAreInvitationsCreated(int numInvitations) {
         long invitationsInRepository = invitationRepository.count();
         Assert.assertEquals(numInvitations, invitationsInRepository);
-
-    }
-
-    @And("^There is an invitation with message \"([^\"]*)\"$")
-    public void thereIsAnInvitationWithMessage(String message) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new PendingException();
-        Invitation inv = new Invitation();
-        inv.setMessage(message);
-        invitationRepository.save(inv);
-        id = inv.getId();
 
     }
 
@@ -58,4 +50,14 @@ public class DeleteInvitationStepDefs {
                 .andDo(print());
     }
 
+    @And("^There is an invitation with message \"([^\"]*)\" by user \"([^\"]*)\"$")
+    public void thereIsAnInvitationWithMessageByUser(String message, String user) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        Invitation inv = new Invitation();
+        inv.setMessage(message);
+        Player player = playerRepository.findByUsernameContaining(user).get(0);
+        inv.setCreatedBy(player);
+        invitationRepository.save(inv);
+        id = inv.getId();
+    }
 }
