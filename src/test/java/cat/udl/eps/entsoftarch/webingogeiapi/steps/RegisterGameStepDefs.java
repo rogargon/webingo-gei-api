@@ -24,7 +24,7 @@ public class RegisterGameStepDefs {
     private StepDefs stepDefs;
 
     @When("^I register a new game with id \"([^\"]*)\"$")
-    public void iRegisterANewGameWithId(int id) throws Throwable {
+    public void iRegisterANewGameWithId(long id) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         JSONObject game = new JSONObject();
         game.put("id", id);
@@ -38,7 +38,7 @@ public class RegisterGameStepDefs {
     }
 
     @When("^I register a new game with id \"([^\"]*)\" and status \"([^\"]*)\"$")
-    public void iRegisterANewGame(int id, int status) throws Throwable {
+    public void iRegisterANewGame(long id, int status) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         JSONObject game = new JSONObject();
         game.put("id", id);
@@ -54,7 +54,7 @@ public class RegisterGameStepDefs {
 
 
     @And("^It has been created a game with id \"([^\"]*)\"$")
-    public void itHasBeenCreatedAGame(int id) throws Throwable {
+    public void itHasBeenCreatedAGame(long id) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/games/{id}", id)
@@ -64,7 +64,7 @@ public class RegisterGameStepDefs {
     }
 
     @And("^It has not been created a game with id \"([^\"]*)\"$")
-    public void itHasNotBeenCreatedAGameWithId(int id) throws Throwable {
+    public void itHasNotBeenCreatedAGameWithId(long id) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/games/{id}", id)
