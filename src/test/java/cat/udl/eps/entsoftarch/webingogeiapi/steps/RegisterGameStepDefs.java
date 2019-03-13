@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
@@ -21,6 +22,20 @@ public class RegisterGameStepDefs {
 
     @Autowired
     private StepDefs stepDefs;
+
+    @When("^I register a new game with id \"([^\"]*)\"$")
+    public void iRegisterANewGameWithId(int id) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        JSONObject game = new JSONObject();
+        game.put("id", id);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/games")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
 
     @When("^I register a new game with id \"([^\"]*)\" and status \"([^\"]*)\"$")
     public void iRegisterANewGame(int id, int status) throws Throwable {
@@ -37,15 +52,15 @@ public class RegisterGameStepDefs {
                 .andDo(print());
     }
 
-    @And("^It has been created a game with id \"([^\"]*)\" and status \"([^\"]*)\"$")
-    public void itHasBeenCreatedAGame(int id, int status) throws Throwable {
+
+    @And("^It has been created a game with id \"([^\"]*)\"$")
+    public void itHasBeenCreatedAGame(int id) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/games/{id}", id)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print())
-                .andExpect(jsonPath("$.status", is(status)));
+                .andDo(print());
     }
 
     @And("^It has not been created a game with id \"([^\"]*)\"$")
