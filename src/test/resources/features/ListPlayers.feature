@@ -40,9 +40,23 @@ Feature: List players
     And The player with name "user" is in the response
 
 
+  Scenario:No having a player with username Pepe, try to list player Pepe authenticated as player
+    Given I login as "admin" with password "password"
+    And I register a new player with username "player", email "player@webingo.org" and password "password"
+    And I login as "player" with password "password"
+    When I list player with username "Pepe"
+    Then The response code is 404
 
+  Scenario: List player authenticated as admin
+    Given I login as "admin" with password "password"
+    When I list player with username "user"
+    Then The response code is 200
+    And The player with name "user" is in the response
 
-
+  Scenario:No having a player with username Pepe, try to list player Pepe authenticated as admin
+    Given I login as "admin" with password "password"
+    When I list player with username "Pepe"
+    Then The response code is 404
 
 
 
