@@ -20,11 +20,12 @@ public class Game {
 
     private int status;
     private float jackpot;
+    private float pricePerCard;
     private boolean bingo;
     private boolean line;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private ZonedDateTime finishedAt, createdAt;
+    private ZonedDateTime finishedAt, startAt;
 
     @Override
     public boolean equals(Object o) {
