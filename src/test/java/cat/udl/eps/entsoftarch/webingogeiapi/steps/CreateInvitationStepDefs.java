@@ -1,24 +1,21 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.InvitationRepository;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.PlayerRepository;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
+import java.util.Arrays;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-
-import java.util.Arrays;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 public class CreateInvitationStepDefs {
 
     @Autowired
@@ -85,15 +82,14 @@ public class CreateInvitationStepDefs {
         Assert.assertEquals(0, invitationRepo.count());
     }
 
-    @When("^I create an invitation with a \"([^\"]*)\" chars message$")
-    public void iCreateAnInvitationWithACharsMessage(String arg0) throws Throwable {
-        char[] charArray = new char[Integer.parseInt(arg0)];
+    @When("^I create an invitation with a (\\d+) chars long message$")
+    public void iCreateAnInvitationWithACharsMessage(int length) throws Throwable {
+        char[] charArray = new char[length];
         Arrays.fill(charArray, ' ');
         String str = new String(charArray);
 
-
         JSONObject player = new JSONObject();
-        player.put("", str);
+        player.put("message", str);
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/invitations")
                         .contentType(MediaType.APPLICATION_JSON)
