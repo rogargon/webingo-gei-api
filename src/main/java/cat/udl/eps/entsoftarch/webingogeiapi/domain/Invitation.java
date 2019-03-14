@@ -1,13 +1,17 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @Entity
@@ -28,15 +32,12 @@ public class Invitation {
     @JsonIdentityReference(alwaysAsId = true)
     private Player createdBy;
 
-
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     private Game invitesTo;
 
-
-    @NotNull
     @Lob
-    @Size(max = 255, message = "error.description.size")
+    @NotBlank
+    @Size(max = 255)
     private String message;
-
 }
