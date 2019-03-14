@@ -32,6 +32,6 @@ public class DeletePlayerStepdefs {
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/players/{username}", username)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is2xxSuccessful());
+                .andExpect(status().is4xxClientError());
     }
 }

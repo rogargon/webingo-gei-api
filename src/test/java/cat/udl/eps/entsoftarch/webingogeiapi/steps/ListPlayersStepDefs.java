@@ -1,15 +1,10 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
-
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.PlayerRepository;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.UserRepository;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-
-
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
