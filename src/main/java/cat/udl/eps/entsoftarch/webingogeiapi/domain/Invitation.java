@@ -1,11 +1,19 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import java.time.ZonedDateTime;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
-import java.time.ZonedDateTime;
-
+@Data
 @Entity
 public class Invitation {
 
@@ -24,51 +32,12 @@ public class Invitation {
     @JsonIdentityReference(alwaysAsId = true)
     private Player createdBy;
 
-    //TODO: Uncomment Game implementations
-    /*@ManyToOne
+    @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
-    private Game invitesTo;*/
-    //public Game getInvitesTo() { return invitesTo; }
-    /*public void setInvitesTo(Game invitesTo) {
-    this.invitesTo = invitesTo;
-    }*/
+    private Game invitesTo;
 
+    @Lob
+    @NotBlank
+    @Size(max = 255)
     private String message;
-
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public ZonedDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(ZonedDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Player getInvites() {
-        return invites;
-    }
-
-    public void setInvites(Player invites) {
-        this.invites = invites;
-    }
-
-    public Player getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(Player createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }
