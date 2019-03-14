@@ -11,10 +11,6 @@ import java.time.ZonedDateTime;
 
 @Data
 @Entity
-@Getter
-@ToString
-@Setter
-@EqualsAndHashCode
 public class Invitation {
 
     @Id
