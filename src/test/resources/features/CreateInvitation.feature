@@ -20,7 +20,7 @@ Feature: Create Invitation
     Given I login as "user" with password "password"
     When I create an invitation with no message
     Then The response code is 400
-    And The error message is "must not be null"
+    And The error message is "must not be blank"
     And And it exists "0" invitations
 
   Scenario: Create invitation as admin
@@ -31,6 +31,14 @@ Feature: Create Invitation
 
   Scenario: Create invitation with a too long message
     Given I login as "user" with password "password"
-    When I create an invitation with a "300" chars message
+    When I create an invitation with a 300 chars long message
     Then The response code is 400
+    And The error message is "size must be between 0 and 255"
+    And And it exists "0" invitations
+
+  Scenario: Create invitation without blank message
+    Given I login as "user" with password "password"
+    When I create an invitation with message ""
+    Then The response code is 400
+    And The error message is "must not be blank"
     And And it exists "0" invitations
