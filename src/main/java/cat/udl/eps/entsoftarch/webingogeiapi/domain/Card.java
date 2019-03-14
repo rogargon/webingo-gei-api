@@ -13,17 +13,11 @@ import org.springframework.security.core.authority.AuthorityUtils;
 
 @Data
 @Entity
-@Getter
-@ToString
-@Setter
-@EqualsAndHashCode
 public class Card {
     private int rows = 3;
     private int cols = 9;
 
-    public Card() {
-        generateCard();
-    }
+    public Card() { }
 
     /**
      * Identifier of card needs to be unique, otherwise it will generate conflicts.
@@ -43,7 +37,7 @@ public class Card {
     /**
      * Generates a card with 9 columns and 3 rows and random numbers.
      */
-    private void generateCard(){
+    public void generateCard(){
         Random r = new Random();
         ArrayList<Integer> generatedNumbers = new ArrayList<>();
 

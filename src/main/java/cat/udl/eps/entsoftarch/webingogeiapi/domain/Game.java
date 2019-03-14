@@ -1,6 +1,6 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.domain;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
@@ -10,6 +10,10 @@ import java.util.Objects;
 
 @Entity
 @Data
+@Setter
+@Getter
+@EqualsAndHashCode
+@ToString
 public class Game {
 
     @Id
@@ -18,27 +22,8 @@ public class Game {
     private float jackpot;
     private boolean bingo;
     private boolean line;
+    private double pricePerCard;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime finishedAt, createdAt;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Game)) return false;
-        Game game = (Game) o;
-        return id == game.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Game{" +
-                "id=" + id +
-                '}';
-    }
 }

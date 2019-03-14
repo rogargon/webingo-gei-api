@@ -1,44 +1,83 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
-import cat.udl.eps.entsoftarch.webingogeiapi.WebingoGeiApiApplication;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Card;
-import cucumber.api.java.en.And;
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
+import cat.udl.eps.entsoftarch.webingogeiapi.repository.CardRepository;
+import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.jayway.jsonpath.JsonPath;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootContextLoader;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.junit.Assert;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 
-@ContextConfiguration(
-        classes = {WebingoGeiApiApplication.class},
-        loader = SpringBootContextLoader.class
-)
-@DirtiesContext
-@RunWith(SpringRunner.class)
-@WebAppConfiguration
-@ActiveProfiles("Test")
+
+
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 public class CardStepDef {
-    @When("^I create a new game with price (\\\\d+.\\\\d+)$")
-    public void I_create_a_new_game_with_price(double arg) {
+    @Autowired
+    CardRepository cr;
+    @Autowired
+    GameRepository gr;
+    String idc;
 
+    private final StepDefs stepDefs;
+
+    public CardStepDef(StepDefs stepDefs) {
+        this.stepDefs = stepDefs;
     }
 
-    @And("^I create a card$")
-    public void iCreateACard() {
+    @Given("^There is a game with price (\\d+.\\d+) and id (\\d+)$")
+    public void thereIsAGame(double arg, int arg2) throws Exception {
+        Game g = new Game();
+        g.setId(arg2);
+        g.setPricePerCard(arg);
+        gr.save(g);
     }
 
-    @And("^A card has been created with price (\\\\d+.\\\\d+)")
-    public void aCardHasBeenCreatedWithPrice(int arg0, int arg1) {
+    @When("^I join the Game with id (\\d+)$")
+    public void iJoinThePreviouslyGame(int arg) throws Exception {
+        Card c = new Card();
+        if(gr.findById(arg).isPresent()){
+            c.setGame(gr.findById(arg).get());
+        }else{
+            assert false;
+        }
+        String json = stepDefs.mapper.writeValueAsString(c);
+        System.out.println("JSON " + json);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/cards")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                        .andDo(print());
+        idc = stepDefs.result.andReturn().getResponse().getHeader("Location");
+        cr.save(c);
     }
 
-    @Given("^A card is created$")
-    public void aCardIsCreated() {
-        Card card = new Card();
-        System.out.println(card.toString());
-        int a=0;
+    @Then("^A card has been created with price (\\d+.\\d+) for the game with id (\\d+)$")
+    public void CardCreated(double arg, int arg2) throws Exception{
+        Assert.assertNotNull("Location not null", idc);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get(idc)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+        String game = stepDefs.result.andReturn().getResponse().getContentAsString();
+        String a = (JsonPath.read(game, "$._links.game.href"));
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get(a)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print()).andExpect(jsonPath("$.id", is(String.valueOf(arg2))));
+
     }
 }
