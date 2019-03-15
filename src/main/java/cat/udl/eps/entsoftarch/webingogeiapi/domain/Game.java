@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -12,12 +13,13 @@ import java.util.Objects;
 @Data
 @Setter
 @Getter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public class Game {
+public class Game extends UriEntity<Integer> {
 
     @Id
-    private int id;
+    @GeneratedValue
+    private Integer id;
     private int status;
     private float jackpot;
     private boolean bingo;

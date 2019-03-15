@@ -4,6 +4,8 @@ import java.util.*;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
@@ -13,7 +15,8 @@ import org.springframework.security.core.authority.AuthorityUtils;
 
 @Data
 @Entity
-public class Card {
+@EqualsAndHashCode(callSuper = true)
+public class Card extends UriEntity<Integer> {
     private int rows = 3;
     private int cols = 9;
 
@@ -23,9 +26,11 @@ public class Card {
      * Identifier of card needs to be unique, otherwise it will generate conflicts.
      */
     @Id
-    private int id;
+    @GeneratedValue
+    private Integer id;
 
     @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
     private Game game;
 
     /**

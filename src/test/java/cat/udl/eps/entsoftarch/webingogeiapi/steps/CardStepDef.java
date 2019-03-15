@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 
-
+import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -77,7 +77,7 @@ public class CardStepDef {
                 get(a)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print()).andExpect(jsonPath("$.id", is(String.valueOf(arg2))));
+                .andDo(print()).andExpect(jsonPath("$._links.self.href", endsWith("/games/" + String.valueOf(arg2))));
 
     }
 }
