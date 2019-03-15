@@ -3,8 +3,42 @@ Feature: Create Invitation
   As an user
   I want to send invitations
 
-  Scenario: Send invitation to registered player
-    Given I login as "admin" with password "password"
-    When I register a new player with username "player", email "player@webingo.org" and password "password"
+
+  Scenario: Create invitation
+    Given I login as "user" with password "password"
+    When I create an invitation with message "asd"
     Then The response code is 201
-    And It has been created a player with username "player" and email "player@webingo.org", the password is not returned
+    And Exists an invitation with message "asd"
+
+  Scenario: Create invitation while not logged in
+    Given I'm not logged in
+    When I create an invitation with message "asd"
+    Then The response code is 401
+    And And it doesn't exist an invitation with message "asd"
+
+  Scenario: Create invitation without message
+    Given I login as "user" with password "password"
+    When I create an invitation with no message
+    Then The response code is 400
+    And The error message is "must not be blank"
+    And And it exists "0" invitations
+
+  Scenario: Create invitation as admin
+    Given I login as "admin" with password "password"
+    When I create an invitation with message "asd"
+    Then The response code is 403
+    And And it exists "0" invitations
+
+  Scenario: Create invitation with a too long message
+    Given I login as "user" with password "password"
+    When I create an invitation with a 300 chars long message
+    Then The response code is 400
+    And The error message is "size must be between 0 and 255"
+    And And it exists "0" invitations
+
+  Scenario: Create invitation without blank message
+    Given I login as "user" with password "password"
+    When I create an invitation with message ""
+    Then The response code is 400
+    And The error message is "must not be blank"
+    And And it exists "0" invitations

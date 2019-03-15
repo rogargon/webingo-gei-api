@@ -1,6 +1,6 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.domain;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
@@ -12,38 +12,18 @@ import java.util.Objects;
 
 @Entity
 @Data
-public class Game {
+@EqualsAndHashCode(callSuper = true)
+public class Game extends UriEntity<Integer> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+    @GeneratedValue
+    private Integer id;
     private int status;
-    private float jackpot;
-    private float pricePerCard;
+    private double jackpot;
+    private double pricePerCard;
     private boolean bingo;
     private boolean line;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private ZonedDateTime finishedAt, startAt;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Game)) return false;
-        Game game = (Game) o;
-        return id == game.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Game{" +
-                "id=" + id +
-                '}';
-    }
+    private ZonedDateTime finishedAt, startAt, createdAt;
 }
