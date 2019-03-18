@@ -67,6 +67,18 @@ public class EditGameStepDefs {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
+
+    @And("^I set up the jackpot to be \"([^\"]*)\"$")
+    public void iSetUpTheJackpotToBe(String arg0) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @And("^It has been edited the jackpot for the game with id \"([^\"]*)\"$")
+    public void itHasBeenEditedTheJackpotForTheGameWithId(String arg0) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
 }
 
 
