@@ -47,6 +47,14 @@ Feature: Edit Game
     Then The response code is 200
     And It has been edited the price PerCard for the game with id "2"
 
+  Scenario: Edit game as admin with incorrect password
+    Given Exists an admin "admin" with password "password"
+    When I want to login in order to edit a game
+    And I login with admin "admin" and password "password1"
+    Then the response code is 400
+    And the error message is "Error: Wrong password"
+
+
 
 
 
