@@ -3,6 +3,7 @@ Feature: Edit Game
   As an admin
   I want to edit a game settings
 
+  
   Scenario: Edit game as admin
     Given I login as "admin" with password "password"
     When I edit game with id "1"
@@ -37,3 +38,26 @@ Feature: Edit Game
     Then The response code is 404
     And The error message is "the game is deleted"
     And It has not been edited a game with id "1"
+
+  Scenario: Edit game to set a specific pricePerCard
+    Given I login as "admin" with password "password"
+    And I register a new game with id "2"
+    When I edit game with id "2"
+    And I set up the pricePerCard to be "5.00"
+    Then The response code is 200
+    And It has been edited the price PerCard for the game with id "2"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
