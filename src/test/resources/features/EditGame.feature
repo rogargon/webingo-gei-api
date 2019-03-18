@@ -70,6 +70,14 @@ Feature: Edit Game
     Then the response code is 200
     And It has been edited the starting time startAt for the game with id "1"
 
+  Scenario: Edit game to change the finishing time
+    Given I login as "admin" with password "password"
+    And Exists a game with id "1"
+    When I edit game with id "1"
+    And I set up the finishing time finishedAt to be "20:00 PM"
+    Then the response code is 200
+    And It has been edited the finishing time finishedAt for the game with id "1"
+
 
 
 

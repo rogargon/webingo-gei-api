@@ -91,6 +91,18 @@ public class EditGameStepDefs {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
+
+    @And("^I set up the finishing time finishedAt to be \"([^\"]*)\"$")
+    public void iSetUpTheFinishingTimeFinishedAtToBe(String arg0) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @And("^It has been edited the finishing time finishedAt for the game with id \"([^\"]*)\"$")
+    public void itHasBeenEditedTheFinishingTimeFinishedAtForTheGameWithId(String arg0) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
 }
 
 
