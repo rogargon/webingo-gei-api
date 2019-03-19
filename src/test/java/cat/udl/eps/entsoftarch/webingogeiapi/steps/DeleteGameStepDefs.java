@@ -20,7 +20,7 @@ public class DeleteGameStepDefs {
     private StepDefs stepDefs;
 
     @When("^I delete a game with id \"([^\"]*)\"$")
-    public void iDeleteAGameWithId(long id) throws Throwable {
+    public void iDeleteAGameWithId(Integer id) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
                 delete("/games/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -30,7 +30,7 @@ public class DeleteGameStepDefs {
     }
 
     @And("^It has not been deleted a game with id \"([^\"]*)\"$")
-    public void itHasNotBeenDeletedAGameWithId(long id) throws Throwable {
+    public void itHasNotBeenDeletedAGameWithId(Integer id) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/games/{id}", id)
                         .accept(MediaType.APPLICATION_JSON))
@@ -39,7 +39,7 @@ public class DeleteGameStepDefs {
 
 
     @And("^It has been deleted a game with id \"([^\"]*)\"$")
-    public void itHasBeenDeletedAGameWithId(long id) throws Throwable {
+    public void itHasBeenDeletedAGameWithId(Integer id) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/games/{id}", id)
                         .accept(MediaType.APPLICATION_JSON)

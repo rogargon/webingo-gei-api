@@ -45,7 +45,7 @@ public class GameEventHandler {
     @HandleBeforeDelete
     public void handleGamePreDelete(Game game) {
         if(game.getStatus() == 1){
-            throw new AccessDeniedException("It's not possible to delete the game");
+            throw new AccessDeniedException("It's not possible to delete the game. It's started.");
         }
     }
 

@@ -26,4 +26,5 @@ public class Game extends UriEntity<Integer> {
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime finishedAt, startAt, createdAt;
+
 }

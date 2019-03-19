@@ -51,15 +51,15 @@ Feature: Edit Game
     Given Exists an admin "admin" with password "password"
     When I want to login in order to edit a game
     And I login with admin "admin" and password "password1"
-    Then the response code is 400
-    And the error message is "Error: Wrong password"
+    Then The response code is 400
+    And The error message is "Error: Wrong password"
 
   Scenario:Edit game to change the jackpot amount
     Given I login as "admin" with password "password"
     And Exists a game with id "1"
     When I edit game with id "1"
     And I set up the jackpot to be "500.00"
-    Then the response code is 200
+    Then The response code is 200
     And It has been edited the jackpot for the game with id "1"
 
   Scenario: Edit game to change the starting time
@@ -67,7 +67,7 @@ Feature: Edit Game
     And Exists a game with id "1"
     When I edit game with id "1"
     And I set up the starting time startAt to be "17:00 PM"
-    Then the response code is 200
+    Then The response code is 200
     And It has been edited the starting time startAt for the game with id "1"
 
   Scenario: Edit game to change the finishing time
@@ -75,7 +75,7 @@ Feature: Edit Game
     And Exists a game with id "1"
     When I edit game with id "1"
     And I set up the finishing time finishedAt to be "20:00 PM"
-    Then the response code is 200
+    Then The response code is 200
     And It has been edited the finishing time finishedAt for the game with id "1"
 
 
