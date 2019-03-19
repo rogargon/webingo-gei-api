@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-public class CardStepDef {
+public class CreateCardStepDefs {
     @Autowired
     CardRepository cr;
     @Autowired
@@ -30,7 +30,7 @@ public class CardStepDef {
 
     private final StepDefs stepDefs;
 
-    public CardStepDef(StepDefs stepDefs) {
+    public CreateCardStepDefs(StepDefs stepDefs) {
         this.stepDefs = stepDefs;
     }
 
