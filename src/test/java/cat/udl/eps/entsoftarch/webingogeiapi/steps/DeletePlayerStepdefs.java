@@ -31,8 +31,7 @@ public class DeletePlayerStepdefs {
     public void itHasNotBeenDeletedAPlayerWithUsername(String username) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/players/{username}", username)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate()))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful());
     }
 }

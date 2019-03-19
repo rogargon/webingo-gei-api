@@ -19,7 +19,7 @@ Feature: Register Player
     Given I'm not logged in
     When I register a new player with username "player", email "player@webingo.org" and password "password"
     Then The response code is 401
-
+    And It has not been created a player with username "player"
 
   Scenario: Register new player with empty password
     Given I login as "admin" with password "password"

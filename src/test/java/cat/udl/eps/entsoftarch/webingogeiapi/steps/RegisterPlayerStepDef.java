@@ -55,8 +55,7 @@ public class RegisterPlayerStepDef {
     // Write code here that turns the phrase above into concrete actions
     stepDefs.result = stepDefs.mockMvc.perform(
         get("/players/{username}", username)
-            .accept(MediaType.APPLICATION_JSON)
-            .with(AuthenticationStepDefs.authenticate()))
+            .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound());
   }
 }

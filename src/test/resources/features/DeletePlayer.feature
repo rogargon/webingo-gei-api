@@ -20,9 +20,10 @@ Feature: Remove Player
   Scenario: Remove a player without authenticating
   Given I login as "admin" with password "password"
     And I register a new player with username "player", email "player@webingo.org" and password "password"
-    And I'm not logged in
+    Given I'm not logged in
     When I delete a player with username "player"
     Then The response code is 401
+    And It has not been deleted a player with username "player"
 
   Scenario: Remove player that not exist
     Given I login as "admin" with password "password"
