@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
+import com.sun.org.apache.bcel.internal.generic.GETFIELD;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
@@ -55,19 +56,28 @@ public class EditGameStepDefs {
     }
 
     @When("^I edit game with id \"([^\"]*)\"$")
-    public void iEditGameWithId(String arg0) throws Throwable {
+    public void iEditGameWithId(int id) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        JSONObject game = new JSONObject();
+        game.put("id", id);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/games")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+        //throw new PendingException();
     }
 
     @And("^It has been edited a game with id \"([^\"]*)\"$")
-    public void itHasBeenEditedAGameWithId(String arg0) throws Throwable {
+    public void itHasBeenEditedAGameWithId(int id) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
 
     @And("^It has not been edited a game with id \"([^\"]*)\"$")
-    public void itHasNotBeenEditedAGameWithId(String arg0) throws Throwable {
+    public void itHasNotBeenEditedAGameWithId(int id) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
