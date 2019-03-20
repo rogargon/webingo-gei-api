@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
+import cat.udl.eps.entsoftarch.webingogeiapi.handler.GameEventHandler;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;

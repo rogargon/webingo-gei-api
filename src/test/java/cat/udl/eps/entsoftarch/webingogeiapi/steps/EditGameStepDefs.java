@@ -1,110 +1,55 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 public class EditGameStepDefs {
 
-    @When("^I edit game with id \"([^\"]*)\"$")
-    public void i_edit_game_with_id(String arg1) throws Exception {
+    private static final Logger logger = LoggerFactory.getLogger(RegisterPlayerStepDef.class);
+
+    @Autowired
+    private StepDefs stepDefs;
+
+    @When("^I try to edit a new game with id \"([^\"]*)\"$")
+    public void iEditAGameWithId(int id) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        JSONObject game = new JSONObject();
+        game.put("id", id);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/games")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
     }
 
-    @Then("^It has been edited a game with id \"([^\"]*)\"$")
-    public void it_has_been_edited_a_game_with_id(String arg1) throws Exception {
+    @And("^Edit enabled at the game with id \"([^\"]*)\"$")
+    public void itHasBeenEnabledGameEdit(int id) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/games/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
     }
 
-    @Then("^It has not been edited a game with id \"([^\"]*)\"$")
-    public void it_has_not_been_edited_a_game_with_id(String arg1) throws Exception {
+    @And("^Edit not enabled at the game with id \"([^\"]*)\"$")
+    public void itHasBeenNotEnabledGameEdit(int id) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @Given("^Exists admin \"([^\"]*)\" with password \"([^\"]*)\"$")
-    public void existsAdminWithPassword(String arg0, String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^Exists a game with id \"([^\"]*)\"$")
-    public void existsAGameWithId(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^I set up the pricePerCard to be \"([^\"]*)\"$")
-    public void iSetUpThePricePerCardToBe(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-
-    @Given("^Exists an admin \"([^\"]*)\" with password \"([^\"]*)\"$")
-    public void existsAnAdminWithPassword(String arg0, String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @When("^I want to login in order to edit a game$")
-    public void iWantToLoginInOrderToEditAGame() {
-    }
-
-    @And("^I login with admin \"([^\"]*)\" and password \"([^\"]*)\"$")
-    public void iLoginWithAdminAndPassword(String arg0, String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-
-    @And("^It has been edited the price PerCard for the game with id \"([^\"]*)\"$")
-    public void itHasBeenEditedThePricePerCardForTheGameWithId(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^I set up the jackpot to be \"([^\"]*)\"$")
-    public void iSetUpTheJackpotToBe(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^It has been edited the jackpot for the game with id \"([^\"]*)\"$")
-    public void itHasBeenEditedTheJackpotForTheGameWithId(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^I set up the starting time startAt to be \"([^\"]*)\"$")
-    public void iSetUpTheStartingTimeStartAtToBe(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^It has been edited the starting time startAt for the game with id \"([^\"]*)\"$")
-    public void itHasBeenEditedTheStartingTimeStartAtForTheGameWithId(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^I set up the finishing time finishedAt to be \"([^\"]*)\"$")
-    public void iSetUpTheFinishingTimeFinishedAtToBe(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^It has been edited the finishing time finishedAt for the game with id \"([^\"]*)\"$")
-    public void itHasBeenEditedTheFinishingTimeFinishedAtForTheGameWithId(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/games/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
     }
 }
-
-
-
-
