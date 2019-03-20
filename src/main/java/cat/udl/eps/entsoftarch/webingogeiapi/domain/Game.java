@@ -18,7 +18,7 @@ public class Game extends UriEntity<Integer> {
     @Id
     @GeneratedValue
     private Integer id;
-    private int status;
+    private GameStatus status;
     private double jackpot;
     private double pricePerCard;
     private boolean bingo;
@@ -28,3 +28,4 @@ public class Game extends UriEntity<Integer> {
     private ZonedDateTime finishedAt, startAt, createdAt;
 
 }
+

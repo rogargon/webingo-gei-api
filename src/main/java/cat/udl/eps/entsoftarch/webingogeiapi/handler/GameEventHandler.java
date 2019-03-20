@@ -1,6 +1,7 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.handler;
 
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.GameStatus;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
 import org.slf4j.Logger;
@@ -44,7 +45,7 @@ public class GameEventHandler {
 
     @HandleBeforeDelete
     public void handleGamePreDelete(Game game) {
-        if(game.getStatus() == 1){
+        if(game.getStatus() == GameStatus.PLAYING){
             throw new AccessDeniedException("It's not possible to delete the game. It's started.");
         }
     }

@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.GameStatus;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
@@ -38,7 +39,7 @@ public class RegisterGameStepDefs {
     }
 
     @When("^I register a new game with id \"([^\"]*)\" and status \"([^\"]*)\"$")
-    public void iRegisterANewGame(Integer id, int status) throws Throwable {
+    public void iRegisterANewGame(Integer id, String status) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         JSONObject game = new JSONObject();
         game.put("id", id);
