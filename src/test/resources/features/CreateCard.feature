@@ -25,13 +25,18 @@ Feature: Create Card
     And I'm not logged in
     When I join the Game with id 1
     Then  The response code is 401
+    And The card with id 1 does not exist
 
   Scenario: Generate a new card with price 0
     Given I login as "user" with password "password"
     When There is a game with price 0.0 and id 1
     Then  A "TransactionSystemException" occurs
+    And The card with id 1 does not exist
+
 
   Scenario: Generate a new card with negative price
     Given I login as "user" with password "password"
     When There is a game with price -5.0 and id 1
     Then  A "TransactionSystemException" occurs
+    And The card with id 1 does not exist
+

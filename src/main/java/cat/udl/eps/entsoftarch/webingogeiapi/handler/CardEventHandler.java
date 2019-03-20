@@ -7,6 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleAfterCreate;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
+import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
+import org.springframework.stereotype.Component;
+
+@Component
+@RepositoryEventHandler
 
 public class CardEventHandler {
     final Logger logger = LoggerFactory.getLogger(Card.class);
@@ -14,10 +19,16 @@ public class CardEventHandler {
     @Autowired
     CardRepository CardRepository;
 
+    public CardEventHandler(CardRepository CardRepository) {
+        this.CardRepository = CardRepository;
+    }
+
+
     @HandleBeforeCreate
     public void handleCardBeforeCreate(Card card){
         card.generateCard();
         logger.info("After creating: {}", card.toString());
+        CardRepository.save(card);
     }
 
 }

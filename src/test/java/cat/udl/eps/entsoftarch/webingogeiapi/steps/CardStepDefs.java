@@ -117,7 +117,7 @@ public class CardStepDefs {
                 .andDo(print());
     }
 
-    @And("^The card with id (\\d+) has been deleted$")
+    @And("^The card with id (\\d+) does not exist$")
     public void theCardWithIdHasBeenDeleted(int arg0) throws Exception{
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/cards/{id}", arg0)
@@ -125,7 +125,7 @@ public class CardStepDefs {
                 .andExpect(status().isNotFound());
     }
 
-    @And("^The card with id (\\d+) has not been deleted$")
+    @And("^The card with id (\\d+) exists$")
     public void theCardWithIdHasNotBeenDeleted(int arg0) throws Exception{
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/cards/{id}", arg0)
