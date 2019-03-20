@@ -14,5 +14,7 @@ public interface InvitationRepository extends PagingAndSortingRepository<Invitat
 
     List<Invitation> findByMessageContaining(@Param("text") String text);
     List<Invitation> findById(@Param("id") long id);
+    List<Invitation> findByInvites(@Param("invites") String invites);
+    List<Invitation> findByCreatedBy(@Param("createdBy") Player createdBy);
 
 }

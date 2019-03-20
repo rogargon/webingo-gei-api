@@ -1,31 +1,41 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Invitation;
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.InvitationRepository;
+import cat.udl.eps.entsoftarch.webingogeiapi.repository.PlayerRepository;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class ListInvitationStepDefs {
 
-    private Iterable<Invitation> list;
+    private ArrayList<Invitation> list;
 
     @Autowired
     InvitationRepository invitationRepository;
 
-    @When("^I list the invitations$")
-    public void iListTheInvitations() {
-        list = invitationRepository.findAll();
-    }
+    @Autowired
+    private PlayerRepository playerRepo;
 
     @And("^The response contains one invitation with message \"([^\"]*)\"$")
     public void theResponseContainsOneInvitationWithName(String message) {
 
-        assert (((Collection<?>) list).size() == 1);
+        Assert.assertEquals(1, (((Collection<?>) list).size()));
 
         for (Invitation inv : list)
-            assert (inv.getMessage().equals(message));
+            Assert.assertEquals(inv.getMessage(), message);
+    }
+
+    @When("^I list the invitations by user \"([^\"]*)\"$")
+    public void iListTheInvitationsByUser(String user) {
+        Player player = playerRepo.findByUsernameContaining(user).get(0);
+        list = new ArrayList<>();
+        list.addAll(invitationRepository.findByCreatedBy(player));
     }
 }
