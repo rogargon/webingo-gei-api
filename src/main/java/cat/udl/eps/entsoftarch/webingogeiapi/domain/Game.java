@@ -6,6 +6,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -24,6 +27,8 @@ public class Game extends UriEntity<Integer> {
     private float jackpot;
     private boolean bingo;
     private boolean line;
+    @NotNull
+    @DecimalMin("0.1")
     private double pricePerCard;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
