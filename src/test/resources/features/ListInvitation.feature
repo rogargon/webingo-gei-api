@@ -17,3 +17,10 @@ Feature: List Invitation
     And There is an invitation with message "asdasd" by user "user2"
     When I list the invitations by user "user2"
     Then The response contains one invitation with message "asdasd"
+
+  Scenario: List all invitations as an admin
+    Given I login as "admin" with password "password"
+    And There is an invitation with message "asd" by user "user"
+    And There is an invitation with message "asdasd" by user "user2"
+    When I list the invitations
+    Then The response contains two invitations

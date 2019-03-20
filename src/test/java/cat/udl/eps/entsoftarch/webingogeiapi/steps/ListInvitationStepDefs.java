@@ -6,6 +6,7 @@ import cat.udl.eps.entsoftarch.webingogeiapi.repository.InvitationRepository;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.PlayerRepository;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,18 @@ public class ListInvitationStepDefs {
         Player player = playerRepo.findByUsernameContaining(user).get(0);
         list = new ArrayList<>();
         list.addAll(invitationRepository.findByCreatedBy(player));
+    }
+
+    @Then("^The response contains two invitations$")
+    public void theResponseContainsTwoInvitations() {
+        Assert.assertEquals(2, (((Collection<?>) list).size()));
+
+    }
+
+    @When("^I list the invitations$")
+    public void iListTheInvitations() {
+        list = new ArrayList<>();
+        list.addAll((Collection<? extends Invitation>) invitationRepository.findAll());
+
     }
 }
