@@ -6,6 +6,7 @@ import cat.udl.eps.entsoftarch.webingogeiapi.repository.CardRepository;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jayway.jsonpath.JsonPath;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -16,10 +17,10 @@ import org.springframework.http.MediaType;
 
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class CreateCardStepDefs {
     @Autowired
@@ -40,6 +41,25 @@ public class CreateCardStepDefs {
         g.setId(arg2);
         g.setPricePerCard(arg);
         gr.save(g);
+    }
+
+    @And("^There is a card with id (\\d+) associated to the game with id (\\d+)$")
+    public void thereIsACardWithIdAssociatedToTheGameWithId(int arg0, int arg1) throws Exception {
+        Card c = new Card();
+        c.setId(arg0);
+        if(gr.findById(arg1).isPresent()){
+            c.setGame(gr.findById(arg1).get());
+        }
+        String json = stepDefs.mapper.writeValueAsString(c);
+        System.out.println("JSON " + json);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/cards")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+        //cr.save(c);
     }
 
     @When("^I join the Game with id (\\d+)$")
@@ -79,5 +99,29 @@ public class CreateCardStepDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print()).andExpect(jsonPath("$._links.self.href", endsWith("/games/" + String.valueOf(arg2))));
 
+    }
+
+    @When("^I delete a card with id (\\d+)$")
+    public void iDeleteACardWithId(int arg0) throws Exception{
+        stepDefs.result = stepDefs.mockMvc.perform(
+                delete("/cards/{id}", arg0)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
+
+    @And("^The card with id (\\d+) has been deleted$")
+    public void theCardWithIdHasBeenDeleted(int arg0) throws Exception{
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/cards/{id}", arg0)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @And("^The card with id (\\d+) has not been deleted$")
+    public void theCardWithIdHasNotBeenDeleted(int arg0) throws Exception{
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/cards/{id}", arg0)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful());
     }
 }
