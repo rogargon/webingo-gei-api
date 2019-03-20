@@ -45,10 +45,11 @@ public class Card extends UriEntity<Integer> {
     public void generateCard(){
         Random r = new Random();
         ArrayList<Integer> generatedNumbers = new ArrayList<>();
+        int temp;
 
         // Generate a list with random numbers.
         for (int i = 0; i < cols; i++){
-            int temp = r.nextInt(10) + 10*i;
+            temp = r.nextInt(10) + 10*i;
             generatedNumbers.add(temp);
 
             for (int j = 1; j < rows; j++){
@@ -64,5 +65,25 @@ public class Card extends UriEntity<Integer> {
         for (int i = 0; i < cols; i++)
             for (int j = 0; j < rows; j++)
                 numbers[j][i] = generatedNumbers.get(j + i*rows);
+
+        int[] line = new int[cols];
+        int count = 0, countotal =0;
+
+        while(countotal<rows){
+            generatedNumbers.clear();
+            while(count<rows){
+                temp = r.nextInt(9);
+                while(generatedNumbers.contains(temp))
+                    temp = r.nextInt(9);
+                generatedNumbers.add(temp);
+                line[temp]+=1;
+                if(line[temp]<3){
+                    numbers[countotal][temp]=-1;
+                }
+                count++;
+            }
+            count=0;
+            countotal++;
+        }
     }
 }
