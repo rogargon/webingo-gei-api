@@ -24,7 +24,7 @@ public class CardStepDefs {
     CardRepository cr;
     @Autowired
     GameRepository gr;
-    String idc;
+    private String idc;
     private Exception actualException;
 
 
@@ -35,7 +35,7 @@ public class CardStepDefs {
     }
 
     @Given("^There is a game with price (.+) and id (\\d+)$")
-    public void thereIsAGame(double arg, int arg2) throws Exception {
+    public void thereIsAGame(double arg, int arg2) {
         Game g = new Game();
         g.setId(arg2);
         g.setPricePerCard(arg);
@@ -52,7 +52,7 @@ public class CardStepDefs {
         if(gr.findById(arg).isPresent()){
             c.setGame(gr.findById(arg).get());
         }else{
-            assert false;
+            throw new Exception("The game with id " + arg +" does not exist");
         }
         String json = stepDefs.mapper.writeValueAsString(c);
         System.out.println("JSON " + json);
@@ -64,7 +64,6 @@ public class CardStepDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                         .andDo(print());
         idc = stepDefs.result.andReturn().getResponse().getHeader("Location");
-        cr.save(c);
     }
 
     @Then("^A card has been created with price (.+) for the game with id (\\d+)$")
@@ -81,12 +80,12 @@ public class CardStepDefs {
                 get(a)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print()).andExpect(jsonPath("$._links.self.href", endsWith("/games/" + String.valueOf(arg2))));
+                .andDo(print()).andExpect(jsonPath("$._links.self.href", endsWith("/games/" + arg2)));
 
     }
 
     @Then("^A \"([^\"]*)\" occurs$")
-    public void aOccurs(String arg0) throws Throwable {
+    public void aOccurs(String arg0) {
         Assert.assertEquals("Exception MissMatch", arg0,actualException.getClass().getSimpleName());
     }
 
