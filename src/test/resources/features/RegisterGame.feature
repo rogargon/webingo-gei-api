@@ -15,7 +15,7 @@ Feature: Register Game
     Then The response code is 401
     And It has not been created a game with id "1"
 
-  Scenario: Try to register new player without authenticating
+  Scenario: Try to register new game without authenticating
     Given I'm not logged in
     When I register a new game with id "1"
     Then The response code is 401
