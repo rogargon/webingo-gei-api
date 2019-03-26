@@ -10,9 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class EditGameStepDefs {
 
@@ -55,30 +58,37 @@ public class EditGameStepDefs {
                 .andDo(print());
     }
 
-    @When("^I edit game with id \"([^\"]*)\"$")
-    public void iEditGameWithId(int id) throws Throwable {
+    @When("^I edit game with id \"([^\"]*)\" and new status \"([^\"]*)\"$")
+    public void iEditGameWithId(int id, String status) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         JSONObject game = new JSONObject();
-        game.put("id", id);
+        game.put("status", status);
         stepDefs.result = stepDefs.mockMvc.perform(
-                post("/games")
+                put("/games/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(game.toString())
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
-        //throw new PendingException();
     }
 
-    @And("^It has been edited a game with id \"([^\"]*)\"$")
-    public void itHasBeenEditedAGameWithId(int id) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
+    @And("^It has been edited a game with id \"([^\"]*)\" and status \"([^\"]*)\"$")
+    public void itHasBeenEditedAGameWithId(int id, String status) throws Throwable {
+        stepDefs.result = stepDefs.mockMvc
+                .perform(get("/games/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+            .with(AuthenticationStepDefs.authenticate()))
+            .andDo(print())
+            .andExpect(jsonPath("$.status", is(status)));
+}
 
     @And("^It has not been edited a game with id \"([^\"]*)\"$")
     public void itHasNotBeenEditedAGameWithId(int id) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        stepDefs.result = stepDefs.mockMvc
+                .perform(
+                        get("/games/{id}", id)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
     }
 }
