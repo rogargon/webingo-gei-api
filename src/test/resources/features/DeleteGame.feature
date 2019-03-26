@@ -8,7 +8,7 @@ Feature: Delete Game
     And  I register a new game with id "1" and status "LOADING"
     When I delete a game with id "1"
     Then The response code is 204
-    And It has been deleted a game with id "1"
+    And There does not exist a game with id "1"
 
   Scenario: Player try to delete a game not started
     Given I login as "admin" with password "password"

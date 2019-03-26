@@ -39,8 +39,8 @@ public class DeleteGameStepDefs {
     }
 
 
-    @And("^It has been deleted a game with id \"([^\"]*)\"$")
-    public void itHasBeenDeletedAGameWithId(Integer id) throws Throwable {
+    @And("^There does not exist a game with id \"([^\"]*)\"$")
+    public void thereDoesNotExistAGameWithId(Integer id) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/games/{id}", id)
                         .accept(MediaType.APPLICATION_JSON)
