@@ -13,6 +13,8 @@ import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
+import java.util.List;
+
 import static org.hamcrest.Matchers.endsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -25,6 +27,7 @@ public class CardStepDefs {
     @Autowired
     GameRepository gr;
     private String idc;
+    private List<Card> cards;
     private Exception actualException;
 
 
@@ -130,5 +133,15 @@ public class CardStepDefs {
                 get("/cards/{id}", arg0)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful());
+    }
+
+    @When("^I list the cards of the game with id (\\d+)$")
+    public void iListTheCardsOfTheGameWithId(int arg0) throws Exception {
+           cards = cr.findByGame(gr.findById(arg0).get());
+    }
+
+    @And("^There are (\\d+) cards associated$")
+    public void thereAreCardsAssociated(int arg0) {
+        assert arg0 == cards.size();
     }
 }
