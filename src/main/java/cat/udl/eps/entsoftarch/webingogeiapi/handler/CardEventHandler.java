@@ -19,11 +19,6 @@ public class CardEventHandler {
     @Autowired
     CardRepository CardRepository;
 
-    public CardEventHandler(CardRepository CardRepository) {
-        this.CardRepository = CardRepository;
-    }
-
-
     @HandleBeforeCreate
     public void handleCardBeforeCreate(Card card){
         card.generateCard();
