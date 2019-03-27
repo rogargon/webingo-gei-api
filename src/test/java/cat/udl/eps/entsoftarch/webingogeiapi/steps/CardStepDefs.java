@@ -13,6 +13,8 @@ import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.endsWith;
@@ -29,6 +31,7 @@ public class CardStepDefs {
     private String idc;
     private List<Card> cards;
     private Exception actualException;
+    private Card created;
 
 
     private final StepDefs stepDefs;
@@ -143,5 +146,39 @@ public class CardStepDefs {
     @And("^There are (\\d+) cards associated$")
     public void thereAreCardsAssociated(int arg0) {
         assert arg0 == cards.size();
+    }
+
+    @Given("^A card is created$")
+    public void aCardIsCreated() {
+        created = new Card();
+    }
+
+    @When("^I generate the numbers$")
+    public void iGenerateTheNumbers() {
+        created.generateCard();
+    }
+
+    @Then("^The resulting card is generated properly$")
+    public void theResultingCardIsGeneratedProperly() {
+        int[][] numbers = created.getNumbers();
+        List<Integer> rownums = new ArrayList<>();
+        int[] max = new int[created.getCols()];
+        int count = 0;
+        for (int i = 0; i < created.getRows(); i++) {
+            for (int j = 1; j < created.getCols(); j++) {
+                if (numbers[i][j] == -1) {//Check three numbers missing per row
+                    count++;
+                    max[i]++;
+                }
+                assert !rownums.contains(numbers[i][j]);//Check number not generated before
+                rownums.add(numbers[i][j]);
+                assert numbers[i][j] < (j + 1) * created.getCols();//Check range of generation is correct
+            }
+            assert count == 3;
+            count = 0;
+        }
+        for (int j = 1; j < created.getCols(); j++) {//Check there are at most two spaces for each column
+            assert max[j] < 3;
+        }
     }
 }
