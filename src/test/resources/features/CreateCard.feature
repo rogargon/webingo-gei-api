@@ -40,3 +40,9 @@ Feature: Create Card
     Then  A "TransactionSystemException" occurs
     And The card with id 1 does not exist
 
+  Scenario: Generate a new card with negative price
+    Given I login as "user" with password "password"
+    When There is a game with price -5.0 and id 1
+    Then  A "TransactionSystemException" occurs
+    And The card with id 1 does not exist
+
