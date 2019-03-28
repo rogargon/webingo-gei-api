@@ -28,7 +28,9 @@ public class Card extends UriEntity<Integer> {
     @Id
     @GeneratedValue
     private Integer id;
-
+    /**
+     * Each card needs to be associated to a game.
+     */
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     private Game game;
@@ -44,7 +46,7 @@ public class Card extends UriEntity<Integer> {
      */
     public void generateCard(){
         Random r = new Random();
-        ArrayList<Integer> generatedNumbers = new ArrayList<>();
+        ArrayList<Integer> generatedNumbers = new ArrayList<>();//Check numbers are not repeated
         int temp;
 
         // Generate a list with random numbers.
