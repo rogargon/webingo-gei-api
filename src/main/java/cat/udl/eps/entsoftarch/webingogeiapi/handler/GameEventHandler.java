@@ -22,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.Null;
 import java.time.ZonedDateTime;
 
 @Component
@@ -35,7 +36,10 @@ public class GameEventHandler {
     @HandleBeforeCreate
     public void handleGamePreCreate(Game game) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        game.setStartAt((ZonedDateTime.now()));
+        game.setStatus(GameStatus.LOADING);
+        if(game.getPricePerCard() <= 0.0){
+            throw new IllegalArgumentException("Price per card can not be negative or 0.0");
+        }
     }
 
     @HandleBeforeSave
