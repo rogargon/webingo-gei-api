@@ -24,11 +24,12 @@ public class RegisterGameStepDefs {
     @Autowired
     private StepDefs stepDefs;
 
-    @When("^I register a new game with id \"([^\"]*)\"$")
-    public void iRegisterANewGameWithId(Integer id) throws Throwable {
+    @When("^I register a new game with id \"([^\"]*)\" and pricePerCard \"([^\"]*)\"$")
+    public void iRegisterANewGameWithId(Integer id, double pricePerCard) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         JSONObject game = new JSONObject();
         game.put("id", id);
+        game.put("pricePerCard", pricePerCard);
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/games")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -38,7 +39,7 @@ public class RegisterGameStepDefs {
                 .andDo(print());
     }
 
-    @When("^I register a new game with id \"([^\"]*)\" and status \"([^\"]*)\"$")
+    @When("^I register a new game with id \"([^\"]*)\"$")
     public void iRegisterANewGame(Integer id, String status) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         JSONObject game = new JSONObject();
@@ -50,8 +51,7 @@ public class RegisterGameStepDefs {
                         .content(game.toString())
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print())
-                .andExpect(jsonPath("$.status", is(status)));
+                .andDo(print());
     }
 
 
