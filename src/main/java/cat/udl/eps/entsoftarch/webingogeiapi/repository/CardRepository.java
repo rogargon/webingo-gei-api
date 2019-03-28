@@ -2,6 +2,7 @@ package cat.udl.eps.entsoftarch.webingogeiapi.repository;
 
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Card;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -18,4 +19,5 @@ public interface CardRepository extends PagingAndSortingRepository<Card, Integer
      * @return a list of the cards.
      */
     List<Card> findByGame(@Param("game") Game game);
+    List<Card> findByPlayer(@Param("player") Player player);
 }

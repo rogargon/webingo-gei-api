@@ -35,6 +35,9 @@ public class Card extends UriEntity<Integer> {
     @JsonIdentityReference(alwaysAsId = true)
     private Game game;
 
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private Player player;
     /**
      * List of numbers associated to a card.
      */
