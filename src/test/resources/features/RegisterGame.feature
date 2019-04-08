@@ -47,7 +47,7 @@ Feature: Register Game
     When I register a new game with id "1" and status "FINISHED"
     Then The response code is 401
     And The error message is "Not allowed to register new game with status finished"
-    
+
   Scenario: Register game with status "LOADING"
     Given I login as "admin" with password "password"
     When I register a new game with id "1" and status "LOADING"

@@ -73,4 +73,19 @@ public class RegisterGameStepDefs {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
+
+    @When("^I register a new game with id \"([^\"]*)\" and status \"([^\"]*)\"$")
+    public void iRegisterANewGameWithIdAndStatus(int id, String status) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        JSONObject game = new JSONObject();
+        game.put("id", id);
+        game.put("status", status);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/games")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
 }
