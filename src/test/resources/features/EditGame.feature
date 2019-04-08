@@ -6,7 +6,7 @@ Feature: Edit Game
 
   Scenario: Edit game as admin
     Given I login as "admin" with password "password"
-    And I register a new game with id "1" and pricePerCard "2.00"
+    And I register a new game with id "1"
     When I edit game with id "1" and new status "PLAYING"
     Then The response code is 200
     And It has been edited a game with id "1" and status "PLAYING"
@@ -30,5 +30,6 @@ Feature: Edit Game
     And I register a new game with id "2" and pricePerCard "2.00"
     When I edit game with id "2"
     And I set up the pricePerCard to be "5.00"
-    Then The response code is 400
+    Then The response code is 401
     And It has been edited the price PerCard for the game with id "2"
+
