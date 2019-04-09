@@ -78,13 +78,11 @@ public class Card extends UriEntity<Integer> {
             generatedNumbers.clear();
             while(count<rows){
                 temp = r.nextInt(9);
-                while(generatedNumbers.contains(temp))
+                while(generatedNumbers.contains(temp) || line[temp]>3)
                     temp = r.nextInt(9);
                 generatedNumbers.add(temp);
                 line[temp]+=1;
-                if(line[temp]<3){
-                    numbers[countotal][temp]=-1;
-                }
+                numbers[countotal][temp]=-1;
                 count++;
             }
             count=0;
