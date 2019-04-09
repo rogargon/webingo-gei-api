@@ -56,6 +56,7 @@ public class DeleteInvitationStepDefs {
         Invitation inv = new Invitation();
         inv.setMessage(message);
         Player player = playerRepository.findByUsernameContaining(user).get(0);
+        inv.setInvites(player);
         inv.setCreatedBy(player);
         invitationRepository.save(inv);
         id = inv.getId();
