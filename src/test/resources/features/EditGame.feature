@@ -41,11 +41,11 @@ Feature: Edit Game
 
   Scenario: Edit game to set a specific pricePerCard
     Given I login as "admin" with password "password"
-    And I register a new game with id "2"
-    When I edit game with id "2"
-    And I set up the pricePerCard to be "5.00"
-    Then The response code is 200
-    And It has been edited the price PerCard for the game with id "2"
+    And There is a game with the pricePerCard 8.0 and id 2
+    When I edit the game with id 2
+    And I edit the pricePerCard to be 5.0 for the game with id 2
+    Then The response code is 201
+    And The game with id 2 has been edited
 
   Scenario: Edit game as admin with incorrect password
     Given Exists an admin "admin" with password "password"
