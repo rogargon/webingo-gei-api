@@ -23,11 +23,10 @@ Feature: Edit Game
     When I edit game with id "3" and set up the pricePerCard to be "5.00"
     Then The response code is 201
 
-  Scenario: Edit game as user
+  Scenario: Edit game as user Good
     Given I login as "admin" with password "password"
     And I register a new game with id "2"
-    Given I'm not logged in
-    Then I login as "user" with password "password"
+    Then I login as "player" with password "password"
     When I edit game with id "2"
     Then The response code is 401
 
