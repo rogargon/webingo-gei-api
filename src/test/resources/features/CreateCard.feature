@@ -4,7 +4,7 @@ Feature: Create Card
   I want to be able to create a card
 
 
-  Scenario: List a card as admin
+  Scenario: Create a card
     Given A card is created
     When I generate the numbers
     Then The resulting card is generated properly
