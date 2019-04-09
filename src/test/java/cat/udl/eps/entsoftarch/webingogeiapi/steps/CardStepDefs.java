@@ -183,7 +183,7 @@ public class CardStepDefs {
                 if(numbers[i][j] != -1){
                     assert !rownums.contains(numbers[i][j]);//Check number was not generated before
                     rownums.add(numbers[i][j]);
-                    assert numbers[i][j] < (j + 1) * created.getCols();//Check range of generation is correct
+                    assert numbers[i][j] < (j + 1) * 10;//Check range of generation is correct
                 }
             }
             assert count == 3;
