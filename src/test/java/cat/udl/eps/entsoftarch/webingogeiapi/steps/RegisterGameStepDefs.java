@@ -7,9 +7,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.GameStatus;
+import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -23,6 +26,9 @@ public class RegisterGameStepDefs {
 
     @Autowired
     private StepDefs stepDefs;
+    @Autowired
+    GameRepository gr;
+
 
     @When("^I register a new game with id \"([^\"]*)\" and pricePerCard \"([^\"]*)\"$")
     public void iRegisterANewGameWithId(Integer id, double pricePerCard) throws Throwable {

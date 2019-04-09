@@ -37,8 +37,9 @@ public class GameEventHandler {
     public void handleGamePreCreate(Game game) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         game.setStatus(GameStatus.LOADING);
-        if(game.getPricePerCard() <= 0.0){
-            throw new IllegalArgumentException("Price per card can not be negative or 0.0");
+        //set startAt Date
+        if(game.getPricePerCard() < 0.0){
+            throw new IllegalArgumentException(String.format("Price per card is %s and it can not be negative or 0.0", game.getPricePerCard()));
         }
     }
 
