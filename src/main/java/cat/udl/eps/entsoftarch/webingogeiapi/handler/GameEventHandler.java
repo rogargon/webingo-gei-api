@@ -16,6 +16,7 @@ import org.springframework.data.rest.core.annotation.HandleBeforeDelete;
 import org.springframework.data.rest.core.annotation.HandleBeforeLinkSave;
 import org.springframework.data.rest.core.annotation.HandleBeforeSave;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,7 +38,7 @@ public class GameEventHandler {
     public void handleGamePreCreate(Game game) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         game.setStatus(GameStatus.LOADING);
-        //set startAt Date
+        //game.setStartAt(...);
         if(game.getPricePerCard() < 0.0){
             throw new IllegalArgumentException(String.format("Price per card is %s and it can not be negative or 0.0", game.getPricePerCard()));
         }
