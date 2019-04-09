@@ -83,12 +83,6 @@ public class ListInvitationStepDefs {
                 .getJSONArray("invitations");
     }
 
-    @Then("^The response contains two invitations$")
-    public void theResponseContainsTwoInvitations() {
-        Assert.assertEquals(2, result.length());
-
-    }
-
     @When("^I list the invitations$")
     public void iListTheInvitations() throws Exception {
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -110,5 +104,11 @@ public class ListInvitationStepDefs {
 
         result = inv
                 .getJSONArray("invitations");
+    }
+
+    @Then("^The response contains \"([^\"]*)\" invitations$")
+    public void theResponseContainsInvitations(String arg0) throws Throwable {
+        int amount = Integer.parseInt(arg0);
+        Assert.assertEquals(amount, result.length());
     }
 }

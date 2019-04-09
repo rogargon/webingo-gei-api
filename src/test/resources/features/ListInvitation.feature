@@ -23,4 +23,4 @@ Feature: List Invitation
     And There is an invitation with message "asd" by user "user"
     And There is an invitation with message "asdasd" by user "user2"
     When I list the invitations
-    Then The response contains two invitations
+    Then The response contains "2" invitations
