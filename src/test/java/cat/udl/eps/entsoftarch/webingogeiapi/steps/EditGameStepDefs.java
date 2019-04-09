@@ -70,4 +70,18 @@ public class EditGameStepDefs {
                                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
     }
+
+    @When("^I edit game with id \"([^\"]*)\" and set up the pricePerCard to be \"([^\"]*)\"$")
+    public void iEditGameWithIdAndSetUpThePricePerCardToBe(int id, Double pricePerCard) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        JSONObject game = new JSONObject();
+        game.put("pricePerCard", pricePerCard);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                put("/games/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
 }

@@ -40,11 +40,10 @@ public class RegisterGameStepDefs {
     }
 
     @When("^I register a new game with id \"([^\"]*)\"$")
-    public void iRegisterANewGame(Integer id, String status) throws Throwable {
+    public void iRegisterANewGame(Integer id) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         JSONObject game = new JSONObject();
         game.put("id", id);
-        game.put("status", status);
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/games")
                         .contentType(MediaType.APPLICATION_JSON)
