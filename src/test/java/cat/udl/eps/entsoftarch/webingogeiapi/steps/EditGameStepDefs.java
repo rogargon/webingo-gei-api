@@ -23,11 +23,11 @@ public class EditGameStepDefs {
     private StepDefs stepDefs;
 
     @When("^I edit game with id \"([^\"]*)\"$")
-    public void iEditGameWithId(int id) throws Throwable {
+    public void iEditGameWithId(Integer id) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         JSONObject game = new JSONObject();
         stepDefs.result = stepDefs.mockMvc.perform(
-                put("/games/{id}", id)
+                patch("/games/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(game.toString())
                         .accept(MediaType.APPLICATION_JSON)
@@ -36,7 +36,7 @@ public class EditGameStepDefs {
     }
 
     @When("^I edit game with id \"([^\"]*)\" and new status \"([^\"]*)\"$")
-    public void iEditGameWithId(int id, String status) throws Throwable {
+    public void iEditGameWithId(Integer id, String status) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         JSONObject game = new JSONObject();
         game.put("status", status);
@@ -50,7 +50,7 @@ public class EditGameStepDefs {
     }
 
     @And("^It has been edited a game with id \"([^\"]*)\" and status \"([^\"]*)\"$")
-    public void itHasBeenEditedAGameWithId(int id, String status) throws Throwable {
+    public void itHasBeenEditedAGameWithId(Integer id, String status) throws Throwable {
         stepDefs.result = stepDefs.mockMvc
                 .perform(get("/games/{id}", id)
                         .accept(MediaType.APPLICATION_JSON)
@@ -70,7 +70,7 @@ public class EditGameStepDefs {
     }
 
     @When("^I edit game with id \"([^\"]*)\" and set up the pricePerCard to be \"([^\"]*)\"$")
-    public void iEditGameWithIdAndSetUpThePricePerCardToBe(int id, Double pricePerCard) throws Throwable {
+    public void iEditGameWithIdAndSetUpThePricePerCardToBe(Integer id, Double pricePerCard) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         JSONObject game = new JSONObject();
         game.put("pricePerCard", pricePerCard);

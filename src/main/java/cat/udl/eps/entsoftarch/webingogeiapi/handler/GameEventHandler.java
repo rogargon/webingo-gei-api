@@ -38,7 +38,7 @@ public class GameEventHandler {
     @HandleBeforeCreate
     public void handleGamePreCreate(Game game) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        game.setStatus(GameStatus.LOADING);
+        game.setStatus(GameStatus.LOADING); //default status
         //game.setStartAt(...);
         if(game.getPricePerCard() < 0.0){
             throw new EditGameBadParam();
@@ -48,6 +48,9 @@ public class GameEventHandler {
     @HandleBeforeSave
     public void handleGamePreSave(Game game){
         logger.info("Before updating: {}", game.toString());
+        if(game.getStatus() == GameStatus.FINISHED && !game.isBingo()){
+            throw new EditGameBadParam(); //meanwhile
+        }
         if(game.getPricePerCard() < 0.0){
             throw new EditGameBadParam();
         }
