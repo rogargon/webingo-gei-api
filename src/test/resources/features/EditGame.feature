@@ -72,10 +72,11 @@ Feature: Edit Game
 
   Scenario: Edit game to change the finishing time
     Given I login as "admin" with password "password"
-    And Exists a game with id "1"
-    When I edit game with id "1"
-    And I set up the finishing time finishedAt to be "20:00 PM"
-    Then The response code is 200
-    And It has been edited the finishing time finishedAt for the game with id "1"
+    And There is a game with id 4
+    When I edit the game with id 4
+    And I edit the finishing time finishedAt to be "2019-04-25T10:24:00+01:00" for the game with id 4
+    Then The response code is 201
+    And The game with id 4 has been edited
+
 
 

@@ -165,4 +165,18 @@ public class EditGameStepDefs {
                 .andDo(print());
     }
 
+    @And("^I edit the finishing time finishedAt to be \"([^\"]*)\" for the game with id (\\d+)$")
+    public void iEditTheFinishingTimeFinishedAtToBeForTheGameWithId(String finishedAt, int id) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        JSONObject game = new JSONObject();
+        ZonedDateTime finishedAtTime = ZonedDateTime.parse(finishedAt);
+        game.put("finishedAt",finishedAt);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                put("/games/{id}",id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
 }
