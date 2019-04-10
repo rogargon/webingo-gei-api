@@ -5,27 +5,30 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Objects;
 
 @Entity
 @Data
-@Setter
-@Getter
 @EqualsAndHashCode(callSuper = true)
-@ToString
 public class Game extends UriEntity<Integer> {
 
     @Id
     @GeneratedValue
     private Integer id;
-    private int status;
-    private float jackpot;
+    private GameStatus status;
+    private ArrayList<Integer> numbers;
+    private double jackpot;
+    private double pricePerCard;
     private boolean bingo;
     private boolean line;
-    private double pricePerCard;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private ZonedDateTime finishedAt, createdAt;
+    private ZonedDateTime finishedAt, startAt;
 }
+
