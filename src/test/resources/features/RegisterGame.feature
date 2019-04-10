@@ -34,3 +34,10 @@ Feature: Register Game
     Then The response code is 500
     And The error message is "Price per card can not be negative or 0.0"
     And It has not been created a game with id "1"
+
+  Scenario: Register new game with 3 cards sold and positive pricePerCard and sets de jackpot
+    Given I login as "admin" with password "password"
+    When I register a new game with id "1" and pricePerCard "2.0"
+    And The game have selled 3 card
+    And The jackpot have set to "6.0"
+    Then The response code is 201
