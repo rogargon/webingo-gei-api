@@ -9,8 +9,8 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 public class AuthenticationStepDefs {
 
-    private static String currentUsername;
-    private static String currentPassword;
+    public static String currentUsername;
+    public static String currentPassword;
 
     @Before
     public void setup() {
