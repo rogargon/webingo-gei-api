@@ -64,6 +64,9 @@ public class GameEventHandler {
         if(game.getStatus() == GameStatus.PLAYING){
             throw new AccessDeniedException("It's not possible to delete the game. It's started.");
         }
+        if(!game.isLine() || !game.isBingo()) {
+            throw new AccessDeniedException("It's not possible to delete the game. It's not finished");
+        }
     }
 
     @HandleBeforeLinkSave
