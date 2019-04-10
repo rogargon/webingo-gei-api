@@ -64,11 +64,11 @@ Feature: Edit Game
 
   Scenario: Edit game to change the starting time
     Given I login as "admin" with password "password"
-    And Exists a game with id "1"
-    When I edit game with id "1"
-    And I set up the starting time startAt to be "17:00 PM"
-    Then The response code is 200
-    And It has been edited the starting time startAt for the game with id "1"
+    And There is a game with id 3
+    When I edit the game with id 3
+    And I edit the starting time startAt to be "2019-04-25T10:24:00+01:00" for the game with id 3
+    Then The response code is 201
+    And The game with id 3 has been edited
 
   Scenario: Edit game to change the finishing time
     Given I login as "admin" with password "password"

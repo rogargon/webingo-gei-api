@@ -7,11 +7,14 @@ import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.skyscreamer.jsonassert.comparator.JSONComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+
+import java.time.ZonedDateTime;
 
 import static org.hamcrest.Matchers.endsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -143,6 +146,22 @@ public class EditGameStepDefs {
                     .content(game.toString())
                     .accept(MediaType.APPLICATION_JSON)
                     .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
+
+
+    @And("^I edit the starting time startAt to be \"([^\"]*)\" for the game with id (\\d+)$")
+    public void iEditTheStartingTimeStartAtToBeForTheGameWithId(String startAt, int id) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        JSONObject game = new JSONObject();
+        ZonedDateTime startAtTime = ZonedDateTime.parse(startAt);
+        game.put("startAt",startAtTime);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                put("/games/{id}",id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
     }
 
