@@ -175,7 +175,7 @@ public class CardStepDefs {
         int[] max = new int[created.getCols()];
         int count = 0;
         for (int i = 0; i < created.getRows(); i++) {
-            for (int j = 1; j < created.getCols(); j++) {
+            for (int j = 0; j < created.getCols(); j++) {
                 if (numbers[i][j] == -1) {//Check three numbers missing per row
                     count++;
                     max[i]++;
