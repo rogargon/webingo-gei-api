@@ -49,10 +49,10 @@ Feature: Edit Game
 
   Scenario: Edit game as admin with incorrect password
     Given Exists an admin "admin" with password "password"
-    When I want to login in order to edit a game
-    And I login with admin "admin" and password "password1"
-    Then The response code is 400
-    And The error message is "Error: Wrong password"
+    And There is a game with id 2
+    When I login as "admin" with password "password1"
+    Then The response code is 401
+    And The error message is "Unauthorized"
 
   Scenario:Edit game to change the jackpot amount
     Given I login as "admin" with password "password"

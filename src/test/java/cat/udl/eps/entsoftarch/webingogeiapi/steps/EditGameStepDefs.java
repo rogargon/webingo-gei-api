@@ -3,6 +3,7 @@ package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
 import com.jayway.jsonpath.JsonPath;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -57,7 +58,6 @@ public class EditGameStepDefs {
 
     }
 
-
     @And("^I edit the pricePerCard to be (\\d+.\\d+) for the game with id (\\d+)$")
     public void iEditThePricePerCardToBeForTheGameWithId(int newpricePerCard, int id) throws Exception {
         JSONObject game = new JSONObject();
@@ -101,4 +101,35 @@ public class EditGameStepDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
     }
+
+    @Given("^Exists an admin \"([^\"]*)\" with password \"([^\"]*)\"$")
+    public void existsAnAdminWithPassword(String admin, String password) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        JSONObject game = new JSONObject();
+        game.put("admin", admin);
+        game.put("password", password);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/games")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
+
+
+    @And("^There is a game with id (\\d+)$")
+    public void thereIsAGameWithId(int id) throws Exception {
+        JSONObject game = new JSONObject();
+        game.put("id",id);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/games/{id}",id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+}
+
+
 }
