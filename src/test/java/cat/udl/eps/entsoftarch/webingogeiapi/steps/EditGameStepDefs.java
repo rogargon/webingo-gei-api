@@ -9,6 +9,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
 import org.junit.Assert;
+import org.skyscreamer.jsonassert.comparator.JSONComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
@@ -131,5 +132,18 @@ public class EditGameStepDefs {
                 .andDo(print());
 }
 
+
+    @And("^I edit the jackpot to be (\\d+.\\d+) for the game with id (\\d+)$")
+    public void iEditTheJackpotToBeForTheGameWithId(float jackpot, int id) throws Exception {
+        JSONObject game = new JSONObject();
+        game.put("jackpot",jackpot);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                put("/games/{id}",id)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(game.toString())
+                    .accept(MediaType.APPLICATION_JSON)
+                    .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
 
 }

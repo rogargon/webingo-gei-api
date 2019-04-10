@@ -56,11 +56,11 @@ Feature: Edit Game
 
   Scenario:Edit game to change the jackpot amount
     Given I login as "admin" with password "password"
-    And Exists a game with id "1"
-    When I edit game with id "1"
-    And I set up the jackpot to be "500.00"
-    Then The response code is 200
-    And It has been edited the jackpot for the game with id "1"
+    And There is a game with id 1
+    When I edit the game with id 1
+    And I edit the jackpot to be 500.0 for the game with id 1
+    Then The response code is 201
+    And The game with id 1 has been edited
 
   Scenario: Edit game to change the starting time
     Given I login as "admin" with password "password"
