@@ -3,6 +3,7 @@ package cat.udl.eps.entsoftarch.webingogeiapi.handler;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.GameStatus;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
+import cat.udl.eps.entsoftarch.webingogeiapi.exception.EditGameBadParam;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,14 +40,22 @@ public class GameEventHandler {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         game.setStatus(GameStatus.LOADING);
         //game.setStartAt(...);
+        /*
         if(game.getPricePerCard() < 0.0){
             throw new IllegalArgumentException(String.format("Price per card is %s and it can not be negative or 0.0", game.getPricePerCard()));
+        }
+        */
+        if(game.getPricePerCard() < 0.0){
+            throw new EditGameBadParam();
         }
     }
 
     @HandleBeforeSave
     public void handleGamePreSave(Game game){
         logger.info("Before updating: {}", game.toString());
+        if(game.getPricePerCard() < 0.0){
+            throw new EditGameBadParam();
+        }
     }
 
     @HandleBeforeDelete
@@ -70,6 +79,9 @@ public class GameEventHandler {
     @HandleAfterSave
     public void handleGamePostSave(Game game){
         logger.info("After updating: {}", game.toString());
+        if(game.getStatus() == GameStatus.PLAYING){
+            throw new AccessDeniedException("It's not possible to delete the game. It's started.");
+        }
         gameRepository.save(game);
     }
 
