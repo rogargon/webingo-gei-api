@@ -6,6 +6,8 @@ import cat.udl.eps.entsoftarch.webingogeiapi.repository.CardRepository;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jayway.jsonpath.JsonPath;
+import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -79,5 +81,17 @@ public class CardStepDef {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print()).andExpect(jsonPath("$._links.self.href", endsWith("/games/" + String.valueOf(arg2))));
 
+    }
+
+    @And("^It has been edited the price PerCard for the game with id \"([^\"]*)\"$")
+    public void itHasBeenEditedThePricePerCardForTheGameWithId(String arg0) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @And("^I set up the pricePerCard to be \"([^\"]*)\"$")
+    public void iSetUpThePricePerCardToBe(String arg0) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
     }
 }
