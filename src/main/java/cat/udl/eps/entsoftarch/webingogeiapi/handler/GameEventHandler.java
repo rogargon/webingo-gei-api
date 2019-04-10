@@ -51,6 +51,9 @@ public class GameEventHandler {
         if(game.getStatus() == GameStatus.FINISHED && !game.isBingo()){
             throw new EditGameBadParam(); //meanwhile
         }
+        if(!game.isLine() && game.isBingo()){
+            throw new EditGameBadParam(); //meanwhile
+        }
         if(game.getPricePerCard() < 0.0){
             throw new EditGameBadParam();
         }
