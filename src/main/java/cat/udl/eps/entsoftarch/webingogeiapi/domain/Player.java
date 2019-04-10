@@ -1,8 +1,12 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.domain;
 
 import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,5 +27,7 @@ public class Player extends User {
 		return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_PLAYER");
 	}
 
-
+	@OneToOne
+	@JsonIdentityReference(alwaysAsId = true)
+	private Card card;
 }
