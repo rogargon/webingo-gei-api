@@ -15,6 +15,7 @@ Feature: List Games
     And I register a new game with id "1"
     And I register a new game with id "2"
     Then I login as "player" with password "password"
+    When I try to list games
     Then The response code is 401
 
   Scenario: Try to list games non-authenticated
@@ -22,4 +23,5 @@ Feature: List Games
     And I register a new game with id "1"
     And I register a new game with id "2"
     Then I'm not logged in
+    When I try to list games
     Then The response code is 401
