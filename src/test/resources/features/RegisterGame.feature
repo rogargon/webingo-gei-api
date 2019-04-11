@@ -43,5 +43,3 @@ Feature: Register Game
     When I register a new game with id "1" and status "PLAYING"
     Then The response code is 201
     And It has been created a game with id "1" and status as "LOADING"
-
-

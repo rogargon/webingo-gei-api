@@ -7,11 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Null;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.stream.IntStream;
 
 @Entity
 @Data
@@ -30,5 +28,12 @@ public class Game extends UriEntity<Integer> {
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime finishedAt, startAt, createdAt;
+
+    public void setNumbers(){
+        numbers = new ArrayList<Integer>();
+        for(int i=0;i<=100; i++) {
+            numbers.add(i);
+        }
+    }
 }
 

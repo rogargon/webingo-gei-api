@@ -41,7 +41,7 @@ public class GameEventHandler {
         if(game.getPricePerCard() < 0.0){
             throw new EditGameBadParam();
         }
-        //game.setNumbers(); init numbers array
+        game.setNumbers();
         game.setStatus(GameStatus.LOADING);
         game.setCreatedAt(ZonedDateTime.now());
         game.setLine(false);
