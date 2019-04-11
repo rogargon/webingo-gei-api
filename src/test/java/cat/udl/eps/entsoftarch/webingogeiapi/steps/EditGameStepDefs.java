@@ -35,6 +35,12 @@ public class EditGameStepDefs {
                 .andDo(print());
     }
 
+    @And("^It has been edited a game with id \"([^\"]*)\"$")
+    public void itHasBeenEditedAGameWithId(String arg0) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
     @When("^I edit game with id \"([^\"]*)\" and new status \"([^\"]*)\"$")
     public void iEditGameWithId(Integer id, String status) throws Throwable {
         // Write code here that turns the phrase above into concrete actions

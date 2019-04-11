@@ -20,6 +20,7 @@ Feature: Edit Game
     Then I login as "player" with password "password"
     When I edit game with id "2"
     Then The response code is 401
+    And It has been edited a game with id "2"
 
   Scenario: Edit game without authenticating Good!
     Given I'm not logged in
