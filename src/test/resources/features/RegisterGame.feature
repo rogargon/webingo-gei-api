@@ -7,7 +7,7 @@ Feature: Register Game
     Given I login as "admin" with password "password"
     When I register a new game with id "1"
     Then The response code is 201
-    And It has been created a game with id "1"
+    And It has been created a game with id "1" status "LOADING" line/bingo "false" jackpot "0.0" pricePerCard "0.0"
 
   Scenario: Register new game as player GOOD!
     Given I login as "player" with password "password"
@@ -25,11 +25,13 @@ Feature: Register Game
     Given I login as "admin" with password "password"
     When I register a new game with id "1" and pricePerCard "0.0"
     Then The response code is 201
+    And It has been created a game with id "1" status "LOADING" line/bingo "false" jackpot "0.0" pricePerCard "0.0"
 
   Scenario: Register new game as admin with specific pricePerCard GOOD!
     Given I login as "admin" with password "password"
-    When I register a new game with id "1" and pricePerCard "0.0"
+    When I register a new game with id "1" and pricePerCard "5.0"
     Then The response code is 201
+    And It has been created a game with id "1" status "LOADING" line/bingo "false" jackpot "0.0" pricePerCard "5.0"
 
   Scenario: Register new game as admin with negative pricePerCard GOOD!
     Given I login as "admin" with password "password"

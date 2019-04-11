@@ -3,6 +3,7 @@ package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 import com.sun.org.apache.bcel.internal.generic.GETFIELD;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
 import org.slf4j.Logger;

@@ -21,8 +21,8 @@ public class Game extends UriEntity<Integer> {
     private Integer id;
     private GameStatus status;
     private ArrayList<Integer> numbers;
-    private double jackpot;
-    private double pricePerCard;
+    private Double jackpot;
+    private Double pricePerCard;
     private boolean bingo;
     private boolean line;
 
@@ -30,7 +30,7 @@ public class Game extends UriEntity<Integer> {
     private ZonedDateTime finishedAt, startAt, createdAt;
 
     public void setNumbers(){
-        numbers = new ArrayList<Integer>();
+        numbers = new ArrayList<>();
         for(int i=0;i<=100; i++) {
             numbers.add(i);
         }

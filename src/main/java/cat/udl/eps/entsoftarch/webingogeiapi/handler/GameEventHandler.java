@@ -5,6 +5,7 @@ import cat.udl.eps.entsoftarch.webingogeiapi.domain.GameStatus;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
 import cat.udl.eps.entsoftarch.webingogeiapi.exception.EditGameBadParam;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
+import javassist.expr.Instanceof;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +39,17 @@ public class GameEventHandler {
     @HandleBeforeCreate
     public void handleGamePreCreate(Game game) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(game.getPricePerCard() < 0.0){
+        if(game.getPricePerCard() == null){
+            game.setPricePerCard(0.0);
+        }else if(game.getPricePerCard() < 0.0){
             throw new EditGameBadParam();
         }
-        game.setNumbers();
+        //game.setNumbers();
         game.setStatus(GameStatus.LOADING);
         game.setCreatedAt(ZonedDateTime.now());
         game.setLine(false);
         game.setBingo(false);
-        game.setJackpot(0);
+        game.setJackpot(0.0);
     }
 
     @HandleBeforeSave

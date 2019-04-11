@@ -103,4 +103,19 @@ public class RegisterGameStepDefs {
                 .andDo(print())
                 .andExpect(jsonPath("$.status", is(status)));
     }
+
+    @And("^It has been created a game with id \"([^\"]*)\" status \"([^\"]*)\" line/bingo \"([^\"]*)\" jackpot \"([^\"]*)\" pricePerCard \"([^\"]*)\"$")
+    public void itHasBeenCreatedAGameWithIdStatusLineBingoJackpotPricePerCard(Integer id, String status, boolean bl, Double jackpot, Double pricePerCard) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        stepDefs.result = stepDefs.mockMvc
+                .perform(get("/games/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.status", is(status)))
+                .andExpect(jsonPath("$.bingo", is(bl)))
+                .andExpect(jsonPath("$.line", is(bl)))
+                .andExpect(jsonPath("$.jackpot", is(jackpot)))
+                .andExpect(jsonPath("$.pricePerCard", is(pricePerCard)));
+    }
 }
