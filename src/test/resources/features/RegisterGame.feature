@@ -38,6 +38,8 @@ Feature: Register Game
   Scenario: Register new game with 3 cards sold and positive pricePerCard and sets de jackpot
     Given I login as "admin" with password "password"
     When I register a new game with id "1" and pricePerCard "2.0"
-    And The game have selled 3 card
+    And The game have selled a card for game with id "1"
+    And The game have selled a card for game with id "1"
+    And The game have selled a card for game with id "1"
     And The jackpot have set to "6.0"
     Then The response code is 201

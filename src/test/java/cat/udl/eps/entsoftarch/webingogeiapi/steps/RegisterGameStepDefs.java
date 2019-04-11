@@ -7,6 +7,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
+import cat.udl.eps.entsoftarch.webingogeiapi.repository.CardRepository;
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.Card;
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
+
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.GameStatus;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
@@ -23,6 +28,13 @@ public class RegisterGameStepDefs {
 
     @Autowired
     private StepDefs stepDefs;
+
+    @Autowired
+    private CardRepository cr;
+
+    @Autowired
+    private GameRepository gr;
+    private String idc;
 
     @When("^I register a new game with id \"([^\"]*)\" and pricePerCard \"([^\"]*)\"$")
     public void iRegisterANewGameWithId(Integer id, double pricePerCard) throws Throwable {
@@ -72,5 +84,32 @@ public class RegisterGameStepDefs {
                 get("/games/{id}", id)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @And("^The game have selled a card for game with id \"([^\"]*)\"$")
+    public void theGameHaveSelledACardForGameWithId(int arg0) throws Exception {
+        Card c = new Card();
+        if(gr.findById(arg0).isPresent()){
+            c.setGame(gr.findById(arg0).get());
+        }else{
+            assert false;
+        }
+        String json = stepDefs.mapper.writeValueAsString(c);
+        System.out.println("JSON " + json);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/cards")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+        idc = stepDefs.result.andReturn().getResponse().getHeader("Location");
+        cr.save(c);
+    }
+
+    @And("^The jackpot have set to \"([^\"]*)\"$")
+    public void theJackpotHaveSetTo(String arg0) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
     }
 }
