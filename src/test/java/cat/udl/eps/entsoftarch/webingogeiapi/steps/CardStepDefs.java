@@ -89,7 +89,16 @@ public class CardStepDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
         idc = stepDefs.result.andReturn().getResponse().getHeader("Location");
-        pr.save(p);
+
+        JSONObject player = new JSONObject();
+        player.put("card", "/cards/" + String.valueOf(c.getId()));
+        stepDefs.mockMvc.perform(
+                patch("/players/{username}",arg1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(player.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
     }
 
     @Then("^A card has been created with price (.+) for the game with id (\\d+)$")
@@ -105,7 +114,7 @@ public class CardStepDefs {
 
         // Get game
         game = (JsonPath.read(game, "$._links.game.href"));
-        stepDefs.result = stepDefs.mockMvc.perform(
+        stepDefs.mockMvc.perform(
                 get(game)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
@@ -129,11 +138,6 @@ public class CardStepDefs {
             c.setGame(gr.findById(arg1).get());
         }
 
-        // Find player by ID
-        Player p = pr.findById(arg2).orElse(null);
-        if(p != null) p.setCard(c);
-        else throw new Exception("The user with id " + arg1 +" does not exist");
-
         // Post new Card
         String json = stepDefs.mapper.writeValueAsString(c);
         System.out.println("JSON " + json);
@@ -144,7 +148,21 @@ public class CardStepDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
-        pr.save(p);
+
+        // Find player by ID
+        Player p = pr.findById(arg2).orElse(null);
+        if(p != null) p.setCard(c);
+        else throw new Exception("The user with id " + arg1 +" does not exist");
+
+        JSONObject player = new JSONObject();
+        player.put("card", "/cards/" + String.valueOf(c.getId()));
+        stepDefs.mockMvc.perform(
+                patch("/players/{username}",arg2)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(player.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
     }
 
     @When("^I delete a card with id (\\d+)$")
@@ -216,5 +234,24 @@ public class CardStepDefs {
         for (int j = 1; j < created.getCols(); j++) {//Check there are at most two spaces for each column
             assert max[j] < 3;
         }
+    }
+
+    @When("^I list the cards of the user \"([^\"]*)\"$")
+    public void iListTheCardsOfTheUser(String arg0) throws Throwable {
+        // Get player
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/players/{username}", arg0)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+        String card = stepDefs.result.andReturn().getResponse().getContentAsString();
+
+        // Get card
+        card = (JsonPath.read(card, "$._links.card.href"));
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get(card)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
     }
 }

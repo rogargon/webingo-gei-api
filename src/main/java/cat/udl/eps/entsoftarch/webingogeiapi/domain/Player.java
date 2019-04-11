@@ -27,7 +27,7 @@ public class Player extends User {
 		return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_PLAYER");
 	}
 
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@OneToOne
 	@JsonIdentityReference(alwaysAsId = true)
 	private Card card;
 }
