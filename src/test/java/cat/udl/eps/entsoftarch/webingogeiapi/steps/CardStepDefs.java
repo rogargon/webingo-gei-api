@@ -12,6 +12,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class CardStepDefs {
     private List<Card> cards;
     private Exception actualException;
     private Card created;
-
+    private Game g;
 
     private final StepDefs stepDefs;
 
@@ -50,7 +51,7 @@ public class CardStepDefs {
     @Given("^There is a game with price (.+) and id (\\d+)$")
     public void thereIsAGame(double arg, int arg2) {
         // Create game
-        Game g = new Game();
+        g = new Game();
         g.setId(arg2);
         g.setPricePerCard(arg);
         try {
@@ -92,8 +93,9 @@ public class CardStepDefs {
 
         JSONObject player = new JSONObject();
         player.put("card", "/cards/" + String.valueOf(c.getId()));
+        player.put("played", new JSONArray().put("/games/" + arg0));
         stepDefs.mockMvc.perform(
-                patch("/players/{username}",arg1)
+                patch( "/players/{username}",arg1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(player.toString())
                         .accept(MediaType.APPLICATION_JSON)

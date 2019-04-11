@@ -33,12 +33,15 @@ public class CardEventHandler {
 
     @HandleBeforeCreate
     public void handleCardBeforeCreate(Card card) throws UserAlreadyJoinedException {
-        /*if(playerRepository.findByCard(card).isPresent()){
-            Player returned = playerRepository.findByCard(card).get();
-            if (c.getGame().getId().equals(card.getGame().getId())){
-                throw new UserAlreadyJoinedException();
-            }
-        }*/
+        List<Player> list = playerRepository.findByPlayed(card.getGame());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(!list.isEmpty() && authentication.getPrincipal() instanceof Player){
+            Player actualPlayer = (Player) authentication.getPrincipal();
+            for(Player p : list)
+                if(p.getId().equals(actualPlayer.getId()))
+                    throw new UserAlreadyJoinedException();
+        }
         card.generateCard();
         logger.info("After creating: {}", card.toString());
         cardRepository.save(card);
