@@ -29,6 +29,6 @@ public class Game extends UriEntity<Integer> {
     private boolean line;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private ZonedDateTime finishedAt, startAt;
+    private ZonedDateTime finishedAt, startAt, createdAt;
 }
 

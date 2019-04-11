@@ -40,6 +40,12 @@ Feature: Edit Game
   Scenario: Edit game as admin to set a specific pricePerCard Good!
     Given I login as "admin" with password "password"
     And I register a new game with id "1"
+    When I edit game with id "1" and set up the pricePerCard to be "5.00"
+    Then The response code is 200
+
+  Scenario: Edit game as admin to set a negative/bad pricePerCard Good!
+    Given I login as "admin" with password "password"
+    And I register a new game with id "1"
     When I edit game with id "1" and set up the pricePerCard to be "-5.00"
     Then The response code is 400
 
