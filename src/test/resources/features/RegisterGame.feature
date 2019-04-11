@@ -33,9 +33,11 @@ Feature: Register Game
     And The error message is "Bad Param"
     And It has not been created a game with id "1"
     
-  Scenario: Register Game as admin with status PLAYING
+  Scenario: Register Game as admin and status differs from LOADING Good!
     Given I login as "admin" with password "password"
-    When I register a new game with id "id" and status "PLAYING"
+    When I register a new game with id "1" and status "PLAYING"
     Then The response code is 400
     And The error message is "Bad Param"
     And It has not been created a game with id "1"
+
+
