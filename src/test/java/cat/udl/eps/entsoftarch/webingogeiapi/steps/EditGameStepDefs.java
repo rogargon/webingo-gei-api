@@ -36,9 +36,13 @@ public class EditGameStepDefs {
     }
 
     @And("^It has been edited a game with id \"([^\"]*)\"$")
-    public void itHasBeenEditedAGameWithId(String arg0) throws Throwable {
+    public void itHasBeenEditedAGameWithId(Integer id) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        stepDefs.result = stepDefs.mockMvc
+                .perform(get("/games/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
     }
 
     @When("^I edit game with id \"([^\"]*)\" and new status \"([^\"]*)\"$")
