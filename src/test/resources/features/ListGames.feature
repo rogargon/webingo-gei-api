@@ -25,3 +25,9 @@ Feature: List Games
     Then I'm not logged in
     When I try to list games
     Then The response code is 401
+  
+  Scenario: Try to list empty games
+    Given I login as "admin" with password "password"
+    When I try to list games
+    Then The response code is 200
+    And Total elements is 0
