@@ -49,4 +49,11 @@ Feature: Edit Player
     And The error message is "length must be between 8 and 256"
     And It has not been edited a player with username "player"
 
-
+  Scenario: Edit player with correct password
+    Given I login as "admin" with password "password"
+    And I register a new player with username "player", email "player@webingo.org" and password "password"
+    Given I login as "user" with password "password"
+    When I edit player with username "player" and a new password "123456789"
+    Then The response code is 200
+    And It has been edited a player with username "player" and email "player@webingo.org", the password is not returned
+    
