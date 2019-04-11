@@ -41,12 +41,13 @@ public class GameEventHandler {
         if(game.getPricePerCard() < 0.0){
             throw new EditGameBadParam();
         }
-        if(game.getStatus().toString() != "LOADING"){
-            throw new EditGameBadParam();
-        }else{
-            game.setStatus(GameStatus.LOADING); //default status
-        }
+        //game.setNumbers(); init numbers array
+        game.setStatus(GameStatus.LOADING); //default status
         game.setCreatedAt(ZonedDateTime.now());
+        game.setStartAt(null);
+        game.setFinishedAt(null);
+        game.setLine(false);
+        game.setBingo(false);
     }
 
     @HandleBeforeSave
