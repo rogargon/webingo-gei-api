@@ -38,11 +38,15 @@ public class GameEventHandler {
     @HandleBeforeCreate
     public void handleGamePreCreate(Game game) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        game.setStatus(GameStatus.LOADING); //default status
-        game.setCreatedAt(ZonedDateTime.now());
         if(game.getPricePerCard() < 0.0){
             throw new EditGameBadParam();
         }
+        if(game.getStatus().toString() != "LOADING"){
+            throw new EditGameBadParam();
+        }else{
+            game.setStatus(GameStatus.LOADING); //default status
+        }
+        game.setCreatedAt(ZonedDateTime.now());
     }
 
     @HandleBeforeSave
