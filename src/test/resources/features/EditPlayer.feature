@@ -56,4 +56,3 @@ Feature: Edit Player
     When I edit player with username "player" and a new password "123456789"
     Then The response code is 200
     And It has been edited a player with username "player" and email "player@webingo.org", the password is not returned
-    

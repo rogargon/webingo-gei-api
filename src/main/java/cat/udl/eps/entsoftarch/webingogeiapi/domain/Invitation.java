@@ -26,16 +26,14 @@ public class Invitation {
 
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
-    @Column(name = "created_by")
     private Player createdBy;
 
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
-    @Column(name = "invites_to")
     private Game invitesTo;
 
     @Lob
-    @NotBlank(message = "The message is mandatory")
+    @NotBlank
     @Size(max = 255)
     private String message;
 }
