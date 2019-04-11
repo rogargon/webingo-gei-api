@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 import org.atteo.evo.inflector.English;
@@ -46,4 +47,6 @@ public abstract class UriEntity<ID extends Serializable> implements Persistable<
     public boolean isNew() {
         return version == null;
     }
+
+    public abstract void setStartAt(ZonedDateTime now);
 }

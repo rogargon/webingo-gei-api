@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.domain;
 
+import java.time.ZonedDateTime;
 import java.util.*;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -64,5 +65,15 @@ public class Card extends UriEntity<Integer> {
         for (int i = 0; i < cols; i++)
             for (int j = 0; j < rows; j++)
                 numbers[j][i] = generatedNumbers.get(j + i*rows);
+    }
+
+    @Override
+    public void setStartAt(ZonedDateTime now) {
+
+    }
+
+    @Override
+    public Integer getId() {
+        return null;
     }
 }

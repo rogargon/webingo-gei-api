@@ -6,6 +6,7 @@ import com.jayway.jsonpath.JsonPath;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,10 +18,14 @@ import org.springframework.http.MediaType;
 import java.time.ZonedDateTime;
 
 import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static sun.audio.AudioPlayer.player;
+
 
 public class EditGameStepDefs {
 
@@ -33,6 +38,16 @@ public class EditGameStepDefs {
         this.stepDefs = stepDefs;
     }
 
+    @Then("^The game with id (\\d+) has not been edited$")
+    public void theGameWithIdHasNotBeenEdited(int id) throws Exception {
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/games/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
+
+
     @Given("^There is a game with the pricePerCard (\\d+.\\d+) and id (\\d+)$")
     public void thereIsAGameWithThePricePerCardAndId(double pricePerCard, int id) throws Exception {
         JSONObject game = new JSONObject();
@@ -44,7 +59,8 @@ public class EditGameStepDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
-            }
+    }
+
 
 
     @When("^I edit the game with id (\\d+)$")
@@ -52,7 +68,7 @@ public class EditGameStepDefs {
         JSONObject game = new JSONObject();
         game.put("id", id);
         stepDefs.result = stepDefs.mockMvc.perform(
-                patch("/games/{id}",id)
+                put("/games/{id}",id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(game.toString())
                         .accept(MediaType.APPLICATION_JSON)
@@ -60,6 +76,20 @@ public class EditGameStepDefs {
                 .andDo(print());
 
 
+
+    }
+
+    @And("^There is a game with incorrect id (\\d+)$")
+    public void ThereIsAGameWithIncorrectId(int id) throws Exception {
+        JSONObject game = new JSONObject();
+        game.put("id", id);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/games/{id}",id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
     }
 
     @And("^I edit the pricePerCard to be (\\d+.\\d+) for the game with id (\\d+)$")

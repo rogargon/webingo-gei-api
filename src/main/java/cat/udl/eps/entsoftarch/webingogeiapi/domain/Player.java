@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.domain;
 
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -24,4 +25,8 @@ public class Player extends User {
 	}
 
 
+	@Override
+	public void setStartAt(ZonedDateTime now) {
+
+	}
 }

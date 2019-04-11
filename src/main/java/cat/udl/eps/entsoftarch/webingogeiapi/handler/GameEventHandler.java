@@ -43,6 +43,7 @@ public class GameEventHandler {
     public void handleGamePreCreate(Game game) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         game.setStartAt((ZonedDateTime.now()));
+
     }
 
 

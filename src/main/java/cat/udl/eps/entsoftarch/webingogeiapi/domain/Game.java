@@ -28,4 +28,14 @@ public class Game extends UriEntity<Integer> {
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime finishedAt, createdAt;
+
+    @Override
+    public void setStartAt(ZonedDateTime now) {
+
+    }
+
+    @Override
+    public Integer getId() {
+        return null;
+    }
 }

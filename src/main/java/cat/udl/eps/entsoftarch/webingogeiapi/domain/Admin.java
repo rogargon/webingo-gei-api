@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.domain;
 
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -20,4 +21,8 @@ public class Admin extends User {
     return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN");
   }
 
+  @Override
+  public void setStartAt(ZonedDateTime now) {
+
+  }
 }
