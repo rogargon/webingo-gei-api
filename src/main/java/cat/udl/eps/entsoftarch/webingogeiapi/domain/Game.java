@@ -19,7 +19,7 @@ import java.util.Objects;
 public class Game extends UriEntity<Integer> {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private GameStatus status;
     private ArrayList<Integer> numbers;
