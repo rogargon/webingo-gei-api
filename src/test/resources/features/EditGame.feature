@@ -57,10 +57,9 @@ Feature: Edit Game
     Then The response code is 401
     And It has not been deleted a game with id "1"
 
-  Scenario: Edit game status as admin
+  Scenario: Edit game status as admin (must to be fixed)
     Given I login as "admin" with password "password"
     And I register a new game with id "1"
     When I edit game with id "1" and new status "PLAYING"
     Then The response code is 200
     And It has been edited a game with id "1" and status "PLAYING"
-
