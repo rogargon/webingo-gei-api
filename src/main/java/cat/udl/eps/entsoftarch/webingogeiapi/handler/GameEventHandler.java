@@ -57,6 +57,9 @@ public class GameEventHandler {
         if(game.getPricePerCard() < 0.0){
             throw new EditGameBadParam();
         }
+        if(gameRepository.findById(game.getId()).get().getStatus().toString() == "LOADING" && game.getStatus().toString() == "PLAYING"){
+            //set startAtDate - init game's date
+        }
     }
 
     @HandleBeforeDelete

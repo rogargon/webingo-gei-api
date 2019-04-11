@@ -8,11 +8,13 @@ Feature: Edit Game
     And I register a new game with id "1"
     When I edit game with id "1"
     Then The response code is 200
+    And It has been edited a game with id "1"
 
   Scenario: Edit game as player Good!
     Given I login as "player" with password "password"
     When I edit game with id "1"
     Then The response code is 401
+    And It has not been edited a game with id "1"
 
   Scenario: Edit game as user Good!
     Given I login as "admin" with password "password"
@@ -56,4 +58,5 @@ Feature: Edit Game
     Then The response code is 200
     And It has been edited a game with id "1" and status "PLAYING"
 
+  Scenario:
 
