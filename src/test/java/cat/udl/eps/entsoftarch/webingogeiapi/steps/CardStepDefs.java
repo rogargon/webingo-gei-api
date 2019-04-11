@@ -223,7 +223,7 @@ public class CardStepDefs {
             for (int j = 0; j < created.getCols(); j++) {
                 if (numbers[i][j] == -1) {//Check three numbers missing per row
                     count++;
-                    max[i]++;
+                    max[j]++;
                 }
                 if(numbers[i][j] != -1){
                     assert !rownums.contains(numbers[i][j]);//Check number was not generated before
