@@ -47,9 +47,6 @@ public class GameEventHandler {
         //game.setNumbers();
         game.setStatus(GameStatus.LOADING);
         game.setCreatedAt(ZonedDateTime.now());
-        game.setLine(false);
-        game.setBingo(false);
-        game.setJackpot(0.0);
     }
 
     @HandleBeforeSave
