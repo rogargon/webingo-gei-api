@@ -3,7 +3,6 @@ Feature: Create Card
   As a player
   I want to be able to create a card
 
-
   Scenario: Create a card
     Given A card is created
     When I generate the numbers
@@ -16,12 +15,12 @@ Feature: Create Card
     Then  The response code is 201
     And A card has been created with price 10.0 for the game with id 1
 
-  #Scenario: Try to join the game twice
-  #  Given I login as "user" with password "password"
-  #  And There is a game with price 10.0 and id 1
-  #  When I join the Game with id 1 as user "user"
-  #  And I join the Game with id 1 as user "user"
-  #  Then  The response code is 403
+  Scenario: Try to join the game twice
+    Given I login as "user" with password "password"
+    And There is a game with price 10.0 and id 1
+    When I join the Game with id 1 as user "user"
+    And I join the Game with id 1 as user "user"
+    Then  The response code is 403
 
   Scenario: Generate a new card logged with a different user than the one who created the game
     Given I login as "user" with password "password"

@@ -31,6 +31,6 @@ public interface PlayerRepository extends PagingAndSortingRepository<Player, Str
    * @param game The game that contains the players we want.
    * @return a list of players.
    */
-  List<Player> findByGame(@Param("game") Game game);
+  List<Player> findByPlayed(@Param("game") Game game);
 
 }

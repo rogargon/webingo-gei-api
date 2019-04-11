@@ -31,5 +31,5 @@ public class Player extends User {
 
 	@ManyToMany
 	@JsonIdentityReference(alwaysAsId = true)
-	private List<Game> game;
+	private List<Game> played;
 }
