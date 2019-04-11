@@ -234,7 +234,7 @@ public class CardStepDefs {
             assert count == 3;
             count = 0;
         }
-        for (int j = 1; j < created.getCols(); j++) {//Check there are at most two spaces for each column
+        for (int j = 0; j < created.getCols(); j++) {//Check there are at most two spaces for each column
             assert max[j] < 3;
         }
     }
