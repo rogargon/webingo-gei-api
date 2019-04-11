@@ -19,5 +19,4 @@ public interface CardRepository extends PagingAndSortingRepository<Card, Integer
      * @return a list of the cards.
      */
     List<Card> findByGame(@Param("game") Game game);
-    List<Card> findByPlayer(@Param("player") Player player);
 }

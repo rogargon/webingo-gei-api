@@ -12,9 +12,11 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,10 +49,12 @@ public class CardStepDefs {
 
     @Given("^There is a game with price (.+) and id (\\d+)$")
     public void thereIsAGame(double arg, int arg2) {
+        // Create game
         Game g = new Game();
         g.setId(arg2);
         g.setPricePerCard(arg);
         try {
+            System.out.println(g);
             gr.save(g);
         }catch (Exception e){
             actualException = e;
@@ -59,15 +63,22 @@ public class CardStepDefs {
 
     @When("^I join the Game with id (\\d+) as user \"([^\"]*)\"$")
     public void iJoinTheGameWithIdAsUser(int arg0, String arg1) throws Throwable {
+        // Create card
         Card c = new Card();
+        c.setId(arg0);
+        // Set game reference
         if(gr.findById(arg0).isPresent()){
             c.setGame(gr.findById(arg0).get());
         }else{
             throw new Exception("The game with id " + arg0 +" does not exist");
         }
+
+        // Find player by ID (username)
         Player p = pr.findById(arg1).orElse(null);
-        if(p != null) c.setPlayer(p);
+        if(p != null) p.setCard(c);
         else throw new Exception("The user with id " + arg1 +" does not exist");
+
+        // Post new Card
         String json = stepDefs.mapper.writeValueAsString(c);
         System.out.println("JSON " + json);
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -78,20 +89,24 @@ public class CardStepDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
         idc = stepDefs.result.andReturn().getResponse().getHeader("Location");
+        pr.save(p);
     }
 
     @Then("^A card has been created with price (.+) for the game with id (\\d+)$")
     public void CardCreated(double arg, int arg2) throws Exception{
         Assert.assertNotNull("Location not null", idc);
+        // Get card
         stepDefs.result = stepDefs.mockMvc.perform(
                 get(idc)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
         String game = stepDefs.result.andReturn().getResponse().getContentAsString();
-        String a = (JsonPath.read(game, "$._links.game.href"));
+
+        // Get game
+        game = (JsonPath.read(game, "$._links.game.href"));
         stepDefs.result = stepDefs.mockMvc.perform(
-                get(a)
+                get(game)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print()).andExpect(jsonPath("$._links.self.href", endsWith("/games/" + arg2)));
@@ -105,14 +120,21 @@ public class CardStepDefs {
 
     @And("^There is a card with id (\\d+) associated to the game with id (\\d+) created by player \"([^\"]*)\"$")
     public void thereIsACardWithIdAssociatedToTheGameWithId(int arg0, int arg1, String arg2) throws Exception {
+        // Create card
         Card c = new Card();
         c.setId(arg0);
+
+        // Set game
         if(gr.findById(arg1).isPresent()){
             c.setGame(gr.findById(arg1).get());
         }
+
+        // Find player by ID
         Player p = pr.findById(arg2).orElse(null);
-        if(p != null) c.setPlayer(p);
+        if(p != null) p.setCard(c);
         else throw new Exception("The user with id " + arg1 +" does not exist");
+
+        // Post new Card
         String json = stepDefs.mapper.writeValueAsString(c);
         System.out.println("JSON " + json);
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -122,6 +144,7 @@ public class CardStepDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
+        pr.save(p);
     }
 
     @When("^I delete a card with id (\\d+)$")
@@ -145,7 +168,8 @@ public class CardStepDefs {
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/cards/{id}", arg0)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is2xxSuccessful());
+                .andExpect(status().is2xxSuccessful())
+                .andDo(print());
     }
 
     @When("^I list the cards of the game with id (\\d+)$")

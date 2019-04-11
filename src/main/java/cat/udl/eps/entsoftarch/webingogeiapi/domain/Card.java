@@ -26,7 +26,7 @@ public class Card extends UriEntity<Integer> {
      * Identifier of card needs to be unique, otherwise it will generate conflicts.
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     /**
      * Each card needs to be associated to a game.
@@ -35,9 +35,6 @@ public class Card extends UriEntity<Integer> {
     @JsonIdentityReference(alwaysAsId = true)
     private Game game;
 
-    @ManyToOne
-    @JsonIdentityReference(alwaysAsId = true)
-    private Player player;
     /**
      * List of numbers associated to a card.
      */
