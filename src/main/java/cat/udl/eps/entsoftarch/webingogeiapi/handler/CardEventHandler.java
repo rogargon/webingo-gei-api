@@ -35,7 +35,6 @@ public class CardEventHandler {
     public void handleCardBeforeCreate(Card card) throws UserAlreadyJoinedException {
         List<Player> list = playerRepository.findByPlayed(card.getGame());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         if(!list.isEmpty() && authentication.getPrincipal() instanceof Player){
             Player actualPlayer = (Player) authentication.getPrincipal();
             for(Player p : list)
