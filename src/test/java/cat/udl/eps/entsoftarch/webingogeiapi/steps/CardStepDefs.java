@@ -192,7 +192,10 @@ public class CardStepDefs {
 
     @When("^I list the cards of the game with id (\\d+)$")
     public void iListTheCardsOfTheGameWithId(int arg0) throws Exception {
-           cards = cr.findByGame(gr.findById(arg0).get());
+        if (gr.findById(arg0).isPresent()){
+            cards = cr.findByGame(gr.findById(arg0).get());
+            System.out.println(cards);
+        }
     }
 
     @And("^There are (\\d+) cards associated$")
