@@ -93,4 +93,14 @@ public class RegisterGameStepDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
     }
+
+    @And("^It has been created a game with id \"([^\"]*)\" and status as \"([^\"]*)\"$")
+    public void itHasBeenEditedAGameWithId(Integer id, String status) throws Throwable {
+        stepDefs.result = stepDefs.mockMvc
+                .perform(get("/games/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.status", is(status)));
+    }
 }

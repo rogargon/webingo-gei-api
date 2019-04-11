@@ -42,12 +42,11 @@ public class GameEventHandler {
             throw new EditGameBadParam();
         }
         //game.setNumbers(); init numbers array
-        game.setStatus(GameStatus.LOADING); //default status
+        game.setStatus(GameStatus.LOADING);
         game.setCreatedAt(ZonedDateTime.now());
-        game.setStartAt(null);
-        game.setFinishedAt(null);
         game.setLine(false);
         game.setBingo(false);
+        game.setJackpot(0);
     }
 
     @HandleBeforeSave
