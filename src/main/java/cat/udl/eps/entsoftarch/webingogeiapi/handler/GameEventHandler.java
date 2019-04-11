@@ -39,7 +39,7 @@ public class GameEventHandler {
     public void handleGamePreCreate(Game game) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         game.setStatus(GameStatus.LOADING); //default status
-        //game.setStartAt(...);
+        //game.setStartAt(ZonedDateTime.now());
         if(game.getPricePerCard() < 0.0){
             throw new EditGameBadParam();
         }
@@ -58,7 +58,7 @@ public class GameEventHandler {
             throw new EditGameBadParam();
         }
         if(gameRepository.findById(game.getId()).get().getStatus().toString() == "LOADING" && game.getStatus().toString() == "PLAYING"){
-            //set startAtDate - init game's date
+            game.setStartAt(ZonedDateTime.now());//set startAtDate - init game's date
         }
     }
 

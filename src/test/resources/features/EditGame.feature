@@ -58,5 +58,3 @@ Feature: Edit Game
     Then The response code is 200
     And It has been edited a game with id "1" and status "PLAYING"
 
-  Scenario:
-
