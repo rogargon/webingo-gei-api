@@ -24,7 +24,7 @@ Feature: Register Game
   Scenario: Register new game as admin with free pricePerCard GOOD! (depends on free pricepercard option)
     Given I login as "admin" with password "password"
     When I register a new game with id "1" and pricePerCard "0.0"
-    Then The response code is 201
+    Then The response code is 400
     And It has been created a game with id "1"
 
   Scenario: Register new game as admin with specific pricePerCard GOOD!

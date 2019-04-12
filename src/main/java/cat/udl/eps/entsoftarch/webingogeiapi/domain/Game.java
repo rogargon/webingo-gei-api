@@ -27,15 +27,14 @@ public class Game extends UriEntity<Integer> {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime finishedAt, startAt, createdAt;
 
-    public void setNumbers(){
-        numbers = new ArrayList<>();
-        for(int i=0;i<=100; i++) {
-            numbers.add(i);
-        }
-    }
-
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     private User gameRegister;
+
+    public void setNumbers(){
+        numbers = new ArrayList<>();
+        for(int i=0;i<=100; i++)
+            numbers.add(i);
+    }
 }
 

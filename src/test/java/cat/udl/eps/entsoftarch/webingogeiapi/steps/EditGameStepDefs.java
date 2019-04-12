@@ -36,11 +36,15 @@ public class EditGameStepDefs {
                 .andDo(print());
     }
 
-    @And("^It has been edited a game with id \"([^\"]*)\"$")
-    public void itHasBeenEditedAGameWithId(Integer id) throws Throwable {
+    @When("^I edit game with id \"([^\"]*)\" and set up the pricePerCard to be \"([^\"]*)\"$")
+    public void iEditGameWithIdAndSetUpThePricePerCardToBe(Integer id, Double pricePerCard) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        stepDefs.result = stepDefs.mockMvc
-                .perform(get("/games/{id}", id)
+        JSONObject game = new JSONObject();
+        game.put("pricePerCard", pricePerCard);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                patch("/games/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
@@ -60,14 +64,14 @@ public class EditGameStepDefs {
                 .andDo(print());
     }
 
-    @And("^It has been edited a game with id \"([^\"]*)\" and status \"([^\"]*)\"$")
-    public void itHasBeenEditedAGameWithId(Integer id, String status) throws Throwable {
+    @And("^It has been edited a game with id \"([^\"]*)\"$")
+    public void itHasBeenEditedAGameWithId(Integer id) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
         stepDefs.result = stepDefs.mockMvc
                 .perform(get("/games/{id}", id)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print())
-                .andExpect(jsonPath("$.status", is(status)));
+                .andDo(print());
     }
 
     @And("^It has not been edited a game with id \"([^\"]*)\"$")
@@ -80,17 +84,24 @@ public class EditGameStepDefs {
                 .andDo(print());
     }
 
-    @When("^I edit game with id \"([^\"]*)\" and set up the pricePerCard to be \"([^\"]*)\"$")
-    public void iEditGameWithIdAndSetUpThePricePerCardToBe(Integer id, Double pricePerCard) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        JSONObject game = new JSONObject();
-        game.put("pricePerCard", pricePerCard);
-        stepDefs.result = stepDefs.mockMvc.perform(
-                patch("/games/{id}", id)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(game.toString())
+    @And("^It has been edited a game with id \"([^\"]*)\" and status \"([^\"]*)\"$")
+    public void itHasBeenEditedAGameWithId(Integer id, String status) throws Throwable {
+        stepDefs.result = stepDefs.mockMvc
+                .perform(get("/games/{id}", id)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print());
+                .andDo(print())
+                .andExpect(jsonPath("$.status", is(status)));
+    }
+
+    @And("^It has been edited a game with id \"([^\"]*)\" and pricePerCard \"([^\"]*)\"$")
+    public void itHasBeenEditedAGameWithIdAndPricePerCard(Integer id, Double pricePerCard) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        stepDefs.result = stepDefs.mockMvc
+                .perform(
+                        get("/games/{id}", id)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print()).andExpect(jsonPath("$.pricePerCard", is(pricePerCard)));
     }
 }

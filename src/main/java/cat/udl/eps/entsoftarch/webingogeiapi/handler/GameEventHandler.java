@@ -41,7 +41,7 @@ public class GameEventHandler {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(game.getPricePerCard() == null){
             game.setPricePerCard(0.0);
-        }else if(game.getPricePerCard() < 0.0){
+        }else if(game.getPricePerCard() <= 0.0){
             throw new EditGameBadParam();
         }
         //game.setNumbers();

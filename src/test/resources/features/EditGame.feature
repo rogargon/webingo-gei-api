@@ -36,18 +36,22 @@ Feature: Edit Game
     Then I login as "player" with password "password"
     When I edit game with id "1" and set up the pricePerCard to be "5.00"
     Then The response code is 401
+    And It has been edited a game with id "1" and pricePerCard "5.00"
 
   Scenario: Edit game as admin to set a specific pricePerCard Good!
     Given I login as "admin" with password "password"
     And I register a new game with id "1"
     When I edit game with id "1" and set up the pricePerCard to be "5.00"
     Then The response code is 200
+    And It has been edited a game with id "1"
+    And It has been edited a game with id "1" and pricePerCard "5.00"
 
   Scenario: Edit game as admin to set a negative/bad pricePerCard Good!
     Given I login as "admin" with password "password"
     And I register a new game with id "1"
     When I edit game with id "1" and set up the pricePerCard to be "-5.00"
     Then The response code is 400
+    And It has not been edited a game with id "1"
 
   Scenario: Edit game status as player Good!
     Given I login as "admin" with password "password"
@@ -55,11 +59,18 @@ Feature: Edit Game
     Then I login as "player" with password "password"
     When I edit game with id "1" and new status "PLAYING"
     Then The response code is 401
-    And It has not been deleted a game with id "1"
+    And It has not been edited a game with id "1"
 
-  Scenario: Edit game status as admin (must to be fixed)
+  Scenario: Edit game status as admin
     Given I login as "admin" with password "password"
     And I register a new game with id "1"
     When I edit game with id "1" and new status "PLAYING"
     Then The response code is 200
     And It has been edited a game with id "1" and status "PLAYING"
+
+  Scenario: Edit game does not exists
+    Given I login as "admin" with password "password"
+    When I edit game with id "1"
+    Then The response code is 404
+    And It has not been edited a game with id "1"
+

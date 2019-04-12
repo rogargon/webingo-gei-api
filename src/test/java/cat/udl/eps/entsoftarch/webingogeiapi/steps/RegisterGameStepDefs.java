@@ -30,6 +30,20 @@ public class RegisterGameStepDefs {
     GameRepository gr;
 
 
+    @When("^I register a new game with id \"([^\"]*)\"$")
+    public void iRegisterANewGame(Integer id) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        JSONObject game = new JSONObject();
+        game.put("id", id);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/games")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
+
     @When("^I register a new game with id \"([^\"]*)\" and pricePerCard \"([^\"]*)\"$")
     public void iRegisterANewGameWithId(Integer id, double pricePerCard) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
@@ -45,11 +59,12 @@ public class RegisterGameStepDefs {
                 .andDo(print());
     }
 
-    @When("^I register a new game with id \"([^\"]*)\"$")
-    public void iRegisterANewGame(Integer id) throws Throwable {
+    @When("^I register a new game with id \"([^\"]*)\" and status \"([^\"]*)\"$")
+    public void iRegisterANewGameWithIdAndStatus(int id, String status) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         JSONObject game = new JSONObject();
         game.put("id", id);
+        game.put("status", status);
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/games")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -58,7 +73,6 @@ public class RegisterGameStepDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
     }
-
 
     @And("^It has been created a game with id \"([^\"]*)\"$")
     public void itHasBeenCreatedAGame(Integer id) throws Throwable {
@@ -79,21 +93,6 @@ public class RegisterGameStepDefs {
                 .andExpect(status().isNotFound());
     }
 
-    @When("^I register a new game with id \"([^\"]*)\" and status \"([^\"]*)\"$")
-    public void iRegisterANewGameWithIdAndStatus(int id, String status) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        JSONObject game = new JSONObject();
-        game.put("id", id);
-        game.put("status", status);
-        stepDefs.result = stepDefs.mockMvc.perform(
-                post("/games")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(game.toString())
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print());
-    }
-
     @And("^It has been created a game with id \"([^\"]*)\" and status as \"([^\"]*)\"$")
     public void itHasBeenEditedAGameWithId(Integer id, String status) throws Throwable {
         stepDefs.result = stepDefs.mockMvc
@@ -102,20 +101,5 @@ public class RegisterGameStepDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
                 .andExpect(jsonPath("$.status", is(status)));
-    }
-
-    @And("^It has been created a game with id \"([^\"]*)\" status \"([^\"]*)\" line/bingo \"([^\"]*)\" jackpot \"([^\"]*)\" pricePerCard \"([^\"]*)\"$")
-    public void itHasBeenCreatedAGameWithIdStatusLineBingoJackpotPricePerCard(Integer id, String status, boolean bl, Double jackpot, Double pricePerCard) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        stepDefs.result = stepDefs.mockMvc
-                .perform(get("/games/{id}", id)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print())
-                .andExpect(jsonPath("$.status", is(status)))
-                .andExpect(jsonPath("$.bingo", is(bl)))
-                .andExpect(jsonPath("$.line", is(bl)))
-                .andExpect(jsonPath("$.jackpot", is(jackpot)))
-                .andExpect(jsonPath("$.pricePerCard", is(pricePerCard)));
     }
 }
