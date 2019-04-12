@@ -1,12 +1,10 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
@@ -35,5 +33,9 @@ public class Game extends UriEntity<Integer> {
             numbers.add(i);
         }
     }
+
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private User gameRegister;
 }
 
