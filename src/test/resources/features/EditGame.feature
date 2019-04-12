@@ -14,9 +14,9 @@ Feature: Edit Game
   Scenario: Edit game as user
     Given I login as "admin" with password "password"
     And I register a new game with id "1" and pricePerCard "2.00"
-    Given I login as "user" with password "password"
+    Given I login as "player" with password "password"
     When I edit game with id "1" and new status "PLAYING"
-    Then The response code is 403
+    Then The response code is 401
     And It has not been edited a game with id "1"
 
   Scenario: Edit game without authenticating
