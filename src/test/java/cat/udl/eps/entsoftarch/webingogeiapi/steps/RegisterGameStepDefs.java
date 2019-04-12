@@ -42,6 +42,7 @@ public class RegisterGameStepDefs {
         JSONObject game = new JSONObject();
         game.put("id", id);
         game.put("pricePerCard", pricePerCard);
+        game.put("jackpot", 0.0);
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/games")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -86,30 +87,12 @@ public class RegisterGameStepDefs {
                 .andExpect(status().isNotFound());
     }
 
-    @And("^The game have selled a card for game with id \"([^\"]*)\"$")
-    public void theGameHaveSelledACardForGameWithId(int arg0) throws Exception {
-        Card c = new Card();
-        if(gr.findById(arg0).isPresent()){
-            c.setGame(gr.findById(arg0).get());
-        }else{
-            assert false;
-        }
-        String json = stepDefs.mapper.writeValueAsString(c);
-        System.out.println("JSON " + json);
-        stepDefs.result = stepDefs.mockMvc.perform(
-                post("/cards")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print());
-        idc = stepDefs.result.andReturn().getResponse().getHeader("Location");
-        cr.save(c);
-    }
-
-    @And("^The jackpot have set to \"([^\"]*)\"$")
-    public void theJackpotHaveSetTo(String arg0) throws Throwable {
+    @And("^Jackpot from game with id \"([^\"]*)\" is \"([^\"]*)\"$")
+    public void jackpotFromGameWithIdIs(Integer id, Double jackpot) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/games/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.jackpot", is(jackpot)));
     }
 }
