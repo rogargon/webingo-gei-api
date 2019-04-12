@@ -37,11 +37,9 @@ Feature: Register Game
     And The error message is "Price per card can not be negative or 0.0"
     And It has not been created a game with id "1"
 
-
-
   Scenario: Register new game with start date and end date
     Given I login as "admin" with password "password"
-    When I register a new game with id "1" and start date "2018-06-04" and finish date "2018-09-04" at  "14:04:13"
+    When I register a new game with id "1", pricePerCard "4.0", start date "2018-06-04" and finish date "2018-09-04" at  "14:04:13"
     Then The response code is 201
     And  A game with the id 1 has been register
     And The game  is registered by "admin"

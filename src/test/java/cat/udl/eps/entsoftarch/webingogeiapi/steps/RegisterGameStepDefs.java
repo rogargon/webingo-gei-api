@@ -84,8 +84,8 @@ public class RegisterGameStepDefs {
                 .andExpect(status().isNotFound());
     }
 
-    @When("^I register a new game with id \"([^\"]*)\" and start date \"([^\"]*)\" and finish date \"([^\"]*)\" at  \"([^\"]*)\"$")
-    public void iRegisterANewGameWithStartDateAndFinishDateAtPm(Integer id, String start_date, String finish_date, String finishTime) throws Throwable {
+    @When("^I register a new game with id \"([^\"]*)\", pricePerCard \"([^\"]*)\", start date \"([^\"]*)\" and finish date \"([^\"]*)\" at  \"([^\"]*)\"$")
+    public void iRegisterANewGameWithStartDateAndFinishDateAtPm(Integer id, double pricePerCard, String start_date, String finish_date, String finishTime) throws Throwable {
         LocalDate localDateStart = LocalDate.parse(start_date);
         LocalDate localDateFinish = LocalDate.parse(finish_date);
         LocalTime localTime = LocalTime.parse(finishTime);
@@ -96,6 +96,7 @@ public class RegisterGameStepDefs {
 
         JSONObject game = new JSONObject();
         game.put("id", id);
+        game.put("pricePerCard", pricePerCard);
         game.put("startAt",startDate);
         game.put("finishedAt",finishDate);
         stepDefs.result = stepDefs.mockMvc.perform(
