@@ -31,7 +31,7 @@ public class EditGameStepDefs {
         JSONObject game = new JSONObject();
         game.put("status", status);
         stepDefs.result = stepDefs.mockMvc.perform(
-                put("/games/{id}", id)
+                post("/games/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(game.toString())
                         .accept(MediaType.APPLICATION_JSON)

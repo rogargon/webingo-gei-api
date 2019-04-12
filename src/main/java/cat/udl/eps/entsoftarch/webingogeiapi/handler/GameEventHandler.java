@@ -3,7 +3,9 @@ package cat.udl.eps.entsoftarch.webingogeiapi.handler;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.GameStatus;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.User;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
+import cat.udl.eps.entsoftarch.webingogeiapi.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +35,18 @@ public class GameEventHandler {
     @Autowired
     GameRepository gameRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @HandleBeforeCreate
     public void handleGamePreCreate(Game game) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        game.setGameRegister(userRepository.findById(user.getUsername()).orElse(null));
         game.setStatus(GameStatus.LOADING);
-        if(game.getPricePerCard() <= 0.0){
+        game.setPricePerCard(2.00);
+
+        if(game.getPricePerCard() <=  0.0){
             throw new IllegalArgumentException("Price per card can not be negative or 0.0");
         }
     }
@@ -80,4 +89,8 @@ public class GameEventHandler {
     public void handleGamePostLinkSave(Game game, Object o) {
         logger.info("After linking: {} to {}", game.toString(), o.toString());
     }
+
+
+
+
 }
