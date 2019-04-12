@@ -93,15 +93,4 @@ public class EditGameStepDefs {
                 .andDo(print())
                 .andExpect(jsonPath("$.status", is(status)));
     }
-
-    @And("^It has been edited a game with id \"([^\"]*)\" and pricePerCard \"([^\"]*)\"$")
-    public void itHasBeenEditedAGameWithIdAndPricePerCard(Integer id, Double pricePerCard) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        stepDefs.result = stepDefs.mockMvc
-                .perform(
-                        get("/games/{id}", id)
-                                .accept(MediaType.APPLICATION_JSON)
-                                .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print()).andExpect(jsonPath("$.pricePerCard", is(pricePerCard)));
-    }
 }

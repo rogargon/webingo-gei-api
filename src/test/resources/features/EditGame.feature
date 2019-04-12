@@ -34,22 +34,21 @@ Feature: Edit Game
     Given I login as "admin" with password "password"
     And I register a new game with id "1"
     Then I login as "player" with password "password"
-    When I edit game with id "1" and set up the pricePerCard to be "5.00"
+    When I edit game with id "1" and set up the pricePerCard to be "5.0"
     Then The response code is 401
-    And It has been edited a game with id "1" and pricePerCard "5.00"
+    And It has been edited a game with id "1"
 
   Scenario: Edit game as admin to set a specific pricePerCard Good!
     Given I login as "admin" with password "password"
     And I register a new game with id "1"
-    When I edit game with id "1" and set up the pricePerCard to be "5.00"
+    When I edit game with id "1" and set up the pricePerCard to be "5.0"
     Then The response code is 200
     And It has been edited a game with id "1"
-    And It has been edited a game with id "1" and pricePerCard "5.00"
 
   Scenario: Edit game as admin to set a negative/bad pricePerCard Good!
     Given I login as "admin" with password "password"
     And I register a new game with id "1"
-    When I edit game with id "1" and set up the pricePerCard to be "-5.00"
+    When I edit game with id "1" and set up the pricePerCard to be "-5.0"
     Then The response code is 400
     And It has not been edited a game with id "1"
 

@@ -17,11 +17,6 @@ Feature: List Games
     Then I login as "player" with password "password"
     When I try to list games
     Then The response code is 401
-
-  Scenario: Try to list games non-authenticated
-    Given I'm not logged in
-    When I try to list games
-    Then The response code is 401
   
   Scenario: Try to list empty games
     Given I login as "admin" with password "password"
