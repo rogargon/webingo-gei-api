@@ -3,8 +3,10 @@ package cat.udl.eps.entsoftarch.webingogeiapi.handler;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.GameStatus;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.User;
 import cat.udl.eps.entsoftarch.webingogeiapi.exception.EditGameBadParam;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
+import cat.udl.eps.entsoftarch.webingogeiapi.repository.UserRepository;
 import javassist.expr.Instanceof;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,17 +38,23 @@ public class GameEventHandler {
     @Autowired
     GameRepository gameRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @HandleBeforeCreate
     public void handleGamePreCreate(Game game) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        game.setGameRegister(userRepository.findById(user.getUsername()).orElse(null));
         if(game.getPricePerCard() == null){
             game.setPricePerCard(0.0);
         }else if(game.getPricePerCard() <= 0.0){
             throw new EditGameBadParam();
         }
-        //game.setNumbers();
         game.setStatus(GameStatus.LOADING);
+        game.setJackpot(0.0);
         game.setCreatedAt(ZonedDateTime.now());
+        //game.setNumbers();
     }
 
     @HandleBeforeSave
@@ -69,15 +77,6 @@ public class GameEventHandler {
     @HandleBeforeDelete
     public void handleGamePreDelete(Game game) {
         logger.info("Before Delete: {} to {}", game.toString());
-        /*
-        if(game.getStatus() == GameStatus.PLAYING){
-            throw new AccessDeniedException("It's not possible to delete the game. It's started.");
-        }
-
-        if(!game.isLine() || !game.isBingo()) {
-            throw new AccessDeniedException("It's not possible to delete the game. It's not finished");
-        }
-         */
     }
 
     @HandleBeforeLinkSave
@@ -94,11 +93,6 @@ public class GameEventHandler {
     @HandleAfterSave
     public void handleGamePostSave(Game game){
         logger.info("After updating: {}", game.toString());
-        /*
-        if(game.getStatus() == GameStatus.PLAYING){
-            throw new AccessDeniedException("It's not possible to delete the game. It's started.");
-        }
-        */
         gameRepository.save(game);
     }
 
