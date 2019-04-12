@@ -80,8 +80,9 @@ public class RegisterGameStepDefs {
         // Write code here that turns the phrase above into concrete actions
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/games/{id}", id)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andExpect(status().isUnauthorized());
     }
 
     @When("^I register a new game with id \"([^\"]*)\", pricePerCard \"([^\"]*)\", start date \"([^\"]*)\" and finish date \"([^\"]*)\" at  \"([^\"]*)\"$")
@@ -123,4 +124,5 @@ public class RegisterGameStepDefs {
     public void theGameIsRegisteredBy(String username) throws Throwable {
         stepDefs.result.andExpect(jsonPath("$.gameRegister.username", is(username)));
     }
+
 }

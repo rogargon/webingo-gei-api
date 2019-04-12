@@ -28,14 +28,12 @@ Feature: Register Game
     When I register a new game with id "1" and pricePerCard "0.0"
     Then The response code is 500
     And The error message is "Price per card can not be negative or 0.0"
-    And It has not been created a game with id "1"
 
   Scenario: Register new game with negative pricePerCard
     Given I login as "admin" with password "password"
     When I register a new game with id "1" and pricePerCard "-1.0"
     Then The response code is 500
     And The error message is "Price per card can not be negative or 0.0"
-    And It has not been created a game with id "1"
 
   Scenario: Register new game with start date and end date
     Given I login as "admin" with password "password"
@@ -43,8 +41,3 @@ Feature: Register Game
     Then The response code is 201
     And  A game with the id 1 has been register
     And The game  is registered by "admin"
-
-
-
-
-
