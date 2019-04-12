@@ -68,12 +68,15 @@ public class GameEventHandler {
 
     @HandleBeforeDelete
     public void handleGamePreDelete(Game game) {
+        /*
         if(game.getStatus() == GameStatus.PLAYING){
             throw new AccessDeniedException("It's not possible to delete the game. It's started.");
         }
+
         if(!game.isLine() || !game.isBingo()) {
             throw new AccessDeniedException("It's not possible to delete the game. It's not finished");
         }
+         */
     }
 
     @HandleBeforeLinkSave
@@ -90,9 +93,11 @@ public class GameEventHandler {
     @HandleAfterSave
     public void handleGamePostSave(Game game){
         logger.info("After updating: {}", game.toString());
+        /*
         if(game.getStatus() == GameStatus.PLAYING){
             throw new AccessDeniedException("It's not possible to delete the game. It's started.");
         }
+        */
         gameRepository.save(game);
     }
 

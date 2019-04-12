@@ -19,9 +19,6 @@ Feature: List Games
     Then The response code is 401
 
   Scenario: Try to list games non-authenticated
-    Given I login as "admin" with password "password"
-    And I register a new game with id "1"
-    And I register a new game with id "2"
     Then I'm not logged in
     When I try to list games
     Then The response code is 401

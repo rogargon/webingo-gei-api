@@ -3,7 +3,7 @@ Feature: Delete Game
   As an admin
   I want to to remove a game
 
-  Scenario: Admin try to delete a game not started
+  Scenario: Admin try to delete a game not started GOOD!
     Given I login as "admin" with password "password"
     And  I register a new game with id "1"
     When I delete a game with id "1"
