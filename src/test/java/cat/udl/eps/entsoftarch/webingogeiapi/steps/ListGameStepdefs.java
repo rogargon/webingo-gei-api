@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
+import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import org.slf4j.Logger;
@@ -16,10 +17,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 public class ListGameStepdefs {
 
-    private static final Logger logger = LoggerFactory.getLogger(RegisterPlayerStepDef.class);
+    private static final Logger logger = LoggerFactory.getLogger(ListGameStepdefs.class);
 
     @Autowired
     private StepDefs stepDefs;
+
+    @Autowired
+    GameRepository gr;
 
     @When("^I try to list games$")
     public void iTryToListGames() throws Throwable {

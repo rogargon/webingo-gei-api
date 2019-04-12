@@ -19,7 +19,7 @@ Feature: List Games
     Then The response code is 401
 
   Scenario: Try to list games non-authenticated
-    Then I'm not logged in
+    Given I'm not logged in
     When I try to list games
     Then The response code is 401
   

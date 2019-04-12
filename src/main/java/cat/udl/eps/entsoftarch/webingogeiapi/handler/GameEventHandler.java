@@ -68,6 +68,7 @@ public class GameEventHandler {
 
     @HandleBeforeDelete
     public void handleGamePreDelete(Game game) {
+        logger.info("Before Delete: {} to {}", game.toString());
         /*
         if(game.getStatus() == GameStatus.PLAYING){
             throw new AccessDeniedException("It's not possible to delete the game. It's started.");
