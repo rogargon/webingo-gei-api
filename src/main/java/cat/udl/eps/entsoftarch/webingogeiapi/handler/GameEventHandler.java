@@ -44,7 +44,6 @@ public class GameEventHandler {
         User user = (User) authentication.getPrincipal();
         game.setGameRegister(userRepository.findById(user.getUsername()).orElse(null));
         game.setStatus(GameStatus.LOADING);
-        game.setPricePerCard(2.00);
 
         if(game.getPricePerCard() <=  0.0){
             throw new IllegalArgumentException("Price per card can not be negative or 0.0");
