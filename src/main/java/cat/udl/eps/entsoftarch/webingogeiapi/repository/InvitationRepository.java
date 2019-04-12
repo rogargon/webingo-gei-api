@@ -1,6 +1,7 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.repository;
 
 
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Invitation;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.User;
@@ -11,6 +12,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
+import java.util.Optional;
 
 @RepositoryRestResource
 public interface InvitationRepository extends PagingAndSortingRepository<Invitation, Long>  {
