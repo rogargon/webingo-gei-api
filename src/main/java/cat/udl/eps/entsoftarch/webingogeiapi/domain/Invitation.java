@@ -17,7 +17,6 @@ public class Invitation {
     private long id;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @Column(name = "created_at")
     private ZonedDateTime createdAt;
 
     @ManyToOne
