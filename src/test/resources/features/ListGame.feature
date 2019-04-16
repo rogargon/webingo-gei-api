@@ -19,7 +19,9 @@ Feature: List Games
     And I register a new game with id "1" and pricePerCard "2.00"
     And I register a new game with id "2" and pricePerCard "3.00"
     When I list games
-    Then The response code is 500
+    Then The response code is 200
+    Then The game with id "1" is in the response
+    Then The game with id "2" is in the response
 
   Scenario: Having 0 games, list games authenticated as admin
     Given I login as "admin" with password "password"
