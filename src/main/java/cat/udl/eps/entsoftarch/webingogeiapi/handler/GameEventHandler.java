@@ -2,7 +2,8 @@ package cat.udl.eps.entsoftarch.webingogeiapi.handler;
 
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.GameStatus;
-import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.User;
+import cat.udl.eps.entsoftarch.webingogeiapi.repository.AdminRepository;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.User;
 import cat.udl.eps.entsoftarch.webingogeiapi.exception.EditGameBadParam;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
@@ -24,11 +25,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.Null;
-import java.time.ZonedDateTime;
 
 @Component
 @RepositoryEventHandler
@@ -39,13 +36,13 @@ public class GameEventHandler {
     GameRepository gameRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private AdminRepository adminRepository;
 
     @HandleBeforeCreate
     public void handleGamePreCreate(Game game) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
-        game.setGameRegister(userRepository.findById(user.getUsername()).orElse(null));
+        game.setCreator(adminRepository.findById(user.getUsername()).orElse(null));
         if(game.getPricePerCard() == null){
             game.setPricePerCard(0.0);
         }else if(game.getPricePerCard() <= 0.0){
@@ -105,4 +102,8 @@ public class GameEventHandler {
     public void handleGamePostLinkSave(Game game, Object o) {
         logger.info("After linking: {} to {}", game.toString(), o.toString());
     }
+
+
+
+
 }

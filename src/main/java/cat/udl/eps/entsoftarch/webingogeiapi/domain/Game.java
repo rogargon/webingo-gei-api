@@ -4,10 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+
+import javax.persistence.Id;
+
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.stream.IntStream;
+import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 
 @Entity
 @Data
@@ -24,12 +30,12 @@ public class Game extends UriEntity<Integer> {
     private boolean bingo;
     private boolean line;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @ManyToOne
     private ZonedDateTime finishedAt, startAt, createdAt;
 
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
-    private User gameRegister;
+    private Admin creator;
 
     public void setNumbers(){
         numbers = new ArrayList<>();

@@ -16,7 +16,6 @@ Feature: Delete Game
     Given I login as "player" with password "password"
     When I delete a game with id "1"
     Then The response code is 401
-    And It has not been deleted a game with id "1"
 
   Scenario: Remove game that not exist GOOD!
     Given I login as "admin" with password "password"
