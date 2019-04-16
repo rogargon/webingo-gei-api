@@ -5,13 +5,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Null;
+
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Objects;
+import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 
 @Entity
 @Data
@@ -19,7 +20,7 @@ import java.util.Objects;
 public class Game extends UriEntity<Integer> {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private GameStatus status;
     private ArrayList<Integer> numbers;
@@ -29,6 +30,12 @@ public class Game extends UriEntity<Integer> {
     private boolean line;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private ZonedDateTime finishedAt, startAt;
+    private ZonedDateTime StartAt, finishedAt ;
+
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private Admin creator;
+
+
 }
 

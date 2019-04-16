@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import cat.udl.eps.entsoftarch.webingogeiapi.WebingoGeiApiApplication;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import cucumber.api.java.Before;
@@ -52,6 +54,7 @@ public class StepDefs {
                 .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();
         this.mapper.registerModule(new JavaTimeModule());
+        this.mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
     }
 
     @Then("^The response code is (\\d+)$")
