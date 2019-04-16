@@ -34,7 +34,7 @@ public class Game extends UriEntity<Integer> {
 
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
-    private User gameRegister;
+    private Admin creator;
 
 
 }
