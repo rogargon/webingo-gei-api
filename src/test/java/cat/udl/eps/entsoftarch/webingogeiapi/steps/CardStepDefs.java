@@ -1,5 +1,14 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
+import static org.hamcrest.Matchers.endsWith;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Card;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
@@ -7,27 +16,17 @@ import cat.udl.eps.entsoftarch.webingogeiapi.repository.CardRepository;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.PlayerRepository;
 import com.jayway.jsonpath.JsonPath;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import java.util.ArrayList;
+import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.Matchers.endsWith;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class CardStepDefs {
     @Autowired
@@ -48,18 +47,12 @@ public class CardStepDefs {
         this.stepDefs = stepDefs;
     }
 
-    @Given("^There is a game with price (.+) and id (\\d+)$")
-    public void thereIsAGame(double arg, int arg2) {
-        // Create game
-        g = new Game();
-        g.setId(arg2);
-        g.setPricePerCard(arg);
-        try {
-            System.out.println(g);
-            gr.save(g);
-        }catch (Exception e){
-            actualException = e;
-        }
+    @Given("^There is a game with price (\\d+.\\d+) and id (\\d+)$")
+    public void thereIsAGame(double pricePerCard, int id) throws Exception {
+        Game g = new Game();
+        g.setId(id);
+        g.setPricePerCard(pricePerCard);
+        gr.save(g);
     }
 
     @When("^I join the Game with id (\\d+) as user \"([^\"]*)\"$")

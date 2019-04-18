@@ -10,7 +10,7 @@ Feature: Register Game
     And It has been created a game with id "1"
     And The game is registered by "admin"
 
-  Scenario: Register new game as user
+  Scenario: Register new game as player
     Given I login as "player" with password "password"
     When I register a new game with id "1" and pricePerCard "5.00"
     Then The response code is 401
@@ -22,17 +22,24 @@ Feature: Register Game
     Then The response code is 401
     And It has not been created a game with id "1"
 
-  Scenario: Register new game with free pricePerCard
+  Scenario: Register new game as admin with specific pricePerCard
     Given I login as "admin" with password "password"
-    When I register a new game with id "1" and pricePerCard "0.0"
-    Then The response code is 500
-    And The error message is "Price per card can not be negative or 0.0"
+    When I register a new game with id "1" and pricePerCard "5.0"
+    Then The response code is 201
+    And It has been created a game with id "1"
 
-  Scenario: Register new game with negative pricePerCard
+  Scenario: Register new game as admin with negative pricePerCard
     Given I login as "admin" with password "password"
     When I register a new game with id "1" and pricePerCard "-1.0"
-    Then The response code is 500
-    And The error message is "Price per card can not be negative or 0.0"
+    Then The response code is 400
+    And The error message is "Bad Param"
+    And It has not been created a game with id "1"
+
+  Scenario: Register new game as admin and status differs from LOADING
+    Given I login as "admin" with password "password"
+    When I register a new game with id "1" and status "PLAYING"
+    Then The response code is 201
+    And It has been created a game with id "1" and status as "LOADING"
 
   Scenario: Register new game with start date and end date
     Given I login as "admin" with password "password"

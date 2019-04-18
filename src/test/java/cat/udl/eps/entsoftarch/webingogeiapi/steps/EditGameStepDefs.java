@@ -3,6 +3,7 @@ package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 import com.sun.org.apache.bcel.internal.generic.GETFIELD;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -22,9 +23,35 @@ public class EditGameStepDefs {
     @Autowired
     private StepDefs stepDefs;
 
+    @When("^I edit game with id \"([^\"]*)\"$")
+    public void iEditGameWithId(Integer id) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        JSONObject game = new JSONObject();
+        stepDefs.result = stepDefs.mockMvc.perform(
+                patch("/games/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
+
+    @When("^I edit game with id \"([^\"]*)\" and set up the pricePerCard to be \"([^\"]*)\"$")
+    public void iEditGameWithIdAndSetUpThePricePerCardToBe(Integer id, Double pricePerCard) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        JSONObject game = new JSONObject();
+        game.put("pricePerCard", pricePerCard);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                patch("/games/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
 
     @When("^I edit game with id \"([^\"]*)\" and new status \"([^\"]*)\"$")
-    public void iEditGameWithId(int id, String status) throws Throwable {
+    public void iEditGameWithId(Integer id, String status) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         JSONObject game = new JSONObject();
         game.put("status", status);
@@ -37,14 +64,14 @@ public class EditGameStepDefs {
                 .andDo(print());
     }
 
-    @And("^It has been edited a game with id \"([^\"]*)\" and status \"([^\"]*)\"$")
-    public void itHasBeenEditedAGameWithId(int id, String status) throws Throwable {
+    @And("^It has been edited a game with id \"([^\"]*)\"$")
+    public void itHasBeenEditedAGameWithId(Integer id) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
         stepDefs.result = stepDefs.mockMvc
                 .perform(get("/games/{id}", id)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print())
-                .andExpect(jsonPath("$.status", is(status)));
+                .andDo(print());
     }
 
     @And("^It has not been edited a game with id \"([^\"]*)\"$")
@@ -55,5 +82,15 @@ public class EditGameStepDefs {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
+    }
+
+    @And("^It has been edited a game with id \"([^\"]*)\" and status \"([^\"]*)\"$")
+    public void itHasBeenEditedAGameWithId(Integer id, String status) throws Throwable {
+        stepDefs.result = stepDefs.mockMvc
+                .perform(get("/games/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.status", is(status)));
     }
 }

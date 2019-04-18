@@ -3,10 +3,11 @@ package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
 import com.jayway.jsonpath.JsonPath;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
@@ -15,6 +16,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,23 @@ public class RegisterGameStepDefs {
 
     @Autowired
     private StepDefs stepDefs;
+    @Autowired
+    GameRepository gr;
+
+
+    @When("^I register a new game with id \"([^\"]*)\"$")
+    public void iRegisterANewGame(Integer id) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        JSONObject game = new JSONObject();
+        game.put("id", id);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/games")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
 
     private ZonedDateTime startDate, finishDate;
 
@@ -44,13 +63,13 @@ public class RegisterGameStepDefs {
                 .andDo(print());
     }
 
-    @When("^I register a new game with id \"([^\"]*)\"$")
-    public void iRegisterANewGame(Integer id, String status) throws Throwable {
+    @When("^I register a new game with id \"([^\"]*)\" and status \"([^\"]*)\"$")
+    public void iRegisterANewGameWithIdAndStatus(int id, String status) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         JSONObject game = new JSONObject();
         game.put("status", status);
         stepDefs.result = stepDefs.mockMvc.perform(
-                post("/games/{id}", id)
+                put("/games/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(game.toString())
                         .accept(MediaType.APPLICATION_JSON)
@@ -70,12 +89,7 @@ public class RegisterGameStepDefs {
 
     @And("^It has not been created a game with id \"([^\"]*)\"$")
     public void itHasNotBeenCreatedAGameWithId(Integer id) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        stepDefs.result = stepDefs.mockMvc.perform(
-                get("/games/{id}", id)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate()))
-                .andExpect(status().isUnauthorized());
+        Assert.assertFalse(gr.findById(id).isPresent());
     }
 
     @When("^I register a new game with id \"([^\"]*)\", pricePerCard \"([^\"]*)\", start date \"([^\"]*)\" and finish date \"([^\"]*)\" at  \"([^\"]*)\"$")
@@ -125,4 +139,14 @@ public class RegisterGameStepDefs {
         stepDefs.result.andExpect(jsonPath("$.username", is(username)));
     }
 
+
+    @And("^It has been created a game with id \"([^\"]*)\" and status as \"([^\"]*)\"$")
+    public void itHasBeenEditedAGameWithId(Integer id, String status) throws Throwable {
+        stepDefs.result = stepDefs.mockMvc
+                .perform(get("/games/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.status", is(status)));
+    }
 }

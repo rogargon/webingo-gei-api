@@ -1,18 +1,15 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.domain;
 
-import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-
-import javax.persistence.Id;
-
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
@@ -24,18 +21,20 @@ public class Game extends UriEntity<Integer> {
     private Integer id;
     private GameStatus status;
     private ArrayList<Integer> numbers;
-    private double jackpot;
-    private double pricePerCard;
+    private Double jackpot;
+    private Double pricePerCard;
     private boolean bingo;
     private boolean line;
-
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private ZonedDateTime StartAt, finishedAt ;
+    private ZonedDateTime finishedAt, startAt, createdAt;
 
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     private Admin creator;
 
-
+    public void setNumbers(){
+        numbers = new ArrayList<>();
+        for(int i=0;i<=100; i++)
+            numbers.add(i);
+    }
 }
 
