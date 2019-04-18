@@ -3,12 +3,10 @@ package cat.udl.eps.entsoftarch.webingogeiapi.handler;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.GameStatus;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.User;
-import cat.udl.eps.entsoftarch.webingogeiapi.repository.AdminRepository;
-import cat.udl.eps.entsoftarch.webingogeiapi.domain.User;
 import cat.udl.eps.entsoftarch.webingogeiapi.exception.EditGameBadParam;
+import cat.udl.eps.entsoftarch.webingogeiapi.repository.AdminRepository;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
-import cat.udl.eps.entsoftarch.webingogeiapi.repository.UserRepository;
-import javassist.expr.Instanceof;
+import java.time.ZonedDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +19,7 @@ import org.springframework.data.rest.core.annotation.HandleBeforeDelete;
 import org.springframework.data.rest.core.annotation.HandleBeforeLinkSave;
 import org.springframework.data.rest.core.annotation.HandleBeforeSave;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -73,7 +70,8 @@ public class GameEventHandler {
 
     @HandleBeforeDelete
     public void handleGamePreDelete(Game game) {
-        logger.info("Before Delete: {} to {}", game.toString());
+        if (game.getStatus().equals(GameStatus.PLAYING))
+            throw new AuthorizationServiceException("Playing game cannot be deleted");
     }
 
     @HandleBeforeLinkSave

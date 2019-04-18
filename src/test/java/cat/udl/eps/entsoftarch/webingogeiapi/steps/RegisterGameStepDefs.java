@@ -3,23 +3,20 @@ package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.jayway.jsonpath.JsonPath;
-import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
-import cat.udl.eps.entsoftarch.webingogeiapi.domain.GameStatus;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
-import cucumber.api.PendingException;
+import com.jayway.jsonpath.JsonPath;
 import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +69,7 @@ public class RegisterGameStepDefs {
         JSONObject game = new JSONObject();
         game.put("status", status);
         stepDefs.result = stepDefs.mockMvc.perform(
-                post("/games/{id}", id)
+                put("/games/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(game.toString())
                         .accept(MediaType.APPLICATION_JSON)
@@ -92,12 +89,7 @@ public class RegisterGameStepDefs {
 
     @And("^It has not been created a game with id \"([^\"]*)\"$")
     public void itHasNotBeenCreatedAGameWithId(Integer id) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        stepDefs.result = stepDefs.mockMvc.perform(
-                get("/games/{id}", id)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate()))
-                .andExpect(status().isUnauthorized());
+        Assert.assertFalse(gr.findById(id).isPresent());
     }
 
     @When("^I register a new game with id \"([^\"]*)\", pricePerCard \"([^\"]*)\", start date \"([^\"]*)\" and finish date \"([^\"]*)\" at  \"([^\"]*)\"$")

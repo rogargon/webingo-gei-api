@@ -22,13 +22,6 @@ Feature: Register Game
     Then The response code is 401
     And It has not been created a game with id "1"
 
-  Scenario: Register new game as admin with free pricePerCard (depends on free pricepercard option)
-    Given I login as "admin" with password "password"
-    When I register a new game with id "1" and pricePerCard "0.0"
-    Then The response code is 500
-    And The error message is "Price per card can not be negative or 0.0"
-    And It has not been created a game with id "1"
-
   Scenario: Register new game as admin with specific pricePerCard
     Given I login as "admin" with password "password"
     When I register a new game with id "1" and pricePerCard "5.0"

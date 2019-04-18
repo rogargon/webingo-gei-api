@@ -1,27 +1,16 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Card;
-import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.CardRepository;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.jayway.jsonpath.JsonPath;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.json.JSONObject;
-import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-
-
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class CardStepDef {
     @Autowired
@@ -34,14 +23,6 @@ public class CardStepDef {
 
     public CardStepDef(StepDefs stepDefs) {
         this.stepDefs = stepDefs;
-    }
-
-    @Given("^There is a game with price (\\d+.\\d+) and id (\\d+)$")
-    public void thereIsAGame(double pricePerCard, int id) throws Exception {
-        Game g = new Game();
-        g.setId(id);
-        g.setPricePerCard(pricePerCard);
-        gr.save(g);
     }
 
     @When("^I join the Game with id (\\d+)$")
@@ -63,24 +44,6 @@ public class CardStepDef {
                         .andDo(print());
         idc = stepDefs.result.andReturn().getResponse().getHeader("Location");
         cr.save(c);
-    }
-
-    @Then("^A card has been created with price (\\d+.\\d+) for the game with id (\\d+)$")
-    public void CardCreated(double arg, int arg2) throws Exception{
-        Assert.assertNotNull("Location not null", idc);
-        stepDefs.result = stepDefs.mockMvc.perform(
-                get(idc)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print());
-        String game = stepDefs.result.andReturn().getResponse().getContentAsString();
-        String a = (JsonPath.read(game, "$._links.game.href"));
-        stepDefs.result = stepDefs.mockMvc.perform(
-                get(a)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print()).andExpect(jsonPath("$._links.self.href", endsWith("/games/" + String.valueOf(arg2))));
-
     }
 
     @And("^I set up the pricePerCard to be \"([^\"]*)\"$")
