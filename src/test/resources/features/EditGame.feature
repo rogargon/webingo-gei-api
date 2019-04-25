@@ -73,3 +73,31 @@ Feature: Edit Game
     Then The response code is 404
     And It has not been edited a game with id "1"
 
+  Scenario: Edit game to change the starting time
+    Given I login as "admin" with password "password"
+    And I register a new game with id "1"
+    When I edit game with id "1"
+    And I edit the game with id "1" and set the start date "2018-04-05" at  "16:07:33"
+    Then The response code is 200
+    And It has been edited a game with id "1"
+
+  Scenario: Edit game to change the finishing time
+    Given I login as "admin" with password "password"
+    And I register a new game with id "1"
+    When I edit game with id "1"
+    And I edit the game with id "1" and set the finish date "2018-04-05" at "18:10:45"
+    Then The response code is 200
+    And It has been edited a game with id "1"
+
+  Scenario: Edit game to change the jackpot amount
+    Given I login as "admin" with password "password"
+    And I register a new game with id "1"
+    When I edit game with id "1"
+    And I edit the game with id "1" and set the jackpot amount to be "100.0"
+    Then The response code is 200
+    And It has been edited a game with id "1"
+
+
+
+
+

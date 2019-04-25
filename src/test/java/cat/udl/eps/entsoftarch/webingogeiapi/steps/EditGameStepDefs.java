@@ -11,6 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -92,5 +97,62 @@ public class EditGameStepDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
                 .andExpect(jsonPath("$.status", is(status)));
+    }
+
+    private ZonedDateTime startDate, finishDate;
+
+    @And("^I edit the game with id \"([^\"]*)\" and set the start date \"([^\"]*)\" at\"([^\"]*)\"$")
+    public void iEditTheGameWithIdAndSetTheStartDateAt(Integer id, String start_date, String start_hour) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        LocalDate localDateStart = LocalDate.parse(start_date);
+        LocalTime localTime = LocalTime.parse(start_hour);
+
+        startDate = ZonedDateTime.of(localDateStart,localTime,ZoneId.of("Europe/Madrid"));
+
+        JSONObject game = new JSONObject();
+        game.put("startAt",startDate);
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                patch("/games/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
+
+
+    @And("^I edit the game with id \"([^\"]*)\" and set the finish date \"([^\"]*)\" at \"([^\"]*)\"$")
+    public void iEditTheGameWithIdAndSetTheFinishDateAt(Integer id, String finish_date, String finish_hour) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        LocalDate localDateFinish = LocalDate.parse(finish_date);
+        LocalTime localTime = LocalTime.parse(finish_hour);
+
+        finishDate = ZonedDateTime.of(localDateFinish,localTime,ZoneId.of("Europe/Madrid"));
+
+        JSONObject game = new JSONObject();
+        game.put("finishAt",finishDate);
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                patch("/games/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
+
+    @And("^I edit the game with id \"([^\"]*)\" and set the jackpot amount to be \"([^\"]*)\"$")
+    public void iEditTheGameWithIdAndSetTheJackpotAmountToBe(Integer id, String jackpot) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        JSONObject game = new JSONObject();
+        game.put("jackpot", jackpot );
+        stepDefs.result = stepDefs.mockMvc.perform(
+                patch("/games/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(game.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
     }
 }
