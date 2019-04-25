@@ -101,7 +101,7 @@ public class EditGameStepDefs {
 
     private ZonedDateTime startDate, finishDate;
 
-    @And("^I edit the game with id \"([^\"]*)\" and set the start date \"([^\"]*)\" at\"([^\"]*)\"$")
+    @And("^I edit the game with id \"([^\"]*)\" and set the start date \"([^\"]*)\" at  \"([^\"]*)\"$")
     public void iEditTheGameWithIdAndSetTheStartDateAt(Integer id, String start_date, String start_hour) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         LocalDate localDateStart = LocalDate.parse(start_date);
