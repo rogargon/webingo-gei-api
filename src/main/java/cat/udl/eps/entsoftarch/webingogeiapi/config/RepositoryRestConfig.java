@@ -20,6 +20,5 @@ public class RepositoryRestConfig extends RepositoryRestConfigurerAdapter {
         config.exposeIdsFor(Player.class);
         config.exposeIdsFor(Game.class);
         config.exposeIdsFor(Invitation.class);
-
     }
 }
