@@ -28,7 +28,7 @@ public class RegisterGameStepDefs {
     @Autowired
     private StepDefs stepDefs;
     @Autowired
-    GameRepository gr;
+    GameRepository gameRepository;
 
 
     @When("^I register a new game with id \"([^\"]*)\"$")
@@ -89,7 +89,7 @@ public class RegisterGameStepDefs {
 
     @And("^It has not been created a game with id \"([^\"]*)\"$")
     public void itHasNotBeenCreatedAGameWithId(Integer id) throws Throwable {
-        Assert.assertFalse(gr.findById(id).isPresent());
+        Assert.assertFalse(gameRepository.findById(id).isPresent());
     }
 
     @When("^I register a new game with id \"([^\"]*)\", pricePerCard \"([^\"]*)\", start date \"([^\"]*)\" and finish date \"([^\"]*)\" at  \"([^\"]*)\"$")

@@ -30,16 +30,16 @@ import org.springframework.http.MediaType;
 
 public class CardStepDefs {
     @Autowired
-    CardRepository cr;
+    CardRepository cardRepository;
     @Autowired
-    GameRepository gr;
+    GameRepository gameRepository;
     @Autowired
-    PlayerRepository pr;
-    private String idc;
-    private List<Card> cards;
+    PlayerRepository playerRepository;
+    private String idCard;
+    private List<Card> cardList;
     private Exception actualException;
-    private Card created;
-    private Game g;
+    private Card createdCard;
+    private Game game;
 
     private final StepDefs stepDefs;
 
@@ -48,32 +48,32 @@ public class CardStepDefs {
     }
 
     @Given("^There is a game with price (\\d+.\\d+) and id (\\d+)$")
-    public void thereIsAGame(double pricePerCard, int id) throws Exception {
-        Game g = new Game();
-        g.setId(id);
-        g.setPricePerCard(pricePerCard);
-        gr.save(g);
+    public void thereIsAGame(double pricePerCard, int id) {
+        Game game = new Game();
+        game.setId(id);
+        game.setPricePerCard(pricePerCard);
+        gameRepository.save(game);
     }
 
     @When("^I join the Game with id (\\d+) as user \"([^\"]*)\"$")
-    public void iJoinTheGameWithIdAsUser(int arg0, String arg1) throws Throwable {
-        // Create card
-        Card c = new Card();
-        c.setId(arg0);
+    public void iJoinTheGameWithIdAsUser(int game_id, String username) throws Throwable {
+        // Create createdCard
+        Card card = new Card();
+        card.setId(game_id);
         // Set game reference
-        if(gr.findById(arg0).isPresent()){
-            c.setGame(gr.findById(arg0).get());
+        if(gameRepository.findById(game_id).isPresent()){
+            card.setGame(gameRepository.findById(game_id).get());
         }else{
-            throw new Exception("The game with id " + arg0 +" does not exist");
+            throw new Exception("The game with id " + game_id +" does not exist");
         }
 
         // Find player by ID (username)
-        Player p = pr.findById(arg1).orElse(null);
-        if(p != null) p.setCard(c);
-        else throw new Exception("The user with id " + arg1 +" does not exist");
+        Player p = playerRepository.findById(username).orElse(null);
+        if(p != null) p.setCard(card);
+        else throw new Exception("The user with id " + username +" does not exist");
 
         // Post new Card
-        String json = stepDefs.mapper.writeValueAsString(c);
+        String json = stepDefs.mapper.writeValueAsString(card);
         System.out.println("JSON " + json);
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/cards")
@@ -82,13 +82,13 @@ public class CardStepDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
-        idc = stepDefs.result.andReturn().getResponse().getHeader("Location");
+        idCard = stepDefs.result.andReturn().getResponse().getHeader("Location");
 
         JSONObject player = new JSONObject();
-        player.put("card", "/cards/" + String.valueOf(c.getId()));
-        player.put("played", new JSONArray().put("/games/" + arg0));
+        player.put("createdCard", "/cards/" + String.valueOf(card.getId()));
+        player.put("played", new JSONArray().put("/games/" + game_id));
         stepDefs.mockMvc.perform(
-                patch( "/players/{username}",arg1)
+                patch( "/players/{username}",username)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(player.toString())
                         .accept(MediaType.APPLICATION_JSON)
@@ -98,10 +98,10 @@ public class CardStepDefs {
 
     @Then("^A card has been created with price (.+) for the game with id (\\d+)$")
     public void CardCreated(double arg, int arg2) throws Exception{
-        Assert.assertNotNull("Location not null", idc);
-        // Get card
+        Assert.assertNotNull("Location not null", idCard);
+        // Get createdCard
         stepDefs.result = stepDefs.mockMvc.perform(
-                get(idc)
+                get(idCard)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
@@ -124,13 +124,13 @@ public class CardStepDefs {
 
     @And("^There is a card with id (\\d+) associated to the game with id (\\d+) created by player \"([^\"]*)\"$")
     public void thereIsACardWithIdAssociatedToTheGameWithId(int arg0, int arg1, String arg2) throws Exception {
-        // Create card
+        // Create createdCard
         Card c = new Card();
         c.setId(arg0);
 
         // Set game
-        if(gr.findById(arg1).isPresent()){
-            c.setGame(gr.findById(arg1).get());
+        if(gameRepository.findById(arg1).isPresent()){
+            c.setGame(gameRepository.findById(arg1).get());
         }
 
         // Post new Card
@@ -145,12 +145,12 @@ public class CardStepDefs {
                 .andDo(print());
 
         // Find player by ID
-        Player p = pr.findById(arg2).orElse(null);
+        Player p = playerRepository.findById(arg2).orElse(null);
         if(p != null) p.setCard(c);
         else throw new Exception("The user with id " + arg1 +" does not exist");
 
         JSONObject player = new JSONObject();
-        player.put("card", "/cards/" + String.valueOf(c.getId()));
+        player.put("createdCard", "/cards/" + String.valueOf(c.getId()));
         stepDefs.mockMvc.perform(
                 patch("/players/{username}",arg2)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -187,35 +187,35 @@ public class CardStepDefs {
 
     @When("^I list the cards of the game with id (\\d+)$")
     public void iListTheCardsOfTheGameWithId(int arg0) throws Exception {
-        if (gr.findById(arg0).isPresent()){
-            cards = cr.findByGame(gr.findById(arg0).get());
-            System.out.println(cards);
+        if (gameRepository.findById(arg0).isPresent()){
+            cardList = cardRepository.findByGame(gameRepository.findById(arg0).get());
+            System.out.println(cardList);
         }
     }
 
     @And("^There are (\\d+) cards associated$")
     public void thereAreCardsAssociated(int arg0) {
-        assert arg0 == cards.size();
+        assert arg0 == cardList.size();
     }
 
     @Given("^A card is created$")
     public void aCardIsCreated() {
-        created = new Card();
+        createdCard = new Card();
     }
 
     @When("^I generate the numbers$")
     public void iGenerateTheNumbers() {
-        created.generateCard();
+        createdCard.generateCard();
     }
 
     @Then("^The resulting card is generated properly$")
     public void theResultingCardIsGeneratedProperly() {
-        int[][] numbers = created.getNumbers();
+        int[][] numbers = createdCard.getNumbers();
         List<Integer> rownums = new ArrayList<>();
-        int[] max = new int[created.getCols()];
+        int[] max = new int[createdCard.getCols()];
         int count = 0;
-        for (int i = 0; i < created.getRows(); i++) {
-            for (int j = 0; j < created.getCols(); j++) {
+        for (int i = 0; i < createdCard.getRows(); i++) {
+            for (int j = 0; j < createdCard.getCols(); j++) {
                 if (numbers[i][j] == -1) {//Check three numbers missing per row
                     count++;
                     max[j]++;
@@ -229,7 +229,7 @@ public class CardStepDefs {
             assert count == 3;
             count = 0;
         }
-        for (int j = 0; j < created.getCols(); j++) {//Check there are at most two spaces for each column
+        for (int j = 0; j < createdCard.getCols(); j++) {//Check there are at most two spaces for each column
             assert max[j] < 3;
         }
     }
@@ -244,8 +244,8 @@ public class CardStepDefs {
                 .andDo(print());
         String card = stepDefs.result.andReturn().getResponse().getContentAsString();
 
-        // Get card
-        card = (JsonPath.read(card, "$._links.card.href"));
+        // Get createdCard
+        card = (JsonPath.read(card, "$._links.createdCard.href"));
         stepDefs.result = stepDefs.mockMvc.perform(
                 get(card)
                         .accept(MediaType.APPLICATION_JSON)
