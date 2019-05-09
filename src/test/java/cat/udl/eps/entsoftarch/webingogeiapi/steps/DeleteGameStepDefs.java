@@ -34,7 +34,8 @@ public class DeleteGameStepDefs {
     public void itHasNotBeenDeletedAGameWithId(Integer id) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/games/{id}", id)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
                 .andExpect(status().is2xxSuccessful());
     }
 

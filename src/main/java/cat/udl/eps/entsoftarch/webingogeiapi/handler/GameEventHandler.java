@@ -2,8 +2,11 @@ package cat.udl.eps.entsoftarch.webingogeiapi.handler;
 
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.GameStatus;
-import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
+import cat.udl.eps.entsoftarch.webingogeiapi.domain.User;
+import cat.udl.eps.entsoftarch.webingogeiapi.exception.EditGameBadParam;
+import cat.udl.eps.entsoftarch.webingogeiapi.repository.AdminRepository;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
+import java.time.ZonedDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +19,10 @@ import org.springframework.data.rest.core.annotation.HandleBeforeDelete;
 import org.springframework.data.rest.core.annotation.HandleBeforeLinkSave;
 import org.springframework.data.rest.core.annotation.HandleBeforeSave;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.Null;
-import java.time.ZonedDateTime;
 
 @Component
 @RepositoryEventHandler
@@ -33,25 +32,46 @@ public class GameEventHandler {
     @Autowired
     GameRepository gameRepository;
 
+    @Autowired
+    private AdminRepository adminRepository;
+
     @HandleBeforeCreate
     public void handleGamePreCreate(Game game) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        game.setStatus(GameStatus.LOADING);
-        if(game.getPricePerCard() <= 0.0){
-            throw new IllegalArgumentException("Price per card can not be negative or 0.0");
+        User user = (User) authentication.getPrincipal();
+        game.setCreator(adminRepository.findById(user.getUsername()).orElse(null));
+        if(game.getPricePerCard() == null){
+            game.setPricePerCard(0.0);
+        }else if(game.getPricePerCard() <= 0.0){
+            throw new EditGameBadParam();
         }
+        game.setStatus(GameStatus.LOADING);
+        game.setJackpot(0.0);
+        game.setCreatedAt(ZonedDateTime.now());
+        //game.setNumbers();
     }
 
     @HandleBeforeSave
     public void handleGamePreSave(Game game){
         logger.info("Before updating: {}", game.toString());
+        if(game.getStatus() == GameStatus.FINISHED && !game.isBingo()){
+            throw new EditGameBadParam(); //meanwhile
+        }
+        if(!game.isLine() && game.isBingo()){
+            throw new EditGameBadParam(); //meanwhile
+        }
+        if(game.getPricePerCard() < 0.0){
+            throw new EditGameBadParam();
+        }
+        if(gameRepository.findById(game.getId()).get().getStatus().toString() == "LOADING" && game.getStatus().toString() == "PLAYING"){
+            game.setStartAt(ZonedDateTime.now());
+        }
     }
 
     @HandleBeforeDelete
     public void handleGamePreDelete(Game game) {
-        if(game.getStatus() == GameStatus.PLAYING){
-            throw new AccessDeniedException("It's not possible to delete the game. It's started.");
-        }
+        if (game.getStatus().equals(GameStatus.PLAYING))
+            throw new AuthorizationServiceException("Playing game cannot be deleted");
     }
 
     @HandleBeforeLinkSave
@@ -80,4 +100,8 @@ public class GameEventHandler {
     public void handleGamePostLinkSave(Game game, Object o) {
         logger.info("After linking: {} to {}", game.toString(), o.toString());
     }
+
+
+
+
 }
