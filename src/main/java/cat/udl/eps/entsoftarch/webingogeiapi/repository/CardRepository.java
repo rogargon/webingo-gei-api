@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public interface CardRepository extends PagingAndSortingRepository<Card, Integer> {
 
-    Optional<Card> findById(@Param("id") long id);
+    Optional<Card> findById(@Param("id") int id);
 
     /**
      * Returns the card related to a game.
