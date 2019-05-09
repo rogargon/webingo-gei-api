@@ -62,7 +62,7 @@ public class CreateInvitationStepDefs {
     @And("^And it doesn't exist an invitation with message \"([^\"]*)\"$")
     public void andItDoesnTExistAnInvitationWithMessage(String text) throws Throwable {
         Assert.assertEquals(0, invitationRepo.count());
-        Assert.assertEquals(0, invitationRepo.findByMessageContaining(text).size());
+        Assert.assertEquals(0, invitationRepo.findByMessageContainingIgnoreCase(text).size());
     }
 
     @When("^I create an invitation with no message$")

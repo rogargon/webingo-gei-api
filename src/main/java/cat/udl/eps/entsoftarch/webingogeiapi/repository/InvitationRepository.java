@@ -17,7 +17,7 @@ import java.util.Optional;
 @RepositoryRestResource
 public interface InvitationRepository extends PagingAndSortingRepository<Invitation, Long>  {
 
-    List<Invitation> findByMessageContaining(@Param("text") String text);
+    List<Invitation> findByMessageContainingIgnoreCase(@Param("text") String text);
     List<Invitation> findById(@Param("id") long id);
 
     @PreAuthorize("#invites.username == principal.username")
