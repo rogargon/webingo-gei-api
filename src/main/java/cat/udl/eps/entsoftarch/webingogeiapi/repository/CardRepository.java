@@ -8,10 +8,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
+import java.util.Optional;
+
 @RepositoryRestResource
 
 
 public interface CardRepository extends PagingAndSortingRepository<Card, Integer> {
+
+    Optional<Card> findById(@Param("id") int id);
 
     /**
      * Returns the card related to a game.
