@@ -36,8 +36,8 @@ public class CardEventHandler {
         List<Player> list = playerRepository.findByPlayed(card.getGame());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Player actualPlayer = null;
-        if(!list.isEmpty() && authentication.getPrincipal() instanceof Player){
-            actualPlayer = (Player) authentication.getPrincipal();
+        if(authentication.getPrincipal() instanceof Player) actualPlayer = (Player) authentication.getPrincipal();
+        if(!list.isEmpty()){
             for(Player p : list)
                 if(p.getId().equals(actualPlayer.getId()))
                     throw new UserAlreadyJoinedException();
@@ -54,8 +54,8 @@ public class CardEventHandler {
     @HandleBeforeDelete
     @Transactional
     public void handleInvitationPreDelete(Card card) throws Throwable{
-        if (playerRepository.findByCard(card).isPresent()){
-            Player player = (Player) playerRepository.findByCard(card).get();
+        if (!playerRepository.findByCard(card).isEmpty()){
+            Player player = (Player) playerRepository.findByCard(card).get(0);
             player.setCard(null);
         }
     }
