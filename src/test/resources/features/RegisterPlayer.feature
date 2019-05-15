@@ -12,13 +12,14 @@ Feature: Register Player
   Scenario: Register new player as user
     Given I login as "user" with password "password"
     When I register a new player with username "player", email "player@webingo.org" and password "password"
-    Then The response code is 403
-    And It has not been created a player with username "player"
+    Then The response code is 201
+    And It has been created a player with username "player" and email "player@webingo.org", the password is not returned
 
   Scenario: Try to register new player without authenticating
     Given I'm not logged in
     When I register a new player with username "player", email "player@webingo.org" and password "password"
-    Then The response code is 401
+    Then The response code is 201
+    And It has been created a player with username "player" and email "player@webingo.org", the password is not returned
 
 
   Scenario: Register new player with empty password
