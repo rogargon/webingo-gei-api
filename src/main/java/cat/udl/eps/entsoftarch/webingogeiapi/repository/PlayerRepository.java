@@ -24,7 +24,7 @@ public interface PlayerRepository extends PagingAndSortingRepository<Player, Str
    * @param card The Card that contains the player we want.
    * @return a player.
    */
-  Optional<Player> findByCard(@Param("card") Card card);
+  List<Player> findByCard(@Param("card") Card card);
 
   /**
    * Returns the players related to a game.
