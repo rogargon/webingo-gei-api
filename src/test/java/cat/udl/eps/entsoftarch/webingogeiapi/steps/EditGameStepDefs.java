@@ -178,6 +178,7 @@ public class EditGameStepDefs {
                 .andExpect(jsonPath("$.startAt",is(parsedStartDate.toString())));
     }
 
+
     @And("^The game with id \"([^\"]*)\" has the finish date \"([^\"]*)\" at \"([^\"]*)\"$")
     public void theGameWithIdHasTheFinishDateAt(Integer id, String finish_date, String finish_hour) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
