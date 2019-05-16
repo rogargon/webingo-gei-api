@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -131,7 +132,7 @@ public class EditGameStepDefs {
         finishDate = ZonedDateTime.of(localDateFinish,localTime,ZoneId.of("Europe/Madrid"));
 
         JSONObject game = new JSONObject();
-        game.put("finishAt",finishDate);
+        game.put("finishedAt",finishDate);
 
         stepDefs.result = stepDefs.mockMvc.perform(
                 patch("/games/{id}", id)
@@ -154,5 +155,62 @@ public class EditGameStepDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
+    }
+
+
+    @And("^The game with id \"([^\"]*)\" has the start date \"([^\"]*)\" at  \"([^\"]*)\"$")
+    public void theGameWithIdHasTheStartDateAt(Integer id, String start_date, String start_hour) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        LocalDate localDateStart = LocalDate.parse(start_date);
+        LocalTime localTime = LocalTime.parse(start_hour);
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+
+
+        startDate = ZonedDateTime.of(localDateStart,localTime,ZoneId.of("Europe/Madrid"));
+        String startDate1 = startDate.format(formatter);
+        ZonedDateTime parsedStartDate = ZonedDateTime.parse(startDate1, formatter);
+
+        stepDefs.result = stepDefs.mockMvc
+                .perform(get("/games/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.startAt",is(parsedStartDate.toString())));
+    }
+
+    @And("^The game with id \"([^\"]*)\" has the finish date \"([^\"]*)\" at \"([^\"]*)\"$")
+    public void theGameWithIdHasTheFinishDateAt(Integer id, String finish_date, String finish_hour) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+
+        LocalDate localDateFinish = LocalDate.parse(finish_date);
+        LocalTime localTime = LocalTime.parse(finish_hour);
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+
+        finishDate = ZonedDateTime.of(localDateFinish,localTime,ZoneId.of("Europe/Madrid"));
+
+        String finishDate1 = finishDate.format(formatter);
+        ZonedDateTime parsedFinishDate = ZonedDateTime.parse(finishDate1, formatter);
+
+        stepDefs.result = stepDefs.mockMvc
+                .perform(get("/games/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.finishedAt",is(parsedFinishDate.toString())));
+
+
+
+
+    }
+
+    @And("^The game with id \"([^\"]*)\" has the jackpot amount \"([^\"]*)\"$")
+    public void theGameWithIdHasTheJackpotAmount(Integer id, Double jackpot) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        stepDefs.result = stepDefs.mockMvc
+                .perform(get("/games/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.jackpot", is(jackpot)));
     }
 }
