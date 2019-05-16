@@ -199,9 +199,6 @@ public class EditGameStepDefs {
                 .andDo(print())
                 .andExpect(jsonPath("$.finishedAt",is(parsedFinishDate.toString())));
 
-
-
-
     }
 
     @And("^The game with id \"([^\"]*)\" has the jackpot amount \"([^\"]*)\"$")
