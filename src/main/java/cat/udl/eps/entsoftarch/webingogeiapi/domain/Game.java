@@ -19,6 +19,7 @@ public class Game extends UriEntity<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String name;
     private GameStatus status;
     private ArrayList<Integer> numbers;
     private Double jackpot;
