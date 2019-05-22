@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -33,11 +34,12 @@ public class CardEventHandler {
 
     @HandleBeforeCreate
     public void handleCardBeforeCreate(Card card) throws UserAlreadyJoinedException {
-        List<Player> list = playerRepository.findByPlayed(card.getGame());
+        List<Player> list = new ArrayList<>();
+        if (card.getGame() != null) list.addAll(playerRepository.findByPlayed(card.getGame()));
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Player actualPlayer = null;
         if(authentication.getPrincipal() instanceof Player) actualPlayer = (Player) authentication.getPrincipal();
-        if(!list.isEmpty()){
+        if(!list.isEmpty() && actualPlayer != null){
             for(Player p : list)
                 if(p.getId().equals(actualPlayer.getId()))
                     throw new UserAlreadyJoinedException();
