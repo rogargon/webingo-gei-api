@@ -1,7 +1,5 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
-import cat.udl.eps.entsoftarch.webingogeiapi.handler.GameEventHandler;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import org.slf4j.Logger;
@@ -16,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class DeleteGameStepDefs {
 
-    private static final Logger logger = LoggerFactory.getLogger(DeleteGameStepDefs.class);
     @Autowired
     private StepDefs stepDefs;
 
