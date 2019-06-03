@@ -45,7 +45,8 @@ public class InvitationEventHandler {
         Player player = (Player) authentication.getPrincipal();
 
 
-            if(!invi.getCreatedBy().getId().equals(player.getId()))
+            if (!invi.getCreatedBy().getId().equals(player.getId()) &&
+                    !invi.getInvites().getId().equals(player.getId()))
                 throw new InvitationDeleteException();
     }
 
