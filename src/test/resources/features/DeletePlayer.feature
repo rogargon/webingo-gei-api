@@ -12,10 +12,9 @@ Feature: Remove Player
   Scenario: Remove player as user
     Given I login as "admin" with password "password"
     And I register a new player with username "player", email "player@webingo.org" and password "password"
-    Given I login as "user" with password "password"
+    Given I login as "player" with password "password"
     When I delete a player with username "player"
-    Then The response code is 403
-    And It has not been deleted a player with username "player"
+    Then The response code is 204
 
   Scenario: Remove a player without authenticating
   Given I login as "admin" with password "password"
