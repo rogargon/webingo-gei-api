@@ -3,6 +3,7 @@ package cat.udl.eps.entsoftarch.webingogeiapi.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,6 +37,19 @@ public class Game extends UriEntity<Integer> {
         numbers = new ArrayList<>();
         for(int i=0;i<=100; i++)
             numbers.add(i);
+    }
+
+    //afegin numbers
+    public void generateNum(){
+        Random r = new Random();
+        int tmp;
+        while(!bingo){
+            tmp = r.nextInt(100);
+            while(numbers.contains(tmp)) {
+                tmp = r.nextInt(100);
+            }
+            numbers.add(tmp);
+        }
     }
 }
 
