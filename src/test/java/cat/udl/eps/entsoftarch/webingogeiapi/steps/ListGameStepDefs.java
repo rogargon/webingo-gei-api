@@ -1,11 +1,5 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
@@ -14,8 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 public class ListGameStepDefs {
-    private static final Logger logger = LoggerFactory.getLogger(ListGameStepDefs.class);
 
     @Autowired
     private StepDefs stepDefs;

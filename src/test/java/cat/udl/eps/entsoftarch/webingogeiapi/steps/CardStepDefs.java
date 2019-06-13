@@ -1,14 +1,5 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
-import static org.hamcrest.Matchers.endsWith;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Card;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Game;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
@@ -20,13 +11,20 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import java.util.ArrayList;
-import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.Matchers.endsWith;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class CardStepDefs {
     @Autowired
@@ -39,7 +37,6 @@ public class CardStepDefs {
     private List<Card> cardList;
     private Exception actualException;
     private Card createdCard;
-    private Game game;
 
     private final StepDefs stepDefs;
 
@@ -85,7 +82,7 @@ public class CardStepDefs {
         idCard = stepDefs.result.andReturn().getResponse().getHeader("Location");
 
         JSONObject player = new JSONObject();
-        player.put("createdCard", "/cards/" + String.valueOf(card.getId()));
+        player.put("createdCard", "/cards/" + card.getId());
         player.put("played", new JSONArray().put("/games/" + game_id));
         stepDefs.mockMvc.perform(
                 patch( "/players/{username}",username)
@@ -186,7 +183,7 @@ public class CardStepDefs {
     }
 
     @When("^I list the cards of the game with id (\\d+)$")
-    public void iListTheCardsOfTheGameWithId(int arg0) throws Exception {
+    public void iListTheCardsOfTheGameWithId(int arg0) {
         if (gameRepository.findById(arg0).isPresent()){
             cardList = cardRepository.findByGame(gameRepository.findById(arg0).get());
             System.out.println(cardList);

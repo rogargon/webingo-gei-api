@@ -20,7 +20,7 @@ public interface InvitationRepository extends PagingAndSortingRepository<Invitat
     List<Invitation> findById(@Param("id") long id);
 
     @PreAuthorize("#invites.username == principal.username")
-    Page<Invitation> findByInvites(@Param("invites") User invites, Pageable p);
+    Page<Invitation> findByInvites(@Param("invites") Player invites, Pageable p);
 
     @PreAuthorize("#createdBy.username == principal.username")
     Page<Invitation> findByCreatedBy(@Param("createdBy") Player createdBy, Pageable p);

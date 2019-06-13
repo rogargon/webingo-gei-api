@@ -1,5 +1,11 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
+import cucumber.api.java.en.And;
+import cucumber.api.java.en.When;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -7,17 +13,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.When;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-
 public class RegisterPlayerStepDef {
 
-  private static final Logger logger = LoggerFactory.getLogger(RegisterPlayerStepDef.class);
 
   @Autowired
   private StepDefs stepDefs;

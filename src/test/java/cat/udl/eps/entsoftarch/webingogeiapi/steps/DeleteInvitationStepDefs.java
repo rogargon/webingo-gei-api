@@ -4,16 +4,12 @@ import cat.udl.eps.entsoftarch.webingogeiapi.domain.Invitation;
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Player;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.InvitationRepository;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.PlayerRepository;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
-import org.json.JSONObject;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 public class DeleteInvitationStepDefs {

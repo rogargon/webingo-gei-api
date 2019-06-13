@@ -1,8 +1,5 @@
 package cat.udl.eps.entsoftarch.webingogeiapi.steps;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
 import cat.udl.eps.entsoftarch.webingogeiapi.domain.Card;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.CardRepository;
 import cat.udl.eps.entsoftarch.webingogeiapi.repository.GameRepository;
@@ -12,12 +9,15 @@ import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 public class CardStepDef {
     @Autowired
-    CardRepository cr;
+    CardRepository cardRepository;
     @Autowired
-    GameRepository gr;
-    String idc;
+    GameRepository gameRepository;
+    String idCard;
 
     private final StepDefs stepDefs;
 
@@ -27,13 +27,13 @@ public class CardStepDef {
 
     @When("^I join the Game with id (\\d+)$")
     public void iJoinThePreviouslyGame(int arg) throws Exception {
-        Card c = new Card();
-        if(gr.findById(arg).isPresent()){
-            c.setGame(gr.findById(arg).get());
+        Card card = new Card();
+        if(gameRepository.findById(arg).isPresent()){
+            card.setGame(gameRepository.findById(arg).get());
         }else{
             assert false;
         }
-        String json = stepDefs.mapper.writeValueAsString(c);
+        String json = stepDefs.mapper.writeValueAsString(card);
         System.out.println("JSON " + json);
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/cards")
@@ -42,8 +42,8 @@ public class CardStepDef {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                         .andDo(print());
-        idc = stepDefs.result.andReturn().getResponse().getHeader("Location");
-        cr.save(c);
+        idCard = stepDefs.result.andReturn().getResponse().getHeader("Location");
+        cardRepository.save(card);
     }
 
     @And("^I set up the pricePerCard to be \"([^\"]*)\"$")
